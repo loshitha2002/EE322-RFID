@@ -1,0 +1,32 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build AVR ASM sim (make)",
+      "type": "shell",
+      "command": "C:\\msys64\\ucrt64\\bin\\mingw32-make.exe",
+      "options": {
+        "cwd": "${workspaceFolder}\\asm_sim",
+        "env": {
+          "Path": "${env:Path};C:\\msys64\\ucrt64\\bin"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Clean AVR ASM sim (make clean)",
+      "type": "shell",
+      "command": "C:\\msys64\\ucrt64\\bin\\mingw32-make.exe",
+      "args": [
+        "clean"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}\\asm_sim",
+        "env": {
+          "Path": "${env:Path};C:\\msys64\\ucrt64\\bin"
+        }
+      },
+      "problemMatcher": []
+    }
+  ]
+}
