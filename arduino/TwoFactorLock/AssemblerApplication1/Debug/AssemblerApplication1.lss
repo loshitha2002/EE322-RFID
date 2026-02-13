@@ -1,0 +1,2936 @@
+
+AVRASM ver. 2.2.8  E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm Fri Feb 13 10:56:21 2026
+
+[builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328Pdef.inc'
+E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(9): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328Pdef.inc'
+[builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328Pdef.inc'
+E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(9): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328Pdef.inc'
+                                 
+                                 // ============================================================================
+                                 
+                                 ;***** Created: 2011-02-09 12:03 ******* Source: ATmega328P.xml **********
+                                 ;*************************************************************************
+                                 ;* A P P L I C A T I O N   N O T E   F O R   T H E   A V R   F A M I L Y
+                                 ;* 
+                                 ;* Number            : AVR000
+                                 ;* File Name         : "m328Pdef.inc"
+                                 ;* Title             : Register/Bit Definitions for the ATmega328P
+                                 ;* Date              : 2011-02-09
+                                 ;* Version           : 2.35
+                                 ;* Support E-mail    : avr@atmel.com
+                                 ;* Target MCU        : ATmega328P
+                                 ;* 
+                                 ;* DESCRIPTION
+                                 ;* When including this file in the assembly program file, all I/O register 
+                                 ;* names and I/O register bit names appearing in the data book can be used.
+                                 ;* In addition, the six registers forming the three data pointers X, Y and 
+                                 ;* Z have been assigned names XL - ZH. Highest RAM address for Internal 
+                                 ;* SRAM is also defined 
+                                 ;* 
+                                 ;* The Register names are represented by their hexadecimal address.
+                                 ;* 
+                                 ;* The Register Bit names are represented by their bit number (0-7).
+                                 ;* 
+                                 ;* Please observe the difference in using the bit names with instructions
+                                 ;* such as "sbr"/"cbr" (set/clear bit in register) and "sbrs"/"sbrc"
+                                 ;* (skip if bit in register set/cleared). The following example illustrates
+                                 ;* this:
+                                 ;* 
+                                 ;* in    r16,PORTB             ;read PORTB latch
+                                 ;* sbr   r16,(1<<PB6)+(1<<PB5) ;set PB6 and PB5 (use masks, not bit#)
+                                 ;* out   PORTB,r16             ;output to PORTB
+                                 ;* 
+                                 ;* in    r16,TIFR              ;read the Timer Interrupt Flag Register
+                                 ;* sbrc  r16,TOV0              ;test the overflow flag (use bit#)
+                                 ;* rjmp  TOV0_is_set           ;jump if set
+                                 ;* ...                         ;otherwise do something else
+                                 ;*************************************************************************
+                                 
+                                 #ifndef _M328PDEF_INC_
+                                 #define _M328PDEF_INC_
+                                 
+                                 
+                                 #pragma partinc 0
+                                 
+                                 ; ***** SPECIFY DEVICE ***************************************************
+                                 .device ATmega328P
+                                 #pragma AVRPART ADMIN PART_NAME ATmega328P
+                                 .equ	SIGNATURE_000	= 0x1e
+                                 .equ	SIGNATURE_001	= 0x95
+                                 .equ	SIGNATURE_002	= 0x0f
+                                 
+                                 #pragma AVRPART CORE CORE_VERSION V2E
+                                 
+                                 
+                                 ; ***** I/O REGISTER DEFINITIONS *****************************************
+                                 ; NOTE:
+                                 ; Definitions marked "MEMORY MAPPED"are extended I/O ports
+                                 ; and cannot be used with IN/OUT instructions
+                                 .equ	UDR0	= 0xc6	; MEMORY MAPPED
+                                 .equ	UBRR0L	= 0xc4	; MEMORY MAPPED
+                                 .equ	UBRR0H	= 0xc5	; MEMORY MAPPED
+                                 .equ	UCSR0C	= 0xc2	; MEMORY MAPPED
+                                 .equ	UCSR0B	= 0xc1	; MEMORY MAPPED
+                                 .equ	UCSR0A	= 0xc0	; MEMORY MAPPED
+                                 .equ	TWAMR	= 0xbd	; MEMORY MAPPED
+                                 .equ	TWCR	= 0xbc	; MEMORY MAPPED
+                                 .equ	TWDR	= 0xbb	; MEMORY MAPPED
+                                 .equ	TWAR	= 0xba	; MEMORY MAPPED
+                                 .equ	TWSR	= 0xb9	; MEMORY MAPPED
+                                 .equ	TWBR	= 0xb8	; MEMORY MAPPED
+                                 .equ	ASSR	= 0xb6	; MEMORY MAPPED
+                                 .equ	OCR2B	= 0xb4	; MEMORY MAPPED
+                                 .equ	OCR2A	= 0xb3	; MEMORY MAPPED
+                                 .equ	TCNT2	= 0xb2	; MEMORY MAPPED
+                                 .equ	TCCR2B	= 0xb1	; MEMORY MAPPED
+                                 .equ	TCCR2A	= 0xb0	; MEMORY MAPPED
+                                 .equ	OCR1BL	= 0x8a	; MEMORY MAPPED
+                                 .equ	OCR1BH	= 0x8b	; MEMORY MAPPED
+                                 .equ	OCR1AL	= 0x88	; MEMORY MAPPED
+                                 .equ	OCR1AH	= 0x89	; MEMORY MAPPED
+                                 .equ	ICR1L	= 0x86	; MEMORY MAPPED
+                                 .equ	ICR1H	= 0x87	; MEMORY MAPPED
+                                 .equ	TCNT1L	= 0x84	; MEMORY MAPPED
+                                 .equ	TCNT1H	= 0x85	; MEMORY MAPPED
+                                 .equ	TCCR1C	= 0x82	; MEMORY MAPPED
+                                 .equ	TCCR1B	= 0x81	; MEMORY MAPPED
+                                 .equ	TCCR1A	= 0x80	; MEMORY MAPPED
+                                 .equ	DIDR1	= 0x7f	; MEMORY MAPPED
+                                 .equ	DIDR0	= 0x7e	; MEMORY MAPPED
+                                 .equ	ADMUX	= 0x7c	; MEMORY MAPPED
+                                 .equ	ADCSRB	= 0x7b	; MEMORY MAPPED
+                                 .equ	ADCSRA	= 0x7a	; MEMORY MAPPED
+                                 .equ	ADCH	= 0x79	; MEMORY MAPPED
+                                 .equ	ADCL	= 0x78	; MEMORY MAPPED
+                                 .equ	TIMSK2	= 0x70	; MEMORY MAPPED
+                                 .equ	TIMSK1	= 0x6f	; MEMORY MAPPED
+                                 .equ	TIMSK0	= 0x6e	; MEMORY MAPPED
+                                 .equ	PCMSK1	= 0x6c	; MEMORY MAPPED
+                                 .equ	PCMSK2	= 0x6d	; MEMORY MAPPED
+                                 .equ	PCMSK0	= 0x6b	; MEMORY MAPPED
+                                 .equ	EICRA	= 0x69	; MEMORY MAPPED
+                                 .equ	PCICR	= 0x68	; MEMORY MAPPED
+                                 .equ	OSCCAL	= 0x66	; MEMORY MAPPED
+                                 .equ	PRR	= 0x64	; MEMORY MAPPED
+                                 .equ	CLKPR	= 0x61	; MEMORY MAPPED
+                                 .equ	WDTCSR	= 0x60	; MEMORY MAPPED
+                                 .equ	SREG	= 0x3f
+                                 .equ	SPL	= 0x3d
+                                 .equ	SPH	= 0x3e
+                                 .equ	SPMCSR	= 0x37
+                                 .equ	MCUCR	= 0x35
+                                 .equ	MCUSR	= 0x34
+                                 .equ	SMCR	= 0x33
+                                 .equ	ACSR	= 0x30
+                                 .equ	SPDR	= 0x2e
+                                 .equ	SPSR	= 0x2d
+                                 .equ	SPCR	= 0x2c
+                                 .equ	GPIOR2	= 0x2b
+                                 .equ	GPIOR1	= 0x2a
+                                 .equ	OCR0B	= 0x28
+                                 .equ	OCR0A	= 0x27
+                                 .equ	TCNT0	= 0x26
+                                 .equ	TCCR0B	= 0x25
+                                 .equ	TCCR0A	= 0x24
+                                 .equ	GTCCR	= 0x23
+                                 .equ	EEARH	= 0x22
+                                 .equ	EEARL	= 0x21
+                                 .equ	EEDR	= 0x20
+                                 .equ	EECR	= 0x1f
+                                 .equ	GPIOR0	= 0x1e
+                                 .equ	EIMSK	= 0x1d
+                                 .equ	EIFR	= 0x1c
+                                 .equ	PCIFR	= 0x1b
+                                 .equ	TIFR2	= 0x17
+                                 .equ	TIFR1	= 0x16
+                                 .equ	TIFR0	= 0x15
+                                 .equ	PORTD	= 0x0b
+                                 .equ	DDRD	= 0x0a
+                                 .equ	PIND	= 0x09
+                                 .equ	PORTC	= 0x08
+                                 .equ	DDRC	= 0x07
+                                 .equ	PINC	= 0x06
+                                 .equ	PORTB	= 0x05
+                                 .equ	DDRB	= 0x04
+                                 .equ	PINB	= 0x03
+                                 
+                                 
+                                 ; ***** BIT DEFINITIONS **************************************************
+                                 
+                                 ; ***** USART0 ***********************
+                                 ; UDR0 - USART I/O Data Register
+                                 .equ	UDR0_0	= 0	; USART I/O Data Register bit 0
+                                 .equ	UDR0_1	= 1	; USART I/O Data Register bit 1
+                                 .equ	UDR0_2	= 2	; USART I/O Data Register bit 2
+                                 .equ	UDR0_3	= 3	; USART I/O Data Register bit 3
+                                 .equ	UDR0_4	= 4	; USART I/O Data Register bit 4
+                                 .equ	UDR0_5	= 5	; USART I/O Data Register bit 5
+                                 .equ	UDR0_6	= 6	; USART I/O Data Register bit 6
+                                 .equ	UDR0_7	= 7	; USART I/O Data Register bit 7
+                                 
+                                 ; UCSR0A - USART Control and Status Register A
+                                 .equ	MPCM0	= 0	; Multi-processor Communication Mode
+                                 .equ	U2X0	= 1	; Double the USART transmission speed
+                                 .equ	UPE0	= 2	; Parity Error
+                                 .equ	DOR0	= 3	; Data overRun
+                                 .equ	FE0	= 4	; Framing Error
+                                 .equ	UDRE0	= 5	; USART Data Register Empty
+                                 .equ	TXC0	= 6	; USART Transmitt Complete
+                                 .equ	RXC0	= 7	; USART Receive Complete
+                                 
+                                 ; UCSR0B - USART Control and Status Register B
+                                 .equ	TXB80	= 0	; Transmit Data Bit 8
+                                 .equ	RXB80	= 1	; Receive Data Bit 8
+                                 .equ	UCSZ02	= 2	; Character Size
+                                 .equ	TXEN0	= 3	; Transmitter Enable
+                                 .equ	RXEN0	= 4	; Receiver Enable
+                                 .equ	UDRIE0	= 5	; USART Data register Empty Interrupt Enable
+                                 .equ	TXCIE0	= 6	; TX Complete Interrupt Enable
+                                 .equ	RXCIE0	= 7	; RX Complete Interrupt Enable
+                                 
+                                 ; UCSR0C - USART Control and Status Register C
+                                 .equ	UCPOL0	= 0	; Clock Polarity
+                                 .equ	UCSZ00	= 1	; Character Size
+                                 .equ	UCPHA0	= UCSZ00	; For compatibility
+                                 .equ	UCSZ01	= 2	; Character Size
+                                 .equ	UDORD0	= UCSZ01	; For compatibility
+                                 .equ	USBS0	= 3	; Stop Bit Select
+                                 .equ	UPM00	= 4	; Parity Mode Bit 0
+                                 .equ	UPM01	= 5	; Parity Mode Bit 1
+                                 .equ	UMSEL00	= 6	; USART Mode Select
+                                 .equ	UMSEL0	= UMSEL00	; For compatibility
+                                 .equ	UMSEL01	= 7	; USART Mode Select
+                                 .equ	UMSEL1	= UMSEL01	; For compatibility
+                                 
+                                 ; UBRR0H - USART Baud Rate Register High Byte
+                                 .equ	UBRR8	= 0	; USART Baud Rate Register bit 8
+                                 .equ	UBRR9	= 1	; USART Baud Rate Register bit 9
+                                 .equ	UBRR10	= 2	; USART Baud Rate Register bit 10
+                                 .equ	UBRR11	= 3	; USART Baud Rate Register bit 11
+                                 
+                                 ; UBRR0L - USART Baud Rate Register Low Byte
+                                 .equ	_UBRR0	= 0	; USART Baud Rate Register bit 0
+                                 .equ	_UBRR1	= 1	; USART Baud Rate Register bit 1
+                                 .equ	UBRR2	= 2	; USART Baud Rate Register bit 2
+                                 .equ	UBRR3	= 3	; USART Baud Rate Register bit 3
+                                 .equ	UBRR4	= 4	; USART Baud Rate Register bit 4
+                                 .equ	UBRR5	= 5	; USART Baud Rate Register bit 5
+                                 .equ	UBRR6	= 6	; USART Baud Rate Register bit 6
+                                 .equ	UBRR7	= 7	; USART Baud Rate Register bit 7
+                                 
+                                 
+                                 ; ***** TWI **************************
+                                 ; TWAMR - TWI (Slave) Address Mask Register
+                                 .equ	TWAM0	= 1	; 
+                                 .equ	TWAMR0	= TWAM0	; For compatibility
+                                 .equ	TWAM1	= 2	; 
+                                 .equ	TWAMR1	= TWAM1	; For compatibility
+                                 .equ	TWAM2	= 3	; 
+                                 .equ	TWAMR2	= TWAM2	; For compatibility
+                                 .equ	TWAM3	= 4	; 
+                                 .equ	TWAMR3	= TWAM3	; For compatibility
+                                 .equ	TWAM4	= 5	; 
+                                 .equ	TWAMR4	= TWAM4	; For compatibility
+                                 .equ	TWAM5	= 6	; 
+                                 .equ	TWAMR5	= TWAM5	; For compatibility
+                                 .equ	TWAM6	= 7	; 
+                                 .equ	TWAMR6	= TWAM6	; For compatibility
+                                 
+                                 ; TWBR - TWI Bit Rate register
+                                 .equ	TWBR0	= 0	; 
+                                 .equ	TWBR1	= 1	; 
+                                 .equ	TWBR2	= 2	; 
+                                 .equ	TWBR3	= 3	; 
+                                 .equ	TWBR4	= 4	; 
+                                 .equ	TWBR5	= 5	; 
+                                 .equ	TWBR6	= 6	; 
+                                 .equ	TWBR7	= 7	; 
+                                 
+                                 ; TWCR - TWI Control Register
+                                 .equ	TWIE	= 0	; TWI Interrupt Enable
+                                 .equ	TWEN	= 2	; TWI Enable Bit
+                                 .equ	TWWC	= 3	; TWI Write Collition Flag
+                                 .equ	TWSTO	= 4	; TWI Stop Condition Bit
+                                 .equ	TWSTA	= 5	; TWI Start Condition Bit
+                                 .equ	TWEA	= 6	; TWI Enable Acknowledge Bit
+                                 .equ	TWINT	= 7	; TWI Interrupt Flag
+                                 
+                                 ; TWSR - TWI Status Register
+                                 .equ	TWPS0	= 0	; TWI Prescaler
+                                 .equ	TWPS1	= 1	; TWI Prescaler
+                                 .equ	TWS3	= 3	; TWI Status
+                                 .equ	TWS4	= 4	; TWI Status
+                                 .equ	TWS5	= 5	; TWI Status
+                                 .equ	TWS6	= 6	; TWI Status
+                                 .equ	TWS7	= 7	; TWI Status
+                                 
+                                 ; TWDR - TWI Data register
+                                 .equ	TWD0	= 0	; TWI Data Register Bit 0
+                                 .equ	TWD1	= 1	; TWI Data Register Bit 1
+                                 .equ	TWD2	= 2	; TWI Data Register Bit 2
+                                 .equ	TWD3	= 3	; TWI Data Register Bit 3
+                                 .equ	TWD4	= 4	; TWI Data Register Bit 4
+                                 .equ	TWD5	= 5	; TWI Data Register Bit 5
+                                 .equ	TWD6	= 6	; TWI Data Register Bit 6
+                                 .equ	TWD7	= 7	; TWI Data Register Bit 7
+                                 
+                                 ; TWAR - TWI (Slave) Address register
+                                 .equ	TWGCE	= 0	; TWI General Call Recognition Enable Bit
+                                 .equ	TWA0	= 1	; TWI (Slave) Address register Bit 0
+                                 .equ	TWA1	= 2	; TWI (Slave) Address register Bit 1
+                                 .equ	TWA2	= 3	; TWI (Slave) Address register Bit 2
+                                 .equ	TWA3	= 4	; TWI (Slave) Address register Bit 3
+                                 .equ	TWA4	= 5	; TWI (Slave) Address register Bit 4
+                                 .equ	TWA5	= 6	; TWI (Slave) Address register Bit 5
+                                 .equ	TWA6	= 7	; TWI (Slave) Address register Bit 6
+                                 
+                                 
+                                 ; ***** TIMER_COUNTER_1 **************
+                                 ; TIMSK1 - Timer/Counter Interrupt Mask Register
+                                 .equ	TOIE1	= 0	; Timer/Counter1 Overflow Interrupt Enable
+                                 .equ	OCIE1A	= 1	; Timer/Counter1 Output CompareA Match Interrupt Enable
+                                 .equ	OCIE1B	= 2	; Timer/Counter1 Output CompareB Match Interrupt Enable
+                                 .equ	ICIE1	= 5	; Timer/Counter1 Input Capture Interrupt Enable
+                                 
+                                 ; TIFR1 - Timer/Counter Interrupt Flag register
+                                 .equ	TOV1	= 0	; Timer/Counter1 Overflow Flag
+                                 .equ	OCF1A	= 1	; Output Compare Flag 1A
+                                 .equ	OCF1B	= 2	; Output Compare Flag 1B
+                                 .equ	ICF1	= 5	; Input Capture Flag 1
+                                 
+                                 ; TCCR1A - Timer/Counter1 Control Register A
+                                 .equ	WGM10	= 0	; Waveform Generation Mode
+                                 .equ	WGM11	= 1	; Waveform Generation Mode
+                                 .equ	COM1B0	= 4	; Compare Output Mode 1B, bit 0
+                                 .equ	COM1B1	= 5	; Compare Output Mode 1B, bit 1
+                                 .equ	COM1A0	= 6	; Comparet Ouput Mode 1A, bit 0
+                                 .equ	COM1A1	= 7	; Compare Output Mode 1A, bit 1
+                                 
+                                 ; TCCR1B - Timer/Counter1 Control Register B
+                                 .equ	CS10	= 0	; Prescaler source of Timer/Counter 1
+                                 .equ	CS11	= 1	; Prescaler source of Timer/Counter 1
+                                 .equ	CS12	= 2	; Prescaler source of Timer/Counter 1
+                                 .equ	WGM12	= 3	; Waveform Generation Mode
+                                 .equ	WGM13	= 4	; Waveform Generation Mode
+                                 .equ	ICES1	= 6	; Input Capture 1 Edge Select
+                                 .equ	ICNC1	= 7	; Input Capture 1 Noise Canceler
+                                 
+                                 ; TCCR1C - Timer/Counter1 Control Register C
+                                 .equ	FOC1B	= 6	; 
+                                 .equ	FOC1A	= 7	; 
+                                 
+                                 ; GTCCR - General Timer/Counter Control Register
+                                 .equ	PSRSYNC	= 0	; Prescaler Reset Timer/Counter1 and Timer/Counter0
+                                 .equ	TSM	= 7	; Timer/Counter Synchronization Mode
+                                 
+                                 
+                                 ; ***** TIMER_COUNTER_2 **************
+                                 ; TIMSK2 - Timer/Counter Interrupt Mask register
+                                 .equ	TOIE2	= 0	; Timer/Counter2 Overflow Interrupt Enable
+                                 .equ	TOIE2A	= TOIE2	; For compatibility
+                                 .equ	OCIE2A	= 1	; Timer/Counter2 Output Compare Match A Interrupt Enable
+                                 .equ	OCIE2B	= 2	; Timer/Counter2 Output Compare Match B Interrupt Enable
+                                 
+                                 ; TIFR2 - Timer/Counter Interrupt Flag Register
+                                 .equ	TOV2	= 0	; Timer/Counter2 Overflow Flag
+                                 .equ	OCF2A	= 1	; Output Compare Flag 2A
+                                 .equ	OCF2B	= 2	; Output Compare Flag 2B
+                                 
+                                 ; TCCR2A - Timer/Counter2 Control Register A
+                                 .equ	WGM20	= 0	; Waveform Genration Mode
+                                 .equ	WGM21	= 1	; Waveform Genration Mode
+                                 .equ	COM2B0	= 4	; Compare Output Mode bit 0
+                                 .equ	COM2B1	= 5	; Compare Output Mode bit 1
+                                 .equ	COM2A0	= 6	; Compare Output Mode bit 1
+                                 .equ	COM2A1	= 7	; Compare Output Mode bit 1
+                                 
+                                 ; TCCR2B - Timer/Counter2 Control Register B
+                                 .equ	CS20	= 0	; Clock Select bit 0
+                                 .equ	CS21	= 1	; Clock Select bit 1
+                                 .equ	CS22	= 2	; Clock Select bit 2
+                                 .equ	WGM22	= 3	; Waveform Generation Mode
+                                 .equ	FOC2B	= 6	; Force Output Compare B
+                                 .equ	FOC2A	= 7	; Force Output Compare A
+                                 
+                                 ; TCNT2 - Timer/Counter2
+                                 .equ	TCNT2_0	= 0	; Timer/Counter 2 bit 0
+                                 .equ	TCNT2_1	= 1	; Timer/Counter 2 bit 1
+                                 .equ	TCNT2_2	= 2	; Timer/Counter 2 bit 2
+                                 .equ	TCNT2_3	= 3	; Timer/Counter 2 bit 3
+                                 .equ	TCNT2_4	= 4	; Timer/Counter 2 bit 4
+                                 .equ	TCNT2_5	= 5	; Timer/Counter 2 bit 5
+                                 .equ	TCNT2_6	= 6	; Timer/Counter 2 bit 6
+                                 .equ	TCNT2_7	= 7	; Timer/Counter 2 bit 7
+                                 
+                                 ; OCR2A - Timer/Counter2 Output Compare Register A
+                                 .equ	OCR2A_0	= 0	; Timer/Counter2 Output Compare Register Bit 0
+                                 .equ	OCR2A_1	= 1	; Timer/Counter2 Output Compare Register Bit 1
+                                 .equ	OCR2A_2	= 2	; Timer/Counter2 Output Compare Register Bit 2
+                                 .equ	OCR2A_3	= 3	; Timer/Counter2 Output Compare Register Bit 3
+                                 .equ	OCR2A_4	= 4	; Timer/Counter2 Output Compare Register Bit 4
+                                 .equ	OCR2A_5	= 5	; Timer/Counter2 Output Compare Register Bit 5
+                                 .equ	OCR2A_6	= 6	; Timer/Counter2 Output Compare Register Bit 6
+                                 .equ	OCR2A_7	= 7	; Timer/Counter2 Output Compare Register Bit 7
+                                 
+                                 ; OCR2B - Timer/Counter2 Output Compare Register B
+                                 .equ	OCR2B_0	= 0	; Timer/Counter2 Output Compare Register Bit 0
+                                 .equ	OCR2B_1	= 1	; Timer/Counter2 Output Compare Register Bit 1
+                                 .equ	OCR2B_2	= 2	; Timer/Counter2 Output Compare Register Bit 2
+                                 .equ	OCR2B_3	= 3	; Timer/Counter2 Output Compare Register Bit 3
+                                 .equ	OCR2B_4	= 4	; Timer/Counter2 Output Compare Register Bit 4
+                                 .equ	OCR2B_5	= 5	; Timer/Counter2 Output Compare Register Bit 5
+                                 .equ	OCR2B_6	= 6	; Timer/Counter2 Output Compare Register Bit 6
+                                 .equ	OCR2B_7	= 7	; Timer/Counter2 Output Compare Register Bit 7
+                                 
+                                 ; ASSR - Asynchronous Status Register
+                                 .equ	TCR2BUB	= 0	; Timer/Counter Control Register2 Update Busy
+                                 .equ	TCR2AUB	= 1	; Timer/Counter Control Register2 Update Busy
+                                 .equ	OCR2BUB	= 2	; Output Compare Register 2 Update Busy
+                                 .equ	OCR2AUB	= 3	; Output Compare Register2 Update Busy
+                                 .equ	TCN2UB	= 4	; Timer/Counter2 Update Busy
+                                 .equ	AS2	= 5	; Asynchronous Timer/Counter2
+                                 .equ	EXCLK	= 6	; Enable External Clock Input
+                                 
+                                 ; GTCCR - General Timer Counter Control register
+                                 .equ	PSRASY	= 1	; Prescaler Reset Timer/Counter2
+                                 .equ	PSR2	= PSRASY	; For compatibility
+                                 ;.equ	TSM	= 7	; Timer/Counter Synchronization Mode
+                                 
+                                 
+                                 ; ***** AD_CONVERTER *****************
+                                 ; ADMUX - The ADC multiplexer Selection Register
+                                 .equ	MUX0	= 0	; Analog Channel and Gain Selection Bits
+                                 .equ	MUX1	= 1	; Analog Channel and Gain Selection Bits
+                                 .equ	MUX2	= 2	; Analog Channel and Gain Selection Bits
+                                 .equ	MUX3	= 3	; Analog Channel and Gain Selection Bits
+                                 .equ	ADLAR	= 5	; Left Adjust Result
+                                 .equ	REFS0	= 6	; Reference Selection Bit 0
+                                 .equ	REFS1	= 7	; Reference Selection Bit 1
+                                 
+                                 ; ADCSRA - The ADC Control and Status register A
+                                 .equ	ADPS0	= 0	; ADC  Prescaler Select Bits
+                                 .equ	ADPS1	= 1	; ADC  Prescaler Select Bits
+                                 .equ	ADPS2	= 2	; ADC  Prescaler Select Bits
+                                 .equ	ADIE	= 3	; ADC Interrupt Enable
+                                 .equ	ADIF	= 4	; ADC Interrupt Flag
+                                 .equ	ADATE	= 5	; ADC  Auto Trigger Enable
+                                 .equ	ADSC	= 6	; ADC Start Conversion
+                                 .equ	ADEN	= 7	; ADC Enable
+                                 
+                                 ; ADCSRB - The ADC Control and Status register B
+                                 .equ	ADTS0	= 0	; ADC Auto Trigger Source bit 0
+                                 .equ	ADTS1	= 1	; ADC Auto Trigger Source bit 1
+                                 .equ	ADTS2	= 2	; ADC Auto Trigger Source bit 2
+                                 .equ	ACME	= 6	; 
+                                 
+                                 ; ADCH - ADC Data Register High Byte
+                                 .equ	ADCH0	= 0	; ADC Data Register High Byte Bit 0
+                                 .equ	ADCH1	= 1	; ADC Data Register High Byte Bit 1
+                                 .equ	ADCH2	= 2	; ADC Data Register High Byte Bit 2
+                                 .equ	ADCH3	= 3	; ADC Data Register High Byte Bit 3
+                                 .equ	ADCH4	= 4	; ADC Data Register High Byte Bit 4
+                                 .equ	ADCH5	= 5	; ADC Data Register High Byte Bit 5
+                                 .equ	ADCH6	= 6	; ADC Data Register High Byte Bit 6
+                                 .equ	ADCH7	= 7	; ADC Data Register High Byte Bit 7
+                                 
+                                 ; ADCL - ADC Data Register Low Byte
+                                 .equ	ADCL0	= 0	; ADC Data Register Low Byte Bit 0
+                                 .equ	ADCL1	= 1	; ADC Data Register Low Byte Bit 1
+                                 .equ	ADCL2	= 2	; ADC Data Register Low Byte Bit 2
+                                 .equ	ADCL3	= 3	; ADC Data Register Low Byte Bit 3
+                                 .equ	ADCL4	= 4	; ADC Data Register Low Byte Bit 4
+                                 .equ	ADCL5	= 5	; ADC Data Register Low Byte Bit 5
+                                 .equ	ADCL6	= 6	; ADC Data Register Low Byte Bit 6
+                                 .equ	ADCL7	= 7	; ADC Data Register Low Byte Bit 7
+                                 
+                                 ; DIDR0 - Digital Input Disable Register
+                                 .equ	ADC0D	= 0	; 
+                                 .equ	ADC1D	= 1	; 
+                                 .equ	ADC2D	= 2	; 
+                                 .equ	ADC3D	= 3	; 
+                                 .equ	ADC4D	= 4	; 
+                                 .equ	ADC5D	= 5	; 
+                                 
+                                 
+                                 ; ***** ANALOG_COMPARATOR ************
+                                 ; ACSR - Analog Comparator Control And Status Register
+                                 .equ	ACIS0	= 0	; Analog Comparator Interrupt Mode Select bit 0
+                                 .equ	ACIS1	= 1	; Analog Comparator Interrupt Mode Select bit 1
+                                 .equ	ACIC	= 2	; Analog Comparator Input Capture Enable
+                                 .equ	ACIE	= 3	; Analog Comparator Interrupt Enable
+                                 .equ	ACI	= 4	; Analog Comparator Interrupt Flag
+                                 .equ	ACO	= 5	; Analog Compare Output
+                                 .equ	ACBG	= 6	; Analog Comparator Bandgap Select
+                                 .equ	ACD	= 7	; Analog Comparator Disable
+                                 
+                                 ; DIDR1 - Digital Input Disable Register 1
+                                 .equ	AIN0D	= 0	; AIN0 Digital Input Disable
+                                 .equ	AIN1D	= 1	; AIN1 Digital Input Disable
+                                 
+                                 
+                                 ; ***** PORTB ************************
+                                 ; PORTB - Port B Data Register
+                                 .equ	PORTB0	= 0	; Port B Data Register bit 0
+                                 .equ	PB0	= 0	; For compatibility
+                                 .equ	PORTB1	= 1	; Port B Data Register bit 1
+                                 .equ	PB1	= 1	; For compatibility
+                                 .equ	PORTB2	= 2	; Port B Data Register bit 2
+                                 .equ	PB2	= 2	; For compatibility
+                                 .equ	PORTB3	= 3	; Port B Data Register bit 3
+                                 .equ	PB3	= 3	; For compatibility
+                                 .equ	PORTB4	= 4	; Port B Data Register bit 4
+                                 .equ	PB4	= 4	; For compatibility
+                                 .equ	PORTB5	= 5	; Port B Data Register bit 5
+                                 .equ	PB5	= 5	; For compatibility
+                                 .equ	PORTB6	= 6	; Port B Data Register bit 6
+                                 .equ	PB6	= 6	; For compatibility
+                                 .equ	PORTB7	= 7	; Port B Data Register bit 7
+                                 .equ	PB7	= 7	; For compatibility
+                                 
+                                 ; DDRB - Port B Data Direction Register
+                                 .equ	DDB0	= 0	; Port B Data Direction Register bit 0
+                                 .equ	DDB1	= 1	; Port B Data Direction Register bit 1
+                                 .equ	DDB2	= 2	; Port B Data Direction Register bit 2
+                                 .equ	DDB3	= 3	; Port B Data Direction Register bit 3
+                                 .equ	DDB4	= 4	; Port B Data Direction Register bit 4
+                                 .equ	DDB5	= 5	; Port B Data Direction Register bit 5
+                                 .equ	DDB6	= 6	; Port B Data Direction Register bit 6
+                                 .equ	DDB7	= 7	; Port B Data Direction Register bit 7
+                                 
+                                 ; PINB - Port B Input Pins
+                                 .equ	PINB0	= 0	; Port B Input Pins bit 0
+                                 .equ	PINB1	= 1	; Port B Input Pins bit 1
+                                 .equ	PINB2	= 2	; Port B Input Pins bit 2
+                                 .equ	PINB3	= 3	; Port B Input Pins bit 3
+                                 .equ	PINB4	= 4	; Port B Input Pins bit 4
+                                 .equ	PINB5	= 5	; Port B Input Pins bit 5
+                                 .equ	PINB6	= 6	; Port B Input Pins bit 6
+                                 .equ	PINB7	= 7	; Port B Input Pins bit 7
+                                 
+                                 
+                                 ; ***** PORTC ************************
+                                 ; PORTC - Port C Data Register
+                                 .equ	PORTC0	= 0	; Port C Data Register bit 0
+                                 .equ	PC0	= 0	; For compatibility
+                                 .equ	PORTC1	= 1	; Port C Data Register bit 1
+                                 .equ	PC1	= 1	; For compatibility
+                                 .equ	PORTC2	= 2	; Port C Data Register bit 2
+                                 .equ	PC2	= 2	; For compatibility
+                                 .equ	PORTC3	= 3	; Port C Data Register bit 3
+                                 .equ	PC3	= 3	; For compatibility
+                                 .equ	PORTC4	= 4	; Port C Data Register bit 4
+                                 .equ	PC4	= 4	; For compatibility
+                                 .equ	PORTC5	= 5	; Port C Data Register bit 5
+                                 .equ	PC5	= 5	; For compatibility
+                                 .equ	PORTC6	= 6	; Port C Data Register bit 6
+                                 .equ	PC6	= 6	; For compatibility
+                                 
+                                 ; DDRC - Port C Data Direction Register
+                                 .equ	DDC0	= 0	; Port C Data Direction Register bit 0
+                                 .equ	DDC1	= 1	; Port C Data Direction Register bit 1
+                                 .equ	DDC2	= 2	; Port C Data Direction Register bit 2
+                                 .equ	DDC3	= 3	; Port C Data Direction Register bit 3
+                                 .equ	DDC4	= 4	; Port C Data Direction Register bit 4
+                                 .equ	DDC5	= 5	; Port C Data Direction Register bit 5
+                                 .equ	DDC6	= 6	; Port C Data Direction Register bit 6
+                                 
+                                 ; PINC - Port C Input Pins
+                                 .equ	PINC0	= 0	; Port C Input Pins bit 0
+                                 .equ	PINC1	= 1	; Port C Input Pins bit 1
+                                 .equ	PINC2	= 2	; Port C Input Pins bit 2
+                                 .equ	PINC3	= 3	; Port C Input Pins bit 3
+                                 .equ	PINC4	= 4	; Port C Input Pins bit 4
+                                 .equ	PINC5	= 5	; Port C Input Pins bit 5
+                                 .equ	PINC6	= 6	; Port C Input Pins bit 6
+                                 
+                                 
+                                 ; ***** PORTD ************************
+                                 ; PORTD - Port D Data Register
+                                 .equ	PORTD0	= 0	; Port D Data Register bit 0
+                                 .equ	PD0	= 0	; For compatibility
+                                 .equ	PORTD1	= 1	; Port D Data Register bit 1
+                                 .equ	PD1	= 1	; For compatibility
+                                 .equ	PORTD2	= 2	; Port D Data Register bit 2
+                                 .equ	PD2	= 2	; For compatibility
+                                 .equ	PORTD3	= 3	; Port D Data Register bit 3
+                                 .equ	PD3	= 3	; For compatibility
+                                 .equ	PORTD4	= 4	; Port D Data Register bit 4
+                                 .equ	PD4	= 4	; For compatibility
+                                 .equ	PORTD5	= 5	; Port D Data Register bit 5
+                                 .equ	PD5	= 5	; For compatibility
+                                 .equ	PORTD6	= 6	; Port D Data Register bit 6
+                                 .equ	PD6	= 6	; For compatibility
+                                 .equ	PORTD7	= 7	; Port D Data Register bit 7
+                                 .equ	PD7	= 7	; For compatibility
+                                 
+                                 ; DDRD - Port D Data Direction Register
+                                 .equ	DDD0	= 0	; Port D Data Direction Register bit 0
+                                 .equ	DDD1	= 1	; Port D Data Direction Register bit 1
+                                 .equ	DDD2	= 2	; Port D Data Direction Register bit 2
+                                 .equ	DDD3	= 3	; Port D Data Direction Register bit 3
+                                 .equ	DDD4	= 4	; Port D Data Direction Register bit 4
+                                 .equ	DDD5	= 5	; Port D Data Direction Register bit 5
+                                 .equ	DDD6	= 6	; Port D Data Direction Register bit 6
+                                 .equ	DDD7	= 7	; Port D Data Direction Register bit 7
+                                 
+                                 ; PIND - Port D Input Pins
+                                 .equ	PIND0	= 0	; Port D Input Pins bit 0
+                                 .equ	PIND1	= 1	; Port D Input Pins bit 1
+                                 .equ	PIND2	= 2	; Port D Input Pins bit 2
+                                 .equ	PIND3	= 3	; Port D Input Pins bit 3
+                                 .equ	PIND4	= 4	; Port D Input Pins bit 4
+                                 .equ	PIND5	= 5	; Port D Input Pins bit 5
+                                 .equ	PIND6	= 6	; Port D Input Pins bit 6
+                                 .equ	PIND7	= 7	; Port D Input Pins bit 7
+                                 
+                                 
+                                 ; ***** TIMER_COUNTER_0 **************
+                                 ; TIMSK0 - Timer/Counter0 Interrupt Mask Register
+                                 .equ	TOIE0	= 0	; Timer/Counter0 Overflow Interrupt Enable
+                                 .equ	OCIE0A	= 1	; Timer/Counter0 Output Compare Match A Interrupt Enable
+                                 .equ	OCIE0B	= 2	; Timer/Counter0 Output Compare Match B Interrupt Enable
+                                 
+                                 ; TIFR0 - Timer/Counter0 Interrupt Flag register
+                                 .equ	TOV0	= 0	; Timer/Counter0 Overflow Flag
+                                 .equ	OCF0A	= 1	; Timer/Counter0 Output Compare Flag 0A
+                                 .equ	OCF0B	= 2	; Timer/Counter0 Output Compare Flag 0B
+                                 
+                                 ; TCCR0A - Timer/Counter  Control Register A
+                                 .equ	WGM00	= 0	; Waveform Generation Mode
+                                 .equ	WGM01	= 1	; Waveform Generation Mode
+                                 .equ	COM0B0	= 4	; Compare Output Mode, Fast PWm
+                                 .equ	COM0B1	= 5	; Compare Output Mode, Fast PWm
+                                 .equ	COM0A0	= 6	; Compare Output Mode, Phase Correct PWM Mode
+                                 .equ	COM0A1	= 7	; Compare Output Mode, Phase Correct PWM Mode
+                                 
+                                 ; TCCR0B - Timer/Counter Control Register B
+                                 .equ	CS00	= 0	; Clock Select
+                                 .equ	CS01	= 1	; Clock Select
+                                 .equ	CS02	= 2	; Clock Select
+                                 .equ	WGM02	= 3	; 
+                                 .equ	FOC0B	= 6	; Force Output Compare B
+                                 .equ	FOC0A	= 7	; Force Output Compare A
+                                 
+                                 ; TCNT0 - Timer/Counter0
+                                 .equ	TCNT0_0	= 0	; 
+                                 .equ	TCNT0_1	= 1	; 
+                                 .equ	TCNT0_2	= 2	; 
+                                 .equ	TCNT0_3	= 3	; 
+                                 .equ	TCNT0_4	= 4	; 
+                                 .equ	TCNT0_5	= 5	; 
+                                 .equ	TCNT0_6	= 6	; 
+                                 .equ	TCNT0_7	= 7	; 
+                                 
+                                 ; OCR0A - Timer/Counter0 Output Compare Register
+                                 .equ	OCR0A_0	= 0	; 
+                                 .equ	OCR0A_1	= 1	; 
+                                 .equ	OCR0A_2	= 2	; 
+                                 .equ	OCR0A_3	= 3	; 
+                                 .equ	OCR0A_4	= 4	; 
+                                 .equ	OCR0A_5	= 5	; 
+                                 .equ	OCR0A_6	= 6	; 
+                                 .equ	OCR0A_7	= 7	; 
+                                 
+                                 ; OCR0B - Timer/Counter0 Output Compare Register
+                                 .equ	OCR0B_0	= 0	; 
+                                 .equ	OCR0B_1	= 1	; 
+                                 .equ	OCR0B_2	= 2	; 
+                                 .equ	OCR0B_3	= 3	; 
+                                 .equ	OCR0B_4	= 4	; 
+                                 .equ	OCR0B_5	= 5	; 
+                                 .equ	OCR0B_6	= 6	; 
+                                 .equ	OCR0B_7	= 7	; 
+                                 
+                                 ; GTCCR - General Timer/Counter Control Register
+                                 ;.equ	PSRSYNC	= 0	; Prescaler Reset Timer/Counter1 and Timer/Counter0
+                                 .equ	PSR10	= PSRSYNC	; For compatibility
+                                 ;.equ	TSM	= 7	; Timer/Counter Synchronization Mode
+                                 
+                                 
+                                 ; ***** EXTERNAL_INTERRUPT ***********
+                                 ; EICRA - External Interrupt Control Register
+                                 .equ	ISC00	= 0	; External Interrupt Sense Control 0 Bit 0
+                                 .equ	ISC01	= 1	; External Interrupt Sense Control 0 Bit 1
+                                 .equ	ISC10	= 2	; External Interrupt Sense Control 1 Bit 0
+                                 .equ	ISC11	= 3	; External Interrupt Sense Control 1 Bit 1
+                                 
+                                 ; EIMSK - External Interrupt Mask Register
+                                 .equ	INT0	= 0	; External Interrupt Request 0 Enable
+                                 .equ	INT1	= 1	; External Interrupt Request 1 Enable
+                                 
+                                 ; EIFR - External Interrupt Flag Register
+                                 .equ	INTF0	= 0	; External Interrupt Flag 0
+                                 .equ	INTF1	= 1	; External Interrupt Flag 1
+                                 
+                                 ; PCICR - Pin Change Interrupt Control Register
+                                 .equ	PCIE0	= 0	; Pin Change Interrupt Enable 0
+                                 .equ	PCIE1	= 1	; Pin Change Interrupt Enable 1
+                                 .equ	PCIE2	= 2	; Pin Change Interrupt Enable 2
+                                 
+                                 ; PCMSK2 - Pin Change Mask Register 2
+                                 .equ	PCINT16	= 0	; Pin Change Enable Mask 16
+                                 .equ	PCINT17	= 1	; Pin Change Enable Mask 17
+                                 .equ	PCINT18	= 2	; Pin Change Enable Mask 18
+                                 .equ	PCINT19	= 3	; Pin Change Enable Mask 19
+                                 .equ	PCINT20	= 4	; Pin Change Enable Mask 20
+                                 .equ	PCINT21	= 5	; Pin Change Enable Mask 21
+                                 .equ	PCINT22	= 6	; Pin Change Enable Mask 22
+                                 .equ	PCINT23	= 7	; Pin Change Enable Mask 23
+                                 
+                                 ; PCMSK1 - Pin Change Mask Register 1
+                                 .equ	PCINT8	= 0	; Pin Change Enable Mask 8
+                                 .equ	PCINT9	= 1	; Pin Change Enable Mask 9
+                                 .equ	PCINT10	= 2	; Pin Change Enable Mask 10
+                                 .equ	PCINT11	= 3	; Pin Change Enable Mask 11
+                                 .equ	PCINT12	= 4	; Pin Change Enable Mask 12
+                                 .equ	PCINT13	= 5	; Pin Change Enable Mask 13
+                                 .equ	PCINT14	= 6	; Pin Change Enable Mask 14
+                                 
+                                 ; PCMSK0 - Pin Change Mask Register 0
+                                 .equ	PCINT0	= 0	; Pin Change Enable Mask 0
+                                 .equ	PCINT1	= 1	; Pin Change Enable Mask 1
+                                 .equ	PCINT2	= 2	; Pin Change Enable Mask 2
+                                 .equ	PCINT3	= 3	; Pin Change Enable Mask 3
+                                 .equ	PCINT4	= 4	; Pin Change Enable Mask 4
+                                 .equ	PCINT5	= 5	; Pin Change Enable Mask 5
+                                 .equ	PCINT6	= 6	; Pin Change Enable Mask 6
+                                 .equ	PCINT7	= 7	; Pin Change Enable Mask 7
+                                 
+                                 ; PCIFR - Pin Change Interrupt Flag Register
+                                 .equ	PCIF0	= 0	; Pin Change Interrupt Flag 0
+                                 .equ	PCIF1	= 1	; Pin Change Interrupt Flag 1
+                                 .equ	PCIF2	= 2	; Pin Change Interrupt Flag 2
+                                 
+                                 
+                                 ; ***** SPI **************************
+                                 ; SPDR - SPI Data Register
+                                 .equ	SPDR0	= 0	; SPI Data Register bit 0
+                                 .equ	SPDR1	= 1	; SPI Data Register bit 1
+                                 .equ	SPDR2	= 2	; SPI Data Register bit 2
+                                 .equ	SPDR3	= 3	; SPI Data Register bit 3
+                                 .equ	SPDR4	= 4	; SPI Data Register bit 4
+                                 .equ	SPDR5	= 5	; SPI Data Register bit 5
+                                 .equ	SPDR6	= 6	; SPI Data Register bit 6
+                                 .equ	SPDR7	= 7	; SPI Data Register bit 7
+                                 
+                                 ; SPSR - SPI Status Register
+                                 .equ	SPI2X	= 0	; Double SPI Speed Bit
+                                 .equ	WCOL	= 6	; Write Collision Flag
+                                 .equ	SPIF	= 7	; SPI Interrupt Flag
+                                 
+                                 ; SPCR - SPI Control Register
+                                 .equ	SPR0	= 0	; SPI Clock Rate Select 0
+                                 .equ	SPR1	= 1	; SPI Clock Rate Select 1
+                                 .equ	CPHA	= 2	; Clock Phase
+                                 .equ	CPOL	= 3	; Clock polarity
+                                 .equ	MSTR	= 4	; Master/Slave Select
+                                 .equ	DORD	= 5	; Data Order
+                                 .equ	SPE	= 6	; SPI Enable
+                                 .equ	SPIE	= 7	; SPI Interrupt Enable
+                                 
+                                 
+                                 ; ***** WATCHDOG *********************
+                                 ; WDTCSR - Watchdog Timer Control Register
+                                 .equ	WDP0	= 0	; Watch Dog Timer Prescaler bit 0
+                                 .equ	WDP1	= 1	; Watch Dog Timer Prescaler bit 1
+                                 .equ	WDP2	= 2	; Watch Dog Timer Prescaler bit 2
+                                 .equ	WDE	= 3	; Watch Dog Enable
+                                 .equ	WDCE	= 4	; Watchdog Change Enable
+                                 .equ	WDP3	= 5	; Watchdog Timer Prescaler Bit 3
+                                 .equ	WDIE	= 6	; Watchdog Timeout Interrupt Enable
+                                 .equ	WDIF	= 7	; Watchdog Timeout Interrupt Flag
+                                 
+                                 
+                                 ; ***** CPU **************************
+                                 ; SREG - Status Register
+                                 .equ	SREG_C	= 0	; Carry Flag
+                                 .equ	SREG_Z	= 1	; Zero Flag
+                                 .equ	SREG_N	= 2	; Negative Flag
+                                 .equ	SREG_V	= 3	; Two's Complement Overflow Flag
+                                 .equ	SREG_S	= 4	; Sign Bit
+                                 .equ	SREG_H	= 5	; Half Carry Flag
+                                 .equ	SREG_T	= 6	; Bit Copy Storage
+                                 .equ	SREG_I	= 7	; Global Interrupt Enable
+                                 
+                                 ; OSCCAL - Oscillator Calibration Value
+                                 .equ	CAL0	= 0	; Oscillator Calibration Value Bit0
+                                 .equ	CAL1	= 1	; Oscillator Calibration Value Bit1
+                                 .equ	CAL2	= 2	; Oscillator Calibration Value Bit2
+                                 .equ	CAL3	= 3	; Oscillator Calibration Value Bit3
+                                 .equ	CAL4	= 4	; Oscillator Calibration Value Bit4
+                                 .equ	CAL5	= 5	; Oscillator Calibration Value Bit5
+                                 .equ	CAL6	= 6	; Oscillator Calibration Value Bit6
+                                 .equ	CAL7	= 7	; Oscillator Calibration Value Bit7
+                                 
+                                 ; CLKPR - Clock Prescale Register
+                                 .equ	CLKPS0	= 0	; Clock Prescaler Select Bit 0
+                                 .equ	CLKPS1	= 1	; Clock Prescaler Select Bit 1
+                                 .equ	CLKPS2	= 2	; Clock Prescaler Select Bit 2
+                                 .equ	CLKPS3	= 3	; Clock Prescaler Select Bit 3
+                                 .equ	CLKPCE	= 7	; Clock Prescaler Change Enable
+                                 
+                                 ; SPMCSR - Store Program Memory Control and Status Register
+                                 .equ    SELFPRGEN = 0; Added for backwards compatibility
+                                 .equ	SPMEN	= 0	; Store Program Memory
+                                 .equ	PGERS	= 1	; Page Erase
+                                 .equ	PGWRT	= 2	; Page Write
+                                 .equ	BLBSET	= 3	; Boot Lock Bit Set
+                                 .equ	RWWSRE	= 4	; Read-While-Write section read enable
+                                 .equ    SIGRD   = 5 ; Signature Row Read
+                                 .equ	RWWSB	= 6	; Read-While-Write Section Busy
+                                 .equ	SPMIE	= 7	; SPM Interrupt Enable
+                                 
+                                 ; MCUCR - MCU Control Register
+                                 .equ	IVCE	= 0	; 
+                                 .equ	IVSEL	= 1	; 
+                                 .equ	PUD	= 4	; 
+                                 .equ	BODSE	= 5	; BOD Sleep Enable
+                                 .equ	BODS	= 6	; BOD Sleep
+                                 
+                                 ; MCUSR - MCU Status Register
+                                 .equ	PORF	= 0	; Power-on reset flag
+                                 .equ	EXTRF	= 1	; External Reset Flag
+                                 .equ	EXTREF	= EXTRF	; For compatibility
+                                 .equ	BORF	= 2	; Brown-out Reset Flag
+                                 .equ	WDRF	= 3	; Watchdog Reset Flag
+                                 
+                                 ; SMCR - Sleep Mode Control Register
+                                 .equ	SE	= 0	; Sleep Enable
+                                 .equ	SM0	= 1	; Sleep Mode Select Bit 0
+                                 .equ	SM1	= 2	; Sleep Mode Select Bit 1
+                                 .equ	SM2	= 3	; Sleep Mode Select Bit 2
+                                 
+                                 ; GPIOR2 - General Purpose I/O Register 2
+                                 .equ	GPIOR20	= 0	; 
+                                 .equ	GPIOR21	= 1	; 
+                                 .equ	GPIOR22	= 2	; 
+                                 .equ	GPIOR23	= 3	; 
+                                 .equ	GPIOR24	= 4	; 
+                                 .equ	GPIOR25	= 5	; 
+                                 .equ	GPIOR26	= 6	; 
+                                 .equ	GPIOR27	= 7	; 
+                                 
+                                 ; GPIOR1 - General Purpose I/O Register 1
+                                 .equ	GPIOR10	= 0	; 
+                                 .equ	GPIOR11	= 1	; 
+                                 .equ	GPIOR12	= 2	; 
+                                 .equ	GPIOR13	= 3	; 
+                                 .equ	GPIOR14	= 4	; 
+                                 .equ	GPIOR15	= 5	; 
+                                 .equ	GPIOR16	= 6	; 
+                                 .equ	GPIOR17	= 7	; 
+                                 
+                                 ; GPIOR0 - General Purpose I/O Register 0
+                                 .equ	GPIOR00	= 0	; 
+                                 .equ	GPIOR01	= 1	; 
+                                 .equ	GPIOR02	= 2	; 
+                                 .equ	GPIOR03	= 3	; 
+                                 .equ	GPIOR04	= 4	; 
+                                 .equ	GPIOR05	= 5	; 
+                                 .equ	GPIOR06	= 6	; 
+                                 .equ	GPIOR07	= 7	; 
+                                 
+                                 ; PRR - Power Reduction Register
+                                 .equ	PRADC	= 0	; Power Reduction ADC
+                                 .equ	PRUSART0	= 1	; Power Reduction USART
+                                 .equ	PRSPI	= 2	; Power Reduction Serial Peripheral Interface
+                                 .equ	PRTIM1	= 3	; Power Reduction Timer/Counter1
+                                 .equ	PRTIM0	= 5	; Power Reduction Timer/Counter0
+                                 .equ	PRTIM2	= 6	; Power Reduction Timer/Counter2
+                                 .equ	PRTWI	= 7	; Power Reduction TWI
+                                 
+                                 
+                                 ; ***** EEPROM ***********************
+                                 ; EEARL - EEPROM Address Register Low Byte
+                                 .equ	EEAR0	= 0	; EEPROM Read/Write Access Bit 0
+                                 .equ	EEAR1	= 1	; EEPROM Read/Write Access Bit 1
+                                 .equ	EEAR2	= 2	; EEPROM Read/Write Access Bit 2
+                                 .equ	EEAR3	= 3	; EEPROM Read/Write Access Bit 3
+                                 .equ	EEAR4	= 4	; EEPROM Read/Write Access Bit 4
+                                 .equ	EEAR5	= 5	; EEPROM Read/Write Access Bit 5
+                                 .equ	EEAR6	= 6	; EEPROM Read/Write Access Bit 6
+                                 .equ	EEAR7	= 7	; EEPROM Read/Write Access Bit 7
+                                 
+                                 ; EEARH - EEPROM Address Register High Byte
+                                 .equ	EEAR8	= 0	; EEPROM Read/Write Access Bit 8
+                                 .equ	EEAR9	= 1	; EEPROM Read/Write Access Bit 9
+                                 
+                                 ; EEDR - EEPROM Data Register
+                                 .equ	EEDR0	= 0	; EEPROM Data Register bit 0
+                                 .equ	EEDR1	= 1	; EEPROM Data Register bit 1
+                                 .equ	EEDR2	= 2	; EEPROM Data Register bit 2
+                                 .equ	EEDR3	= 3	; EEPROM Data Register bit 3
+                                 .equ	EEDR4	= 4	; EEPROM Data Register bit 4
+                                 .equ	EEDR5	= 5	; EEPROM Data Register bit 5
+                                 .equ	EEDR6	= 6	; EEPROM Data Register bit 6
+                                 .equ	EEDR7	= 7	; EEPROM Data Register bit 7
+                                 
+                                 ; EECR - EEPROM Control Register
+                                 .equ	EERE	= 0	; EEPROM Read Enable
+                                 .equ	EEPE	= 1	; EEPROM Write Enable
+                                 .equ	EEMPE	= 2	; EEPROM Master Write Enable
+                                 .equ	EERIE	= 3	; EEPROM Ready Interrupt Enable
+                                 .equ	EEPM0	= 4	; EEPROM Programming Mode Bit 0
+                                 .equ	EEPM1	= 5	; EEPROM Programming Mode Bit 1
+                                 
+                                 
+                                 
+                                 ; ***** LOCKSBITS ********************************************************
+                                 .equ	LB1	= 0	; Lock bit
+                                 .equ	LB2	= 1	; Lock bit
+                                 .equ	BLB01	= 2	; Boot Lock bit
+                                 .equ	BLB02	= 3	; Boot Lock bit
+                                 .equ	BLB11	= 4	; Boot lock bit
+                                 .equ	BLB12	= 5	; Boot lock bit
+                                 
+                                 
+                                 ; ***** FUSES ************************************************************
+                                 ; LOW fuse bits
+                                 .equ	CKSEL0	= 0	; Select Clock Source
+                                 .equ	CKSEL1	= 1	; Select Clock Source
+                                 .equ	CKSEL2	= 2	; Select Clock Source
+                                 .equ	CKSEL3	= 3	; Select Clock Source
+                                 .equ	SUT0	= 4	; Select start-up time
+                                 .equ	SUT1	= 5	; Select start-up time
+                                 .equ	CKOUT	= 6	; Clock output
+                                 .equ	CKDIV8	= 7	; Divide clock by 8
+                                 
+                                 ; HIGH fuse bits
+                                 .equ	BOOTRST	= 0	; Select reset vector
+                                 .equ	BOOTSZ0	= 1	; Select boot size
+                                 .equ	BOOTSZ1	= 2	; Select boot size
+                                 .equ	EESAVE	= 3	; EEPROM memory is preserved through chip erase
+                                 .equ	WDTON	= 4	; Watchdog Timer Always On
+                                 .equ	SPIEN	= 5	; Enable Serial programming and Data Downloading
+                                 .equ	DWEN	= 6	; debugWIRE Enable
+                                 .equ	RSTDISBL	= 7	; External reset disable
+                                 
+                                 ; EXTENDED fuse bits
+                                 .equ	BODLEVEL0	= 0	; Brown-out Detector trigger level
+                                 .equ	BODLEVEL1	= 1	; Brown-out Detector trigger level
+                                 .equ	BODLEVEL2	= 2	; Brown-out Detector trigger level
+                                 
+                                 
+                                 
+                                 ; ***** CPU REGISTER DEFINITIONS *****************************************
+                                 .def	XH	= r27
+                                 .def	XL	= r26
+                                 .def	YH	= r29
+                                 .def	YL	= r28
+                                 .def	ZH	= r31
+                                 .def	ZL	= r30
+                                 
+                                 
+                                 
+                                 ; ***** DATA MEMORY DECLARATIONS *****************************************
+                                 .equ	FLASHEND	= 0x3fff	; Note: Word address
+                                 .equ	IOEND	= 0x00ff
+                                 .equ	SRAM_START	= 0x0100
+                                 .equ	SRAM_SIZE	= 2048
+                                 .equ	RAMEND	= 0x08ff
+                                 .equ	XRAMEND	= 0x0000
+                                 .equ	E2END	= 0x03ff
+                                 .equ	EEPROMEND	= 0x03ff
+                                 .equ	EEADRBITS	= 10
+                                 #pragma AVRPART MEMORY PROG_FLASH 32768
+                                 #pragma AVRPART MEMORY EEPROM 1024
+                                 #pragma AVRPART MEMORY INT_SRAM SIZE 2048
+                                 #pragma AVRPART MEMORY INT_SRAM START_ADDR 0x100
+                                 
+                                 
+                                 
+                                 ; ***** BOOTLOADER DECLARATIONS ******************************************
+                                 .equ	NRWW_START_ADDR	= 0x3800
+                                 .equ	NRWW_STOP_ADDR	= 0x3fff
+                                 .equ	RWW_START_ADDR	= 0x0
+                                 .equ	RWW_STOP_ADDR	= 0x37ff
+                                 .equ	PAGESIZE	= 64
+                                 .equ	FIRSTBOOTSTART	= 0x3f00
+                                 .equ	SECONDBOOTSTART	= 0x3e00
+                                 .equ	THIRDBOOTSTART	= 0x3c00
+                                 .equ	FOURTHBOOTSTART	= 0x3800
+                                 .equ	SMALLBOOTSTART	= FIRSTBOOTSTART
+                                 .equ	LARGEBOOTSTART	= FOURTHBOOTSTART
+                                 
+                                 
+                                 
+                                 ; ***** INTERRUPT VECTORS ************************************************
+                                 .equ	INT0addr	= 0x0002	; External Interrupt Request 0
+                                 .equ	INT1addr	= 0x0004	; External Interrupt Request 1
+                                 .equ	PCI0addr	= 0x0006	; Pin Change Interrupt Request 0
+                                 .equ	PCI1addr	= 0x0008	; Pin Change Interrupt Request 0
+                                 .equ	PCI2addr	= 0x000a	; Pin Change Interrupt Request 1
+                                 .equ	WDTaddr	= 0x000c	; Watchdog Time-out Interrupt
+                                 .equ	OC2Aaddr	= 0x000e	; Timer/Counter2 Compare Match A
+                                 .equ	OC2Baddr	= 0x0010	; Timer/Counter2 Compare Match A
+                                 .equ	OVF2addr	= 0x0012	; Timer/Counter2 Overflow
+                                 .equ	ICP1addr	= 0x0014	; Timer/Counter1 Capture Event
+                                 .equ	OC1Aaddr	= 0x0016	; Timer/Counter1 Compare Match A
+                                 .equ	OC1Baddr	= 0x0018	; Timer/Counter1 Compare Match B
+                                 .equ	OVF1addr	= 0x001a	; Timer/Counter1 Overflow
+                                 .equ	OC0Aaddr	= 0x001c	; TimerCounter0 Compare Match A
+                                 .equ	OC0Baddr	= 0x001e	; TimerCounter0 Compare Match B
+                                 .equ	OVF0addr	= 0x0020	; Timer/Couner0 Overflow
+                                 .equ	SPIaddr	= 0x0022	; SPI Serial Transfer Complete
+                                 .equ	URXCaddr	= 0x0024	; USART Rx Complete
+                                 .equ	UDREaddr	= 0x0026	; USART, Data Register Empty
+                                 .equ	UTXCaddr	= 0x0028	; USART Tx Complete
+                                 .equ	ADCCaddr	= 0x002a	; ADC Conversion Complete
+                                 .equ	ERDYaddr	= 0x002c	; EEPROM Ready
+                                 .equ	ACIaddr	= 0x002e	; Analog Comparator
+                                 .equ	TWIaddr	= 0x0030	; Two-wire Serial Interface
+                                 .equ	SPMRaddr	= 0x0032	; Store Program Memory Read
+                                 
+                                 .equ	INT_VECTORS_SIZE	= 52	; size in words
+                                 
+                                 #endif  /* _M328PDEF_INC_ */
+                                 
+                                 ; ***** END OF FILE ******************************************************
+                                 
+                                 // TwoFactorLock_Full.S
+                                 // EXACT Assembly Translation of TwoFactorLock.ino
+                                 // Hardware: 4x4 Keypad + I2C LCD (16x2) + MFRC522 + Buzzer + Lock + LED
+                                 // Feature: 3 Wrong PIN attempts = 30 second lockout
+                                 // ============================================================================
+                                 
+                                 .equ __SFR_OFFSET = 0
+                                 .include "m328Pdef.inc"
+                                 
+                                 ;***** Created: 2011-02-09 12:03 ******* Source: ATmega328P.xml **********
+                                 ;*************************************************************************
+                                 ;* A P P L I C A T I O N   N O T E   F O R   T H E   A V R   F A M I L Y
+                                 ;* 
+                                 ;* Number            : AVR000
+                                 ;* File Name         : "m328Pdef.inc"
+                                 ;* Title             : Register/Bit Definitions for the ATmega328P
+                                 ;* Date              : 2011-02-09
+                                 ;* Version           : 2.35
+                                 ;* Support E-mail    : avr@atmel.com
+                                 ;* Target MCU        : ATmega328P
+                                 ;* 
+                                 ;* DESCRIPTION
+                                 ;* When including this file in the assembly program file, all I/O register 
+                                 ;* names and I/O register bit names appearing in the data book can be used.
+                                 ;* In addition, the six registers forming the three data pointers X, Y and 
+                                 ;* Z have been assigned names XL - ZH. Highest RAM address for Internal 
+                                 ;* SRAM is also defined 
+                                 ;* 
+                                 ;* The Register names are represented by their hexadecimal address.
+                                 ;* 
+                                 ;* The Register Bit names are represented by their bit number (0-7).
+                                 ;* 
+                                 ;* Please observe the difference in using the bit names with instructions
+                                 ;* such as "sbr"/"cbr" (set/clear bit in register) and "sbrs"/"sbrc"
+                                 ;* (skip if bit in register set/cleared). The following example illustrates
+                                 ;* this:
+                                 ;* 
+                                 ;* in    r16,PORTB             ;read PORTB latch
+                                 ;* sbr   r16,(1<<PB6)+(1<<PB5) ;set PB6 and PB5 (use masks, not bit#)
+                                 ;* out   PORTB,r16             ;output to PORTB
+                                 ;* 
+                                 ;* in    r16,TIFR              ;read the Timer Interrupt Flag Register
+                                 ;* sbrc  r16,TOV0              ;test the overflow flag (use bit#)
+                                 ;* rjmp  TOV0_is_set           ;jump if set
+                                 ;* ...                         ;otherwise do something else
+                                 ;*************************************************************************
+                                 
+                                 #ifndef _M328PDEF_INC_
+                                 #endif  /* _M328PDEF_INC_ */
+                                 
+                                 ; ***** END OF FILE ******************************************************
+                                 
+                                 // ============================================================================
+                                 // PIN CONFIGURATION (Matches TwoFactorLock.ino exactly)
+                                 // ============================================================================
+                                 // PIN_BUZZER  = D8  = PB0
+                                 // PIN_LOCK    = D7  = PD7
+                                 // PIN_LED     = A3  = PC3
+                                 // RFID SS     = D10 = PB2
+                                 // RFID RST    = D9  = PB1
+                                 // RFID MOSI   = D11 = PB3
+                                 // RFID MISO   = D12 = PB4
+                                 // RFID SCK    = D13 = PB5
+                                 // LCD SDA     = A4  = PC4
+                                 // LCD SCL     = A5  = PC5
+                                 // Keypad Row1 = D2  = PD2
+                                 // Keypad Row2 = D3  = PD3
+                                 // Keypad Row3 = D4  = PD4
+                                 // Keypad Row4 = D5  = PD5
+                                 // Keypad Col1 = D6  = PD6
+                                 // Keypad Col2 = A0  = PC0
+                                 // Keypad Col3 = A1  = PC1
+                                 // Keypad Col4 = A2  = PC2
+                                 
+                                 // ============================================================================
+                                 // CONSTANTS (Matches TwoFactorLock.ino exactly)
+                                 // ============================================================================
+                                 .equ PIN_LENGTH = 4
+                                 .equ MAX_ATTEMPTS = 3
+                                 .equ LOCKOUT_TIME_S = 30
+                                 
+                                 // State Machine Values
+                                 .equ SYS_IDLE = 0
+                                 .equ SYS_ENTER_PIN = 1
+                                 .equ SYS_CHECK_PIN = 2
+                                 .equ SYS_WAIT_RFID = 3
+                                 .equ SYS_ACCESS_GRANTED = 4
+                                 .equ SYS_LOCKOUT = 5
+                                 
+                                 // I2C LCD Address
+                                 .equ LCD_ADDR = 0x27
+                                 .equ LCD_BACKLIGHT = 0x08
+                                 .equ LCD_ENABLE = 0x04
+                                 .equ LCD_RS = 0x01
+                                 
+                                 // SPI Registers
+                                 .equ SPI_SS = PB2
+                                 .equ SPI_MOSI = PB3
+                                 .equ SPI_MISO = PB4
+                                 .equ SPI_SCK = PB5
+                                 
+                                 // MFRC522 Registers
+                                 .equ MFRC_CommandReg = 0x01
+                                 .equ MFRC_ComIrqReg = 0x04
+                                 .equ MFRC_FIFODataReg = 0x09
+                                 .equ MFRC_FIFOLevelReg = 0x0A
+                                 .equ MFRC_BitFramingReg = 0x0D
+                                 .equ MFRC_ModeReg = 0x11
+                                 .equ MFRC_TxControlReg = 0x14
+                                 .equ MFRC_TxASKReg = 0x15
+                                 .equ MFRC_VersionReg = 0x37
+                                 
+                                 // MFRC522 Commands
+                                 .equ CMD_IDLE = 0x00
+                                 .equ CMD_TRANSCEIVE = 0x0C
+                                 .equ CMD_SOFTRESET = 0x0F
+                                 .equ PICC_REQIDL = 0x26
+                                 .equ PICC_ANTICOLL = 0x93
+                                 
+                                 // TWI (I2C) Registers
+                                 .equ TWBR_REG = 0xB8
+                                 .equ TWSR_REG = 0xB9
+                                 .equ TWDR_REG = 0xBB
+                                 .equ TWCR_REG = 0xBC
+                                 
+                                 // TWI Control Bits
+                                 .equ TWINT_BIT = 7
+                                 .equ TWEA_BIT = 6
+                                 .equ TWSTA_BIT = 5
+                                 .equ TWSTO_BIT = 4
+                                 .equ TWEN_BIT = 2
+                                 
+                                 // Timer0 (for millis approximation)
+                                 .equ TIMER_PRESCALE = 64
+                                 
+                                 // ============================================================================
+                                 // DATA SECTION (SRAM)
+                                 // ============================================================================
+                                 .dseg
+                                 
+                                 // Input buffer (5 bytes: 4 digits + null)
+                                 input_buffer:
+000100                               .byte 5
+                                 
+                                 // State variables
+                                 current_state:
+000105                               .byte 1
+                                 
+                                 input_index:
+000106                               .byte 1
+                                 
+                                 wrong_attempts:
+000107                               .byte 1
+                                 
+                                 is_locked_out:
+000108                               .byte 1
+                                 
+                                 lockout_counter:
+000109                               .byte 1
+                                 
+                                 // Scanned RFID UID storage
+                                 scanned_uid:
+00010a                               .byte 4
+                                 
+                                 // ============================================================================
+                                 // INTERRUPT VECTOR TABLE
+                                 // ============================================================================
+                                 .cseg
+                                 .org 0x0000
+                                 
+000000 c014                          rjmp    RESET                   ; Reset Handler
+000001 c00b                          rjmp    DEFAULT_HANDLER         ; INT0
+000002 c00a                          rjmp    DEFAULT_HANDLER         ; INT1
+000003 c009                          rjmp    DEFAULT_HANDLER         ; PCINT0
+000004 c008                          rjmp    DEFAULT_HANDLER         ; PCINT1
+000005 c007                          rjmp    DEFAULT_HANDLER         ; PCINT2
+000006 c006                          rjmp    DEFAULT_HANDLER         ; WDT
+000007 c006                          rjmp    TIMER0_OVF_ISR          ; Timer0 Overflow (for millis)
+000008 c004                          rjmp    DEFAULT_HANDLER         ; Timer0 Compare A
+000009 c003                          rjmp    DEFAULT_HANDLER         ; Timer0 Compare B
+00000a c002                          rjmp    DEFAULT_HANDLER         ; Timer1 Overflow
+00000b c001                          rjmp    DEFAULT_HANDLER         ; Timer1 Compare A
+00000c c000                          rjmp    DEFAULT_HANDLER         ; Timer1 Compare B
+                                 
+                                 DEFAULT_HANDLER:
+00000d 9518                          reti
+                                 
+                                 // ============================================================================
+                                 // TIMER0 ISR - Approximate millisecond counter
+                                 // ============================================================================
+                                 TIMER0_OVF_ISR:
+00000e 930f                          push    r16
+00000f b70f                          in      r16, SREG
+000010 930f                          push    r16
+                                 
+                                     ; Increment lockout counter (approximate seconds)
+                                     ; Timer0 overflows every ~1ms at 16MHz/64 prescaler
+                                     ; We use this for lockout timing
+                                 
+000011 910f                          pop     r16
+000012 bf0f                          out     SREG, r16
+000013 910f                          pop     r16
+000014 9518                          reti
+                                 
+                                 // ============================================================================
+                                 // RESET / MAIN ENTRY POINT
+                                 // Equivalent to: void setup()
+                                 // ============================================================================
+                                 RESET:
+                                     ; --- Stack Pointer Init ---
+000015 e008                          ldi     r16, HIGH(RAMEND)
+000016 bf0e                          out     SPH, r16
+000017 ef0f                          ldi     r16, LOW(RAMEND)
+000018 bf0d                          out     SPL, r16
+                                 
+                                     ; --- Pin Configuration ---
+                                     ; pinMode(PIN_BUZZER, OUTPUT)  -> PB0 output
+                                     ; pinMode(PIN_LOCK, OUTPUT)    -> PD7 output
+                                     ; pinMode(PIN_LED, OUTPUT)     -> PC3 output
+000019 9a20                          sbi     DDRB, PB0              ; Buzzer = output
+00001a 9a57                          sbi     DDRD, PD7              ; Lock = output
+00001b 9a3b                          sbi     DDRC, PC3              ; LED = output
+                                 
+                                     ; All outputs LOW initially
+                                     ; digitalWrite(PIN_LOCK, LOW)
+                                     ; digitalWrite(PIN_LED, LOW)
+00001c 9828                          cbi     PORTB, PB0             ; Buzzer OFF
+00001d 985f                          cbi     PORTD, PD7             ; Lock OFF
+00001e 9843                          cbi     PORTC, PC3             ; LED OFF
+                                 
+                                     ; --- Keypad Pin Configuration ---
+                                     ; Row pins (D2-D5) = Output (driven LOW one at a time)
+00001f 9a52                          sbi     DDRD, PD2              ; Row 1 = output
+000020 9a53                          sbi     DDRD, PD3              ; Row 2 = output
+000021 9a54                          sbi     DDRD, PD4              ; Row 3 = output
+000022 9a55                          sbi     DDRD, PD5              ; Row 4 = output
+                                 
+                                     ; Column pins (D6, A0, A1, A2) = Input with pull-up
+000023 9856                          cbi     DDRD, PD6              ; Col 1 = input
+000024 9838                          cbi     DDRC, PC0              ; Col 2 = input
+000025 9839                          cbi     DDRC, PC1              ; Col 3 = input
+000026 983a                          cbi     DDRC, PC2              ; Col 4 = input
+000027 9a5e                          sbi     PORTD, PD6             ; Col 1 pull-up
+000028 9a40                          sbi     PORTC, PC0             ; Col 2 pull-up
+000029 9a41                          sbi     PORTC, PC1             ; Col 3 pull-up
+00002a 9a42                          sbi     PORTC, PC2             ; Col 4 pull-up
+                                 
+                                     ; --- SPI Init (for RFID) ---
+                                     ; SPI.begin()
+                                     ; Set MOSI, SCK, SS as output
+00002b 9a23                          sbi     DDRB, SPI_MOSI         ; MOSI = output
+00002c 9a25                          sbi     DDRB, SPI_SCK          ; SCK = output
+00002d 9a22                          sbi     DDRB, SPI_SS           ; SS = output
+00002e 9a21                          sbi     DDRB, PB1              ; RST = output
+00002f 9824                          cbi     DDRB, SPI_MISO         ; MISO = input
+                                 
+                                     ; SS HIGH (deselect RFID)
+000030 9a2a                          sbi     PORTB, SPI_SS
+                                 
+                                     ; RST HIGH
+000031 9a29                          sbi     PORTB, PB1
+                                 
+                                     ; Enable SPI, Master mode, clock rate fck/16
+000032 e501                          ldi     r16, (1<<SPE)|(1<<MSTR)|(1<<SPR0)
+000033 bd0c                          out     SPCR, r16
+                                 
+                                     ; --- I2C Init (for LCD) ---
+                                     ; Wire.begin()
+000034 d1cb                          rcall   i2c_init
+                                 
+                                     ; --- LCD Init ---
+                                     ; lcd.init()
+000035 d1ea                          rcall   lcd_init
+                                 
+                                     ; lcd.backlight()
+000036 d204                          rcall   lcd_enable_backlight
+                                 
+                                     ; lcd.clear()
+000037 d1ff                          rcall   lcd_clear
+                                 
+                                     ; lcd.setCursor(0, 0)
+000038 e040                          ldi     r20, 0
+000039 e050                          ldi     r21, 0
+00003a d201                          rcall   lcd_set_cursor
+                                 
+                                     ; lcd.print("System Booting")
+00003b efea                          ldi     ZL, LOW(str_booting<<1)
+00003c e0f6                          ldi     ZH, HIGH(str_booting<<1)
+00003d d207                          rcall   lcd_print_string
+                                 
+                                     ; delay(1000)
+00003e d32e                          rcall   delay_1000ms
+                                 
+                                     ; --- RFID Init ---
+                                     ; rfid.PCD_Init()
+00003f d26c                          rcall   mfrc522_init
+                                 
+                                     ; delay(1500)
+000040 d32c                          rcall   delay_1000ms
+000041 d328                          rcall   delay_500ms
+                                 
+                                     ; --- Initialize State Variables ---
+                                     ; currentState = SYS_IDLE
+000042 e000                          ldi     r16, SYS_IDLE
+000043 9300 0105                     sts     current_state, r16
+                                 
+                                     ; wrongAttempts = 0
+000045 e000                          ldi     r16, 0
+000046 9300 0107                     sts     wrong_attempts, r16
+                                 
+                                     ; isLockedOut = false
+000048 9300 0108                     sts     is_locked_out, r16
+                                 
+                                     ; inputIndex = 0
+00004a 9300 0106                     sts     input_index, r16
+                                 
+                                     ; memset(inputBuffer, 0, 5)
+00004c 9300 0100                     sts     input_buffer, r16
+00004e 9300 0101                     sts     input_buffer+1, r16
+000050 9300 0102                     sts     input_buffer+2, r16
+000052 9300 0103                     sts     input_buffer+3, r16
+000054 9300 0104                     sts     input_buffer+4, r16
+                                 
+                                     ; resetSystem()
+000056 d129                          rcall   reset_system
+                                 
+                                     ; Enable global interrupts
+000057 9478                          sei
+                                 
+                                 // ============================================================================
+                                 // MAIN LOOP
+                                 // Equivalent to: void loop()
+                                 // ============================================================================
+                                 main_loop:
+                                     ; switch (currentState)
+000058 9100 0105                     lds     r16, current_state
+                                 
+00005a 3000                          cpi     r16, SYS_IDLE
+00005b f081                          breq    state_idle
+                                 
+00005c 3001                          cpi     r16, SYS_ENTER_PIN
+00005d f049                          breq    state_enter_pin_jump
+                                 
+00005e 3002                          cpi     r16, SYS_CHECK_PIN
+00005f f041                          breq    state_check_pin_jump
+                                 
+000060 3003                          cpi     r16, SYS_WAIT_RFID
+000061 f039                          breq    state_wait_rfid_jump
+                                 
+000062 3004                          cpi     r16, SYS_ACCESS_GRANTED
+000063 f031                          breq    state_access_granted_jump
+                                 
+000064 3005                          cpi     r16, SYS_LOCKOUT
+000065 f029                          breq    state_lockout_jump
+                                 
+000066 cff1                          rjmp    main_loop
+                                 
+                                 ; --- Jump trampolines (because breq has limited range) ---
+                                 state_enter_pin_jump:
+000067 c02f                          rjmp    state_enter_pin
+                                 state_check_pin_jump:
+000068 c054                          rjmp    state_check_pin
+                                 state_wait_rfid_jump:
+000069 c0a7                          rjmp    state_wait_rfid
+                                 state_access_granted_jump:
+00006a c0cf                          rjmp    state_access_granted
+                                 state_lockout_jump:
+00006b c0df                          rjmp    state_lockout
+                                 
+                                 // ============================================================================
+                                 // STATE: SYS_IDLE
+                                 // Equivalent to: case SYS_IDLE in loop()
+                                 // ============================================================================
+                                 state_idle:
+                                     ; char key = keypad.getKey()
+00006c d13f                          rcall   scan_keypad
+                                     ; Result in r24 (0 = no key, else ASCII char)
+                                 
+00006d 2388                          tst     r24
+00006e f139                          breq    state_idle_done        ; No key pressed, continue loop
+                                 
+                                     ; Key was pressed!
+00006f 2f18                          mov     r17, r24               ; Save key in r17
+                                 
+                                     ; lcd.clear()
+000070 d1c6                          rcall   lcd_clear
+                                 
+                                     ; lcd.print("Enter PIN:")
+000071 e1ec                          ldi     ZL, LOW(str_enter_pin<<1)
+000072 e0f7                          ldi     ZH, HIGH(str_enter_pin<<1)
+000073 d1d1                          rcall   lcd_print_string
+                                 
+                                     ; lcd.setCursor(0, 1)
+000074 e040                          ldi     r20, 0
+000075 e051                          ldi     r21, 1
+000076 d1c5                          rcall   lcd_set_cursor
+                                 
+                                     ; currentState = SYS_ENTER_PIN
+000077 e001                          ldi     r16, SYS_ENTER_PIN
+000078 9300 0105                     sts     current_state, r16
+                                 
+                                     ; if (key != '#' && key != '*')
+00007a 2f81                          mov     r24, r17
+00007b 3283                          cpi     r24, '#'
+00007c f0c9                          breq    state_idle_done
+00007d 328a                          cpi     r24, '*'
+00007e f0b1                          breq    state_idle_star
+                                 
+                                     ; Save the first key press (FIX: don't lose it!)
+                                     ; inputBuffer[inputIndex++] = key
+00007f 9120 0106                     lds     r18, input_index
+000081 e0e0                          ldi     ZL, LOW(input_buffer)
+000082 e0f1                          ldi     ZH, HIGH(input_buffer)
+000083 0fe2                          add     ZL, r18
+000084 2733                          clr     r19
+000085 1ff3                          adc     ZH, r19
+000086 8380                          st      Z, r24
+                                 
+                                     ; inputIndex++
+000087 9523                          inc     r18
+000088 9320 0106                     sts     input_index, r18
+                                 
+                                     ; inputBuffer[inputIndex] = '\0'
+00008a e0e0                          ldi     ZL, LOW(input_buffer)
+00008b e0f1                          ldi     ZH, HIGH(input_buffer)
+00008c 0fe2                          add     ZL, r18
+00008d 2733                          clr     r19
+00008e 1ff3                          adc     ZH, r19
+00008f 2700                          clr     r16
+000090 8300                          st      Z, r16
+                                 
+                                     ; lcd.print('*')
+000091 e28a                          ldi     r24, '*'
+000092 d1b0                          rcall   lcd_print_char
+                                 
+                                     ; tone(PIN_BUZZER, 1000, 50)
+000093 d29a                          rcall   buzzer_short_beep
+                                 
+000094 c001                          rjmp    state_idle_done
+                                 
+                                 state_idle_star:
+                                     ; else if (key == '*') resetSystem()
+000095 d0ea                          rcall   reset_system
+                                 
+                                 state_idle_done:
+000096 cfc1                          rjmp    main_loop
+                                 
+                                 // ============================================================================
+                                 // STATE: SYS_ENTER_PIN
+                                 // Equivalent to: void handlePinEntry()
+                                 // ============================================================================
+                                 state_enter_pin:
+                                     ; char key = keypad.getKey()
+000097 d114                          rcall   scan_keypad
+                                     ; Result in r24
+                                 
+000098 2388                          tst     r24
+000099 f111                          breq    enter_pin_done         ; No key, continue loop
+                                 
+                                     ; tone(PIN_BUZZER, 1000, 50)
+00009a d293                          rcall   buzzer_short_beep
+                                 
+                                     ; if (key == '#')
+00009b 3283                          cpi     r24, '#'
+00009c f0d1                          breq    enter_pin_hash
+                                 
+                                     ; if (key == '*')
+00009d 328a                          cpi     r24, '*'
+00009e f0e1                          breq    enter_pin_star
+                                 
+                                     ; else: Store the digit
+                                     ; if (inputIndex < 4)
+00009f 9120 0106                     lds     r18, input_index
+0000a1 3024                          cpi     r18, PIN_LENGTH
+0000a2 f4cc                          brge    enter_pin_done         ; Buffer full, ignore
+                                 
+                                     ; inputBuffer[inputIndex++] = key
+0000a3 2f18                          mov     r17, r24               ; Save key
+0000a4 e0e0                          ldi     ZL, LOW(input_buffer)
+0000a5 e0f1                          ldi     ZH, HIGH(input_buffer)
+0000a6 0fe2                          add     ZL, r18
+0000a7 2733                          clr     r19
+0000a8 1ff3                          adc     ZH, r19
+0000a9 8310                          st      Z, r17
+                                 
+                                     ; inputIndex++
+0000aa 9523                          inc     r18
+0000ab 9320 0106                     sts     input_index, r18
+                                 
+                                     ; inputBuffer[inputIndex] = '\0'
+0000ad e0e0                          ldi     ZL, LOW(input_buffer)
+0000ae e0f1                          ldi     ZH, HIGH(input_buffer)
+0000af 0fe2                          add     ZL, r18
+0000b0 2733                          clr     r19
+0000b1 1ff3                          adc     ZH, r19
+0000b2 2700                          clr     r16
+0000b3 8300                          st      Z, r16
+                                 
+                                     ; lcd.print('*')
+0000b4 e28a                          ldi     r24, '*'
+0000b5 d18d                          rcall   lcd_print_char
+                                 
+0000b6 c005                          rjmp    enter_pin_done
+                                 
+                                 enter_pin_hash:
+                                     ; currentState = SYS_CHECK_PIN
+0000b7 e002                          ldi     r16, SYS_CHECK_PIN
+0000b8 9300 0105                     sts     current_state, r16
+0000ba c001                          rjmp    enter_pin_done
+                                 
+                                 enter_pin_star:
+                                     ; resetSystem()
+0000bb d0c4                          rcall   reset_system
+                                 
+                                 enter_pin_done:
+0000bc cf9b                          rjmp    main_loop
+                                 
+                                 // ============================================================================
+                                 // STATE: SYS_CHECK_PIN
+                                 // Equivalent to: void verifyPin()
+                                 // ============================================================================
+                                 state_check_pin:
+                                     ; lcd.clear()
+0000bd d179                          rcall   lcd_clear
+                                 
+                                     ; lcd.print("Verifying...")
+0000be e2e8                          ldi     ZL, LOW(str_verifying<<1)
+0000bf e0f7                          ldi     ZH, HIGH(str_verifying<<1)
+0000c0 d184                          rcall   lcd_print_string
+                                 
+                                     ; delay(800)
+0000c1 d2a8                          rcall   delay_500ms
+0000c2 d2a3                          rcall   delay_250ms
+                                 
+                                     ; --- strcmp(inputBuffer, SECRET_PIN) ---
+                                     ; Compare byte by byte
+0000c3 e0a0                          ldi     XL, LOW(input_buffer)
+0000c4 e0b1                          ldi     XH, HIGH(input_buffer)
+0000c5 eee0                          ldi     ZL, LOW(secret_pin<<1)
+0000c6 e0f6                          ldi     ZH, HIGH(secret_pin<<1)
+                                 
+0000c7 e020                          ldi     r18, 0                 ; match = true (0 = match)
+0000c8 e034                          ldi     r19, PIN_LENGTH        ; 4 bytes to compare
+                                 
+                                 check_pin_loop:
+0000c9 2333                          tst     r19
+0000ca f039                          breq    check_pin_compare_null
+                                 
+0000cb 910d                          ld      r16, X+                ; input byte
+0000cc 9115                          lpm     r17, Z+                ; secret byte (flash)
+0000cd 1701                          cp      r16, r17
+0000ce f009                          breq    check_pin_next
+0000cf e021                          ldi     r18, 1                 ; mismatch found
+                                 check_pin_next:
+0000d0 953a                          dec     r19
+0000d1 cff7                          rjmp    check_pin_loop
+                                 
+                                 check_pin_compare_null:
+                                     ; Also check null terminator
+0000d2 910c                          ld      r16, X
+0000d3 2300                          tst     r16
+0000d4 f009                          breq    check_pin_result
+0000d5 e021                          ldi     r18, 1                 ; Extra chars = mismatch
+                                 
+                                 check_pin_result:
+0000d6 2322                          tst     r18
+0000d7 f491                          brne    pin_wrong
+                                 
+                                     ; === PIN CORRECT ===
+                                     ; wrongAttempts = 0
+0000d8 2700                          clr     r16
+0000d9 9300 0107                     sts     wrong_attempts, r16
+                                 
+                                     ; lcd.clear()
+0000db d15b                          rcall   lcd_clear
+                                 
+                                     ; lcd.print("PIN OK!")
+0000dc e3e6                          ldi     ZL, LOW(str_pin_ok<<1)
+0000dd e0f7                          ldi     ZH, HIGH(str_pin_ok<<1)
+0000de d166                          rcall   lcd_print_string
+                                 
+                                     ; lcd.setCursor(0, 1)
+0000df e040                          ldi     r20, 0
+0000e0 e051                          ldi     r21, 1
+0000e1 d15a                          rcall   lcd_set_cursor
+                                 
+                                     ; lcd.print("Scan Card")
+0000e2 e3ee                          ldi     ZL, LOW(str_scan_card<<1)
+0000e3 e0f7                          ldi     ZH, HIGH(str_scan_card<<1)
+0000e4 d160                          rcall   lcd_print_string
+                                 
+                                     ; tone(PIN_BUZZER, 2000, 150)
+0000e5 d24c                          rcall   buzzer_confirm_beep
+                                 
+                                     ; currentState = SYS_WAIT_RFID
+0000e6 e003                          ldi     r16, SYS_WAIT_RFID
+0000e7 9300 0105                     sts     current_state, r16
+                                 
+0000e9 cf6e                          rjmp    main_loop
+                                 
+                                 pin_wrong:
+                                     ; === PIN WRONG ===
+                                     ; wrongAttempts++
+0000ea 9100 0107                     lds     r16, wrong_attempts
+0000ec 9503                          inc     r16
+0000ed 9300 0107                     sts     wrong_attempts, r16
+                                 
+                                     ; lcd.clear()
+0000ef d147                          rcall   lcd_clear
+                                 
+                                     ; lcd.print("Wrong PIN!")
+0000f0 e4e8                          ldi     ZL, LOW(str_wrong_pin<<1)
+0000f1 e0f7                          ldi     ZH, HIGH(str_wrong_pin<<1)
+0000f2 d152                          rcall   lcd_print_string
+                                 
+                                     ; lcd.setCursor(0, 1)
+0000f3 e040                          ldi     r20, 0
+0000f4 e051                          ldi     r21, 1
+0000f5 d146                          rcall   lcd_set_cursor
+                                 
+                                     ; if (wrongAttempts >= MAX_ATTEMPTS)
+0000f6 9100 0107                     lds     r16, wrong_attempts
+0000f8 3003                          cpi     r16, MAX_ATTEMPTS
+0000f9 f47c                          brge    pin_lockout
+                                 
+                                     ; --- Not locked out yet ---
+                                     ; lcd.print("Tries left: ")
+0000fa e5e4                          ldi     ZL, LOW(str_tries_left<<1)
+0000fb e0f7                          ldi     ZH, HIGH(str_tries_left<<1)
+0000fc d148                          rcall   lcd_print_string
+                                 
+                                     ; lcd.print(MAX_ATTEMPTS - wrongAttempts)
+0000fd 9100 0107                     lds     r16, wrong_attempts
+0000ff e013                          ldi     r17, MAX_ATTEMPTS
+000100 1b10                          sub     r17, r16
+000101 2f81                          mov     r24, r17
+000102 5d80                          subi    r24, -'0'             ; Convert to ASCII
+000103 d13f                          rcall   lcd_print_char
+                                 
+                                     ; tone(PIN_BUZZER, 500, 700)
+000104 d232                          rcall   buzzer_error_beep
+                                 
+                                     ; delay(2000)
+000105 d267                          rcall   delay_1000ms
+000106 d266                          rcall   delay_1000ms
+                                 
+                                     ; resetSystem()
+000107 d078                          rcall   reset_system
+000108 cf4f                          rjmp    main_loop
+                                 
+                                 pin_lockout:
+                                     ; === LOCKOUT ===
+                                     ; lcd.print("SYSTEM LOCKED!")
+000109 e6e2                          ldi     ZL, LOW(str_system_locked<<1)
+00010a e0f7                          ldi     ZH, HIGH(str_system_locked<<1)
+00010b d139                          rcall   lcd_print_string
+                                 
+                                     ; tone(PIN_BUZZER, 300, 2000)
+00010c d233                          rcall   buzzer_alarm
+                                 
+                                     ; delay(2000)
+00010d d25f                          rcall   delay_1000ms
+00010e d25e                          rcall   delay_1000ms
+                                 
+                                     ; startLockout()
+00010f d066                          rcall   start_lockout
+                                 
+000110 cf47                          rjmp    main_loop
+                                 
+                                 // ============================================================================
+                                 // STATE: SYS_WAIT_RFID
+                                 // Equivalent to: void handleRfidCheck()
+                                 // ============================================================================
+                                 state_wait_rfid:
+                                     ; if (!rfid.PICC_IsNewCardPresent()) return
+000111 d1bb                          rcall   mfrc522_request
+000112 2388                          tst     r24
+000113 f529                          brne    rfid_no_card
+                                 
+                                     ; if (!rfid.PICC_ReadCardSerial()) return
+000114 d1d5                          rcall   mfrc522_anticoll
+000115 2388                          tst     r24
+000116 f511                          brne    rfid_no_card
+                                 
+                                     ; lcd.clear()
+000117 d11f                          rcall   lcd_clear
+                                 
+                                     ; lcd.print("Reading Card...")
+000118 e9ec                          ldi     ZL, LOW(str_reading_card<<1)
+000119 e0f7                          ldi     ZH, HIGH(str_reading_card<<1)
+00011a d12a                          rcall   lcd_print_string
+                                 
+                                     ; --- Compare scanned UID with SECRET_UID ---
+00011b e0aa                          ldi     XL, LOW(scanned_uid)
+00011c e0b1                          ldi     XH, HIGH(scanned_uid)
+00011d eee6                          ldi     ZL, LOW(secret_uid<<1)
+00011e e0f6                          ldi     ZH, HIGH(secret_uid<<1)
+                                 
+00011f e020                          ldi     r18, 0                 ; match = true
+000120 e034                          ldi     r19, 4                 ; 4 bytes
+                                 
+                                 rfid_check_loop:
+000121 2333                          tst     r19
+000122 f039                          breq    rfid_check_done
+                                 
+000123 910d                          ld      r16, X+
+000124 9115                          lpm     r17, Z+
+000125 1701                          cp      r16, r17
+000126 f009                          breq    rfid_check_next
+000127 e021                          ldi     r18, 1                 ; mismatch
+                                 rfid_check_next:
+000128 953a                          dec     r19
+000129 cff7                          rjmp    rfid_check_loop
+                                 
+                                 rfid_check_done:
+                                     ; rfid.PICC_HaltA()
+00012a d1ec                          rcall   mfrc522_halt
+                                 
+00012b 2322                          tst     r18
+00012c f421                          brne    rfid_unknown
+                                 
+                                     ; === CARD MATCH ===
+                                     ; currentState = SYS_ACCESS_GRANTED
+00012d e004                          ldi     r16, SYS_ACCESS_GRANTED
+00012e 9300 0105                     sts     current_state, r16
+000130 cf27                          rjmp    main_loop
+                                 
+                                 rfid_unknown:
+                                     ; === UNKNOWN CARD ===
+                                     ; lcd.clear()
+000131 d105                          rcall   lcd_clear
+                                 
+                                     ; lcd.print("Unknown Card!")
+000132 eaec                          ldi     ZL, LOW(str_unknown_card<<1)
+000133 e0f7                          ldi     ZH, HIGH(str_unknown_card<<1)
+000134 d110                          rcall   lcd_print_string
+                                 
+                                     ; tone(PIN_BUZZER, 400, 1000)
+000135 d201                          rcall   buzzer_error_beep
+                                 
+                                     ; delay(2000)
+000136 d236                          rcall   delay_1000ms
+000137 d235                          rcall   delay_1000ms
+                                 
+                                     ; resetSystem()
+000138 d047                          rcall   reset_system
+                                 
+                                 rfid_no_card:
+000139 cf1e                          rjmp    main_loop
+                                 
+                                 // ============================================================================
+                                 // STATE: SYS_ACCESS_GRANTED
+                                 // Equivalent to: void grantAccess()
+                                 // ============================================================================
+                                 state_access_granted:
+                                     ; lcd.clear()
+00013a d0fc                          rcall   lcd_clear
+                                 
+                                     ; lcd.print("ACCESS GRANTED")
+00013b ebea                          ldi     ZL, LOW(str_access_granted<<1)
+00013c e0f7                          ldi     ZH, HIGH(str_access_granted<<1)
+00013d d107                          rcall   lcd_print_string
+                                 
+                                     ; digitalWrite(PIN_LOCK, HIGH)
+00013e 9a5f                          sbi     PORTD, PD7
+                                 
+                                     ; digitalWrite(PIN_LED, HIGH)
+00013f 9a43                          sbi     PORTC, PC3
+                                 
+                                     ; tone(PIN_BUZZER, 3000, 200)
+000140 d1fb                          rcall   buzzer_success_beep
+                                 
+                                     ; delay(3000)
+000141 d22b                          rcall   delay_1000ms
+000142 d22a                          rcall   delay_1000ms
+000143 d229                          rcall   delay_1000ms
+                                 
+                                     ; digitalWrite(PIN_LOCK, LOW)
+000144 985f                          cbi     PORTD, PD7
+                                 
+                                     ; digitalWrite(PIN_LED, LOW)
+000145 9843                          cbi     PORTC, PC3
+                                 
+                                     ; wrongAttempts = 0
+000146 2700                          clr     r16
+000147 9300 0107                     sts     wrong_attempts, r16
+                                 
+                                     ; resetSystem()
+000149 d036                          rcall   reset_system
+                                 
+00014a cf0d                          rjmp    main_loop
+                                 
+                                 // ============================================================================
+                                 // STATE: SYS_LOCKOUT
+                                 // Equivalent to: void handleLockout()
+                                 // ============================================================================
+                                 state_lockout:
+                                     ; Read lockout counter (counts down from 30)
+00014b 9140 0109                     lds     r20, lockout_counter
+                                 
+                                     ; lcd.clear()
+00014d d0e9                          rcall   lcd_clear
+                                 
+                                     ; lcd.print("!! LOCKED OUT !!")
+00014e e7e2                          ldi     ZL, LOW(str_locked_out<<1)
+00014f e0f7                          ldi     ZH, HIGH(str_locked_out<<1)
+000150 d0f4                          rcall   lcd_print_string
+                                 
+                                     ; lcd.setCursor(0, 1)
+000151 e040                          ldi     r20, 0
+000152 e051                          ldi     r21, 1
+000153 d0e8                          rcall   lcd_set_cursor
+                                 
+                                     ; lcd.print("Wait: ")
+000154 e8e4                          ldi     ZL, LOW(str_wait<<1)
+000155 e0f7                          ldi     ZH, HIGH(str_wait<<1)
+000156 d0ee                          rcall   lcd_print_string
+                                 
+                                     ; lcd.print(remaining seconds)
+000157 9180 0109                     lds     r24, lockout_counter
+000159 d0f3                          rcall   lcd_print_number
+                                 
+                                     ; lcd.print("s")
+00015a e8ec                          ldi     ZL, LOW(str_seconds<<1)
+00015b e0f7                          ldi     ZH, HIGH(str_seconds<<1)
+00015c d0e8                          rcall   lcd_print_string
+                                 
+                                     ; Alarm beep
+00015d d1e7                          rcall   buzzer_alarm_short
+                                 
+                                     ; Ignore keypad presses
+00015e d04d                          rcall   scan_keypad            ; Read and discard
+                                 
+                                     ; Decrement counter
+00015f 9100 0109                     lds     r16, lockout_counter
+000161 2300                          tst     r16
+000162 f029                          breq    lockout_finished
+                                 
+000163 950a                          dec     r16
+000164 9300 0109                     sts     lockout_counter, r16
+                                 
+                                     ; delay(1000) - 1 second between updates
+000166 d206                          rcall   delay_1000ms
+                                 
+000167 cef0                          rjmp    main_loop
+                                 
+                                 lockout_finished:
+                                     ; isLockedOut = false
+000168 2700                          clr     r16
+000169 9300 0108                     sts     is_locked_out, r16
+                                 
+                                     ; wrongAttempts = 0
+00016b 9300 0107                     sts     wrong_attempts, r16
+                                 
+                                     ; lcd.clear()
+00016d d0c9                          rcall   lcd_clear
+                                 
+                                     ; lcd.print("Lock Released")
+00016e e8ee                          ldi     ZL, LOW(str_lock_released<<1)
+00016f e0f7                          ldi     ZH, HIGH(str_lock_released<<1)
+000170 d0d4                          rcall   lcd_print_string
+                                 
+                                     ; tone(PIN_BUZZER, 2000, 200)
+000171 d1c0                          rcall   buzzer_confirm_beep
+                                 
+                                     ; delay(1500)
+000172 d1fa                          rcall   delay_1000ms
+000173 d1f6                          rcall   delay_500ms
+                                 
+                                     ; resetSystem()
+000174 d00b                          rcall   reset_system
+                                 
+000175 cee2                          rjmp    main_loop
+                                 
+                                 // ============================================================================
+                                 // FUNCTION: start_lockout
+                                 // Equivalent to: void startLockout()
+                                 // ============================================================================
+                                 start_lockout:
+                                     ; isLockedOut = true
+000176 e001                          ldi     r16, 1
+000177 9300 0108                     sts     is_locked_out, r16
+                                 
+                                     ; lockout_counter = 30 (seconds)
+000179 e10e                          ldi     r16, LOCKOUT_TIME_S
+00017a 9300 0109                     sts     lockout_counter, r16
+                                 
+                                     ; currentState = SYS_LOCKOUT
+00017c e005                          ldi     r16, SYS_LOCKOUT
+00017d 9300 0105                     sts     current_state, r16
+                                 
+00017f 9508                          ret
+                                 
+                                 // ============================================================================
+                                 // FUNCTION: reset_system
+                                 // Equivalent to: void resetSystem()
+                                 // ============================================================================
+                                 reset_system:
+                                     ; lcd.clear()
+000180 d0b6                          rcall   lcd_clear
+                                 
+                                     ; lcd.print("READY. Press Key")
+000181 e0ea                          ldi     ZL, LOW(str_ready<<1)
+000182 e0f7                          ldi     ZH, HIGH(str_ready<<1)
+000183 d0c1                          rcall   lcd_print_string
+                                 
+                                     ; if (wrongAttempts > 0) show tries remaining
+000184 9100 0107                     lds     r16, wrong_attempts
+000186 2300                          tst     r16
+000187 f081                          breq    reset_no_tries
+                                 
+                                     ; lcd.setCursor(0, 1)
+000188 e040                          ldi     r20, 0
+000189 e051                          ldi     r21, 1
+00018a d0b1                          rcall   lcd_set_cursor
+                                 
+                                     ; lcd.print("Tries: ")
+00018b ecea                          ldi     ZL, LOW(str_tries<<1)
+00018c e0f7                          ldi     ZH, HIGH(str_tries<<1)
+00018d d0b7                          rcall   lcd_print_string
+                                 
+                                     ; lcd.print(MAX_ATTEMPTS - wrongAttempts)
+00018e 9100 0107                     lds     r16, wrong_attempts
+000190 e013                          ldi     r17, MAX_ATTEMPTS
+000191 1b10                          sub     r17, r16
+000192 2f81                          mov     r24, r17
+000193 5d80                          subi    r24, -'0'
+000194 d0ae                          rcall   lcd_print_char
+                                 
+                                     ; lcd.print(" left")
+000195 ede2                          ldi     ZL, LOW(str_left<<1)
+000196 e0f7                          ldi     ZH, HIGH(str_left<<1)
+000197 d0ad                          rcall   lcd_print_string
+                                 
+                                 reset_no_tries:
+                                     ; currentState = SYS_IDLE
+000198 e000                          ldi     r16, SYS_IDLE
+000199 9300 0105                     sts     current_state, r16
+                                 
+                                     ; inputIndex = 0
+00019b 2700                          clr     r16
+00019c 9300 0106                     sts     input_index, r16
+                                 
+                                     ; memset(inputBuffer, 0, 5)
+00019e 2700                          clr     r16
+00019f 9300 0100                     sts     input_buffer, r16
+0001a1 9300 0101                     sts     input_buffer+1, r16
+0001a3 9300 0102                     sts     input_buffer+2, r16
+0001a5 9300 0103                     sts     input_buffer+3, r16
+0001a7 9300 0104                     sts     input_buffer+4, r16
+                                 
+                                     ; digitalWrite(PIN_LOCK, LOW)
+0001a9 985f                          cbi     PORTD, PD7
+                                 
+                                     ; digitalWrite(PIN_LED, LOW)
+0001aa 9843                          cbi     PORTC, PC3
+                                 
+0001ab 9508                          ret
+                                 
+                                 // ============================================================================
+                                 // KEYPAD SCANNER
+                                 // Scans the 4x4 matrix keypad
+                                 // Returns: r24 = ASCII key pressed, or 0 if none
+                                 // Row pins: PD2, PD3, PD4, PD5 (output, active LOW)
+                                 // Col pins: PD6, PC0, PC1, PC2 (input, pull-up)
+                                 // ============================================================================
+                                 scan_keypad:
+0001ac 931f                          push    r17
+0001ad 932f                          push    r18
+0001ae 933f                          push    r19
+0001af 934f                          push    r20
+                                 
+0001b0 2788                          clr     r24                    ; Default: no key
+                                 
+0001b1 e010                          ldi     r17, 0                 ; Row counter (0-3)
+                                 
+                                 scan_row_loop:
+0001b2 3014                          cpi     r17, 4
+0001b3 f409                          brne    scan_rows_continue
+0001b4 c042                          rjmp    scan_done
+                                 
+                                 scan_rows_continue:
+                                 
+                                     ; Set all rows HIGH first
+0001b5 9a5a                          sbi     PORTD, PD2
+0001b6 9a5b                          sbi     PORTD, PD3
+0001b7 9a5c                          sbi     PORTD, PD4
+0001b8 9a5d                          sbi     PORTD, PD5
+                                 
+                                     ; Set current row LOW
+0001b9 3010                          cpi     r17, 0
+0001ba f411                          brne    scan_not_row0
+0001bb 985a                          cbi     PORTD, PD2
+0001bc c009                          rjmp    scan_read_cols
+                                 scan_not_row0:
+0001bd 3011                          cpi     r17, 1
+0001be f411                          brne    scan_not_row1
+0001bf 985b                          cbi     PORTD, PD3
+0001c0 c005                          rjmp    scan_read_cols
+                                 scan_not_row1:
+0001c1 3012                          cpi     r17, 2
+0001c2 f411                          brne    scan_not_row2
+0001c3 985c                          cbi     PORTD, PD4
+0001c4 c001                          rjmp    scan_read_cols
+                                 scan_not_row2:
+0001c5 985d                          cbi     PORTD, PD5
+                                 
+                                 scan_read_cols:
+                                     ; Small delay for signal to settle
+0001c6 0000                          nop
+0001c7 0000                          nop
+0001c8 0000                          nop
+0001c9 0000                          nop
+0001ca 0000                          nop
+0001cb 0000                          nop
+                                 
+                                     ; Read column pins
+0001cc e020                          ldi     r18, 0                 ; Col counter
+                                 
+                                     ; Check Col 1 (PD6)
+0001cd 9b4e                          sbis    PIND, PD6
+0001ce c00b                          rjmp    key_found
+                                 
+0001cf 9523                          inc     r18
+                                 
+                                     ; Check Col 2 (PC0)
+0001d0 9b30                          sbis    PINC, PC0
+0001d1 c008                          rjmp    key_found
+                                 
+0001d2 9523                          inc     r18
+                                 
+                                     ; Check Col 3 (PC1)
+0001d3 9b31                          sbis    PINC, PC1
+0001d4 c005                          rjmp    key_found
+                                 
+0001d5 9523                          inc     r18
+                                 
+                                     ; Check Col 4 (PC2)
+0001d6 9b32                          sbis    PINC, PC2
+0001d7 c002                          rjmp    key_found
+                                 
+                                     ; No key in this row
+0001d8 9513                          inc     r17
+0001d9 cfd8                          rjmp    scan_row_loop
+                                 
+                                 key_found:
+                                     ; r17 = row, r18 = col
+                                     ; Index into keypad_map: row * 4 + col
+0001da 2f31                          mov     r19, r17
+0001db 0f33                          lsl     r19                    ; row * 2
+0001dc 0f33                          lsl     r19                    ; row * 4
+0001dd 0f32                          add     r19, r18               ; row * 4 + col
+                                 
+                                     ; Load character from keypad_map
+0001de eeea                          ldi     ZL, LOW(keypad_map<<1)
+0001df e0f6                          ldi     ZH, HIGH(keypad_map<<1)
+0001e0 0fe3                          add     ZL, r19
+0001e1 2744                          clr     r20
+0001e2 1ff4                          adc     ZH, r20
+0001e3 9184                          lpm     r24, Z                 ; r24 = key character (flash)
+                                 
+                                     ; Debounce: wait until key released
+                                 key_debounce_wait:
+0001e4 d176                          rcall   delay_10ms
+                                     ; Re-read the same column
+0001e5 3020                          cpi     r18, 0
+0001e6 f419                          brne    debounce_not_col0
+0001e7 994e                          sbic    PIND, PD6
+0001e8 c00e                          rjmp    scan_done
+0001e9 cffa                          rjmp    key_debounce_wait
+                                 debounce_not_col0:
+0001ea 3021                          cpi     r18, 1
+0001eb f419                          brne    debounce_not_col1
+0001ec 9930                          sbic    PINC, PC0
+0001ed c009                          rjmp    scan_done
+0001ee cff5                          rjmp    key_debounce_wait
+                                 debounce_not_col1:
+0001ef 3022                          cpi     r18, 2
+0001f0 f419                          brne    debounce_not_col2
+0001f1 9931                          sbic    PINC, PC1
+0001f2 c004                          rjmp    scan_done
+0001f3 cff0                          rjmp    key_debounce_wait
+                                 debounce_not_col2:
+0001f4 9932                          sbic    PINC, PC2
+0001f5 c001                          rjmp    scan_done
+0001f6 cfed                          rjmp    key_debounce_wait
+                                 
+                                 scan_done:
+                                     ; Restore all rows HIGH
+0001f7 9a5a                          sbi     PORTD, PD2
+0001f8 9a5b                          sbi     PORTD, PD3
+0001f9 9a5c                          sbi     PORTD, PD4
+0001fa 9a5d                          sbi     PORTD, PD5
+                                 
+0001fb 914f                          pop     r20
+0001fc 913f                          pop     r19
+0001fd 912f                          pop     r18
+0001fe 911f                          pop     r17
+0001ff 9508                          ret
+                                 
+                                 // ============================================================================
+                                 // I2C (TWI) LOW-LEVEL DRIVER
+                                 // ============================================================================
+                                 i2c_init:
+                                     ; Set SCL frequency: 100kHz at 16MHz
+                                     ; TWBR = ((F_CPU/F_SCL) - 16) / 2 = ((16000000/100000) - 16) / 2 = 72
+000200 e408                          ldi     r16, 72
+000201 9300 00b8                     sts     TWBR_REG, r16
+                                     ; Prescaler = 1
+000203 e000                          ldi     r16, 0
+000204 9300 00b9                     sts     TWSR_REG, r16
+                                     ; Enable TWI
+000206 e004                          ldi     r16, (1<<TWEN_BIT)
+000207 9300 00bc                     sts     TWCR_REG, r16
+000209 9508                          ret
+                                 
+                                 i2c_start:
+                                     ; Send START condition
+00020a ea04                          ldi     r16, (1<<TWINT_BIT)|(1<<TWSTA_BIT)|(1<<TWEN_BIT)
+00020b 9300 00bc                     sts     TWCR_REG, r16
+                                 i2c_start_wait:
+00020d 9100 00bc                     lds     r16, TWCR_REG
+00020f ff07                          sbrs    r16, TWINT_BIT
+000210 cffc                          rjmp    i2c_start_wait
+000211 9508                          ret
+                                 
+                                 i2c_stop:
+                                     ; Send STOP condition
+000212 e904                          ldi     r16, (1<<TWINT_BIT)|(1<<TWSTO_BIT)|(1<<TWEN_BIT)
+000213 9300 00bc                     sts     TWCR_REG, r16
+000215 9508                          ret
+                                 
+                                 i2c_write:
+                                     ; Write byte in r24 to I2C bus
+000216 9380 00bb                     sts     TWDR_REG, r24
+000218 e804                          ldi     r16, (1<<TWINT_BIT)|(1<<TWEN_BIT)
+000219 9300 00bc                     sts     TWCR_REG, r16
+                                 i2c_write_wait:
+00021b 9100 00bc                     lds     r16, TWCR_REG
+00021d ff07                          sbrs    r16, TWINT_BIT
+00021e cffc                          rjmp    i2c_write_wait
+00021f 9508                          ret
+                                 
+                                 // ============================================================================
+                                 // LCD I2C DRIVER (HD44780 via PCF8574 I2C backpack)
+                                 // ============================================================================
+                                 lcd_init:
+                                     ; Wait for LCD to power up
+000220 d13d                          rcall   delay_50ms
+                                 
+                                     ; Send init sequence (4-bit mode)
+000221 e380                          ldi     r24, 0x30
+000222 d05c                          rcall   lcd_send_nibble
+000223 d131                          rcall   delay_5ms
+                                 
+000224 e380                          ldi     r24, 0x30
+000225 d059                          rcall   lcd_send_nibble
+000226 d123                          rcall   delay_1ms
+                                 
+000227 e380                          ldi     r24, 0x30
+000228 d056                          rcall   lcd_send_nibble
+000229 d120                          rcall   delay_1ms
+                                 
+                                     ; Set 4-bit mode
+00022a e280                          ldi     r24, 0x20
+00022b d053                          rcall   lcd_send_nibble
+00022c d11d                          rcall   delay_1ms
+                                 
+                                     ; Function set: 4-bit, 2 lines, 5x8 font
+00022d e288                          ldi     r24, 0x28
+00022e d032                          rcall   lcd_send_command
+                                 
+                                     ; Display ON, cursor OFF, blink OFF
+00022f e08c                          ldi     r24, 0x0C
+000230 d030                          rcall   lcd_send_command
+                                 
+                                     ; Clear display
+000231 e081                          ldi     r24, 0x01
+000232 d02e                          rcall   lcd_send_command
+000233 d121                          rcall   delay_5ms
+                                 
+                                     ; Entry mode: increment, no shift
+000234 e086                          ldi     r24, 0x06
+000235 d02b                          rcall   lcd_send_command
+                                 
+000236 9508                          ret
+                                 
+                                 lcd_clear:
+000237 e081                          ldi     r24, 0x01
+000238 d028                          rcall   lcd_send_command
+000239 d11b                          rcall   delay_5ms
+00023a 9508                          ret
+                                 
+                                 lcd_enable_backlight:
+                                     ; Just set backlight flag (handled in every I2C write)
+00023b 9508                          ret
+                                 
+                                 lcd_set_cursor:
+                                     ; r20 = col, r21 = row
+                                     ; DDRAM address: row 0 = 0x00, row 1 = 0x40
+00023c 2f84                          mov     r24, r20
+00023d 2355                          tst     r21
+00023e f009                          breq    lcd_cursor_set
+00023f 6480                          ori     r24, 0x40              ; Row 1 offset
+                                 lcd_cursor_set:
+000240 6880                          ori     r24, 0x80              ; Set DDRAM command
+000241 d01f                          rcall   lcd_send_command
+000242 9508                          ret
+                                 
+                                 lcd_print_char:
+                                     ; Print single char in r24
+000243 d02c                          rcall   lcd_send_data
+000244 9508                          ret
+                                 
+                                 lcd_print_string:
+                                     ; Print null-terminated string pointed to by Z
+000245 938f                          push    r24
+                                 lcd_ps_loop:
+000246 9185                          lpm     r24, Z+
+000247 2388                          tst     r24
+000248 f011                          breq    lcd_ps_done
+000249 d026                          rcall   lcd_send_data
+00024a cffb                          rjmp    lcd_ps_loop
+                                 lcd_ps_done:
+00024b 918f                          pop     r24
+00024c 9508                          ret
+                                 
+                                 lcd_print_number:
+                                     ; Print number in r24 (0-99) as decimal
+00024d 931f                          push    r17
+00024e 932f                          push    r18
+                                 
+00024f 2f18                          mov     r17, r24
+                                 
+                                     ; Tens digit
+000250 e020                          ldi     r18, 0
+                                 lcd_num_tens:
+000251 301a                          cpi     r17, 10
+000252 f018                          brlo    lcd_num_ones
+000253 501a                          subi    r17, 10
+000254 9523                          inc     r18
+000255 cffb                          rjmp    lcd_num_tens
+                                 
+                                 lcd_num_ones:
+                                     ; Print tens if > 0
+000256 2322                          tst     r18
+000257 f019                          breq    lcd_num_skip_tens
+000258 2f82                          mov     r24, r18
+000259 5d80                          subi    r24, -'0'
+00025a d015                          rcall   lcd_send_data
+                                 
+                                 lcd_num_skip_tens:
+                                     ; Print ones
+00025b 2f81                          mov     r24, r17
+00025c 5d80                          subi    r24, -'0'
+00025d d012                          rcall   lcd_send_data
+                                 
+00025e 912f                          pop     r18
+00025f 911f                          pop     r17
+000260 9508                          ret
+                                 
+                                 lcd_send_command:
+                                     ; Send command byte (RS=0)
+000261 938f                          push    r24
+000262 939f                          push    r25
+000263 2f98                          mov     r25, r24
+                                 
+                                     ; High nibble
+000264 7f80                          andi    r24, 0xF0
+000265 6088                          ori     r24, LCD_BACKLIGHT     ; Backlight ON, RS=0
+000266 d01b                          rcall   lcd_write_nibble_en
+                                 
+                                     ; Low nibble
+000267 2f89                          mov     r24, r25
+000268 9582                          swap    r24
+000269 7f80                          andi    r24, 0xF0
+00026a 6088                          ori     r24, LCD_BACKLIGHT
+00026b d016                          rcall   lcd_write_nibble_en
+                                 
+00026c d0dd                          rcall   delay_1ms
+                                 
+00026d 919f                          pop     r25
+00026e 918f                          pop     r24
+00026f 9508                          ret
+                                 
+                                 lcd_send_data:
+                                     ; Send data byte (RS=1)
+000270 938f                          push    r24
+000271 939f                          push    r25
+000272 2f98                          mov     r25, r24
+                                 
+                                     ; High nibble
+000273 7f80                          andi    r24, 0xF0
+000274 6089                          ori     r24, LCD_BACKLIGHT|LCD_RS  ; Backlight ON, RS=1
+000275 d00c                          rcall   lcd_write_nibble_en
+                                 
+                                     ; Low nibble
+000276 2f89                          mov     r24, r25
+000277 9582                          swap    r24
+000278 7f80                          andi    r24, 0xF0
+000279 6089                          ori     r24, LCD_BACKLIGHT|LCD_RS
+00027a d007                          rcall   lcd_write_nibble_en
+                                 
+00027b d0ce                          rcall   delay_1ms
+                                 
+00027c 919f                          pop     r25
+00027d 918f                          pop     r24
+00027e 9508                          ret
+                                 
+                                 lcd_send_nibble:
+                                     ; Send raw nibble (for init sequence)
+00027f 6088                          ori     r24, LCD_BACKLIGHT
+000280 d001                          rcall   lcd_write_nibble_en
+000281 9508                          ret
+                                 
+                                 lcd_write_nibble_en:
+                                     ; Write nibble with ENABLE pulse via I2C
+000282 938f                          push    r24
+                                 
+                                     ; Send with EN=1
+000283 6084                          ori     r24, LCD_ENABLE
+000284 d008                          rcall   lcd_i2c_write_byte
+000285 d0c4                          rcall   delay_1ms
+                                 
+                                     ; Send with EN=0
+000286 918f                          pop     r24
+000287 938f                          push    r24
+000288 7f8b                          andi    r24, ~LCD_ENABLE
+000289 d003                          rcall   lcd_i2c_write_byte
+00028a d0bf                          rcall   delay_1ms
+                                 
+00028b 918f                          pop     r24
+00028c 9508                          ret
+                                 
+                                 lcd_i2c_write_byte:
+                                     ; Write byte in r24 to LCD via I2C
+00028d 938f                          push    r24
+00028e df7b                          rcall   i2c_start
+                                 
+                                     ; Send address (0x27 << 1 | 0 for write = 0x4E)
+00028f e48e                          ldi     r24, (LCD_ADDR << 1)
+000290 df85                          rcall   i2c_write
+                                 
+                                     ; Send data byte
+000291 918f                          pop     r24
+000292 df83                          rcall   i2c_write
+                                 
+000293 df7e                          rcall   i2c_stop
+000294 9508                          ret
+                                 
+                                 // ============================================================================
+                                 // SPI DRIVER (for MFRC522 RFID)
+                                 // ============================================================================
+                                 spi_transfer:
+                                     ; Send byte in r24 via SPI, receive response in r24
+000295 bd8e                          out     SPDR, r24
+                                 spi_wait:
+000296 b50d                          in      r16, SPSR
+000297 ff07                          sbrs    r16, SPIF
+000298 cffd                          rjmp    spi_wait
+000299 b58e                          in      r24, SPDR
+00029a 9508                          ret
+                                 
+                                 mfrc522_write_reg:
+                                     ; Write value r25 to register r24
+                                     ; Address byte: (reg << 1) & 0x7E
+00029b 0f88                          lsl     r24
+00029c 778e                          andi    r24, 0x7E
+                                 
+00029d 982a                          cbi     PORTB, SPI_SS          ; SS LOW (select)
+00029e dff6                          rcall   spi_transfer           ; Send address
+00029f 2f89                          mov     r24, r25
+0002a0 dff4                          rcall   spi_transfer           ; Send value
+0002a1 9a2a                          sbi     PORTB, SPI_SS          ; SS HIGH (deselect)
+0002a2 9508                          ret
+                                 
+                                 mfrc522_read_reg:
+                                     ; Read register r24, result in r24
+                                     ; Address byte: ((reg << 1) & 0x7E) | 0x80
+0002a3 0f88                          lsl     r24
+0002a4 778e                          andi    r24, 0x7E
+0002a5 6880                          ori     r24, 0x80
+                                 
+0002a6 982a                          cbi     PORTB, SPI_SS
+0002a7 dfed                          rcall   spi_transfer           ; Send address
+0002a8 e080                          ldi     r24, 0x00
+0002a9 dfeb                          rcall   spi_transfer           ; Read value
+0002aa 9a2a                          sbi     PORTB, SPI_SS
+0002ab 9508                          ret
+                                 
+                                 // ============================================================================
+                                 // MFRC522 RFID DRIVER
+                                 // ============================================================================
+                                 mfrc522_init:
+                                     ; Reset the MFRC522
+                                     ; Pull RST LOW then HIGH
+0002ac 9829                          cbi     PORTB, PB1
+0002ad d0b0                          rcall   delay_50ms
+0002ae 9a29                          sbi     PORTB, PB1
+0002af d0ae                          rcall   delay_50ms
+                                 
+                                     ; Soft reset
+0002b0 e081                          ldi     r24, MFRC_CommandReg
+0002b1 e09f                          ldi     r25, CMD_SOFTRESET
+0002b2 dfe8                          rcall   mfrc522_write_reg
+0002b3 d0aa                          rcall   delay_50ms
+                                 
+                                     ; Timer: TModeReg (0x2A) = 0x8D
+0002b4 e28a                          ldi     r24, 0x2A
+0002b5 e89d                          ldi     r25, 0x8D
+0002b6 dfe4                          rcall   mfrc522_write_reg
+                                 
+                                     ; TPrescalerReg (0x2B) = 0x3E
+0002b7 e28b                          ldi     r24, 0x2B
+0002b8 e39e                          ldi     r25, 0x3E
+0002b9 dfe1                          rcall   mfrc522_write_reg
+                                 
+                                     ; TReloadRegH (0x2C) = 0x00
+0002ba e28c                          ldi     r24, 0x2C
+0002bb e090                          ldi     r25, 0x00
+0002bc dfde                          rcall   mfrc522_write_reg
+                                 
+                                     ; TReloadRegL (0x2D) = 0x1E
+0002bd e28d                          ldi     r24, 0x2D
+0002be e19e                          ldi     r25, 0x1E
+0002bf dfdb                          rcall   mfrc522_write_reg
+                                 
+                                     ; TxASKReg = 0x40 (force 100% ASK modulation)
+0002c0 e185                          ldi     r24, MFRC_TxASKReg
+0002c1 e490                          ldi     r25, 0x40
+0002c2 dfd8                          rcall   mfrc522_write_reg
+                                 
+                                     ; ModeReg = 0x3D
+0002c3 e181                          ldi     r24, MFRC_ModeReg
+0002c4 e39d                          ldi     r25, 0x3D
+0002c5 dfd5                          rcall   mfrc522_write_reg
+                                 
+                                     ; Turn on antenna: read TxControlReg, OR with 0x03
+0002c6 e184                          ldi     r24, MFRC_TxControlReg
+0002c7 dfdb                          rcall   mfrc522_read_reg
+0002c8 6083                          ori     r24, 0x03
+0002c9 2f98                          mov     r25, r24
+0002ca e184                          ldi     r24, MFRC_TxControlReg
+0002cb dfcf                          rcall   mfrc522_write_reg
+                                 
+0002cc 9508                          ret
+                                 
+                                 mfrc522_request:
+                                     ; Send REQA command to detect cards nearby
+                                     ; Returns r24 = 0 if card found, 1 if no card
+                                 
+                                     ; BitFramingReg = 0x07 (7 bits)
+0002cd e08d                          ldi     r24, MFRC_BitFramingReg
+0002ce e097                          ldi     r25, 0x07
+0002cf dfcb                          rcall   mfrc522_write_reg
+                                 
+                                     ; Write REQA (0x26) to FIFO
+0002d0 e089                          ldi     r24, MFRC_FIFODataReg
+0002d1 e296                          ldi     r25, PICC_REQIDL
+0002d2 dfc8                          rcall   mfrc522_write_reg
+                                 
+                                     ; Execute Transceive command
+0002d3 e081                          ldi     r24, MFRC_CommandReg
+0002d4 e09c                          ldi     r25, CMD_TRANSCEIVE
+0002d5 dfc5                          rcall   mfrc522_write_reg
+                                 
+                                     ; Start transmission: BitFramingReg |= 0x80
+0002d6 e08d                          ldi     r24, MFRC_BitFramingReg
+0002d7 dfcb                          rcall   mfrc522_read_reg
+0002d8 6880                          ori     r24, 0x80
+0002d9 2f98                          mov     r25, r24
+0002da e08d                          ldi     r24, MFRC_BitFramingReg
+0002db dfbf                          rcall   mfrc522_write_reg
+                                 
+                                     ; Wait for response (with timeout)
+0002dc ef4f                          ldi     r20, 0xFF              ; Timeout counter H
+0002dd ef5f                          ldi     r21, 0xFF              ; Timeout counter L
+                                 
+                                 mfrc_req_wait:
+0002de e084                          ldi     r24, MFRC_ComIrqReg
+0002df dfc3                          rcall   mfrc522_read_reg
+0002e0 2f08                          mov     r16, r24
+                                 
+                                     ; Check RxIRq (bit 5) or IdleIRq (bit 4)
+0002e1 7300                          andi    r16, 0x30
+0002e2 f429                          brne    mfrc_req_got_response
+                                 
+                                     ; Timeout check
+0002e3 5051                          subi    r21, 1
+0002e4 4040                          sbci    r20, 0
+0002e5 f7c1                          brne    mfrc_req_wait
+                                 
+                                     ; Timeout - no card
+0002e6 e081                          ldi     r24, 1
+0002e7 9508                          ret
+                                 
+                                 mfrc_req_got_response:
+                                     ; Card detected
+0002e8 e080                          ldi     r24, 0
+0002e9 9508                          ret
+                                 
+                                 mfrc522_anticoll:
+                                     ; Anti-collision: get card UID
+                                     ; Returns r24 = 0 if success, stores UID in scanned_uid
+                                 
+                                     ; BitFramingReg = 0x00 (full bytes)
+0002ea e08d                          ldi     r24, MFRC_BitFramingReg
+0002eb e090                          ldi     r25, 0x00
+0002ec dfae                          rcall   mfrc522_write_reg
+                                 
+                                     ; Clear FIFO
+0002ed e08a                          ldi     r24, MFRC_FIFOLevelReg
+0002ee e890                          ldi     r25, 0x80
+0002ef dfab                          rcall   mfrc522_write_reg
+                                 
+                                     ; Write anti-collision command to FIFO
+0002f0 e089                          ldi     r24, MFRC_FIFODataReg
+0002f1 e993                          ldi     r25, PICC_ANTICOLL       ; 0x93
+0002f2 dfa8                          rcall   mfrc522_write_reg
+                                 
+0002f3 e089                          ldi     r24, MFRC_FIFODataReg
+0002f4 e290                          ldi     r25, 0x20                ; NVB = 0x20
+0002f5 dfa5                          rcall   mfrc522_write_reg
+                                 
+                                     ; Execute Transceive
+0002f6 e081                          ldi     r24, MFRC_CommandReg
+0002f7 e09c                          ldi     r25, CMD_TRANSCEIVE
+0002f8 dfa2                          rcall   mfrc522_write_reg
+                                 
+                                     ; Start transmission
+0002f9 e08d                          ldi     r24, MFRC_BitFramingReg
+0002fa dfa8                          rcall   mfrc522_read_reg
+0002fb 6880                          ori     r24, 0x80
+0002fc 2f98                          mov     r25, r24
+0002fd e08d                          ldi     r24, MFRC_BitFramingReg
+0002fe df9c                          rcall   mfrc522_write_reg
+                                 
+                                     ; Wait for response
+0002ff ef4f                          ldi     r20, 0xFF
+000300 ef5f                          ldi     r21, 0xFF
+                                 
+                                 mfrc_ac_wait:
+000301 e084                          ldi     r24, MFRC_ComIrqReg
+000302 dfa0                          rcall   mfrc522_read_reg
+000303 2f08                          mov     r16, r24
+000304 7300                          andi    r16, 0x30
+000305 f429                          brne    mfrc_ac_got_response
+                                 
+000306 5051                          subi    r21, 1
+000307 4040                          sbci    r20, 0
+000308 f7c1                          brne    mfrc_ac_wait
+                                 
+                                     ; Timeout
+000309 e081                          ldi     r24, 1
+00030a 9508                          ret
+                                 
+                                 mfrc_ac_got_response:
+                                     ; Read 4 bytes of UID from FIFO
+00030b e024                          ldi     r18, 4
+00030c e0aa                          ldi     XL, LOW(scanned_uid)
+00030d e0b1                          ldi     XH, HIGH(scanned_uid)
+                                 
+                                 mfrc_read_uid_loop:
+00030e 2322                          tst     r18
+00030f f029                          breq    mfrc_read_uid_done
+                                 
+000310 e089                          ldi     r24, MFRC_FIFODataReg
+000311 df91                          rcall   mfrc522_read_reg
+000312 938d                          st      X+, r24
+                                 
+000313 952a                          dec     r18
+000314 cff9                          rjmp    mfrc_read_uid_loop
+                                 
+                                 mfrc_read_uid_done:
+                                     ; Success
+000315 e080                          ldi     r24, 0
+000316 9508                          ret
+                                 
+                                 mfrc522_halt:
+                                     ; Send HLTA command to put card to sleep
+                                     ; FIFO: 0x50, 0x00
+000317 e08a                          ldi     r24, MFRC_FIFOLevelReg
+000318 e890                          ldi     r25, 0x80
+000319 df81                          rcall   mfrc522_write_reg
+                                 
+00031a e089                          ldi     r24, MFRC_FIFODataReg
+00031b e590                          ldi     r25, 0x50
+00031c df7e                          rcall   mfrc522_write_reg
+                                 
+00031d e089                          ldi     r24, MFRC_FIFODataReg
+00031e e090                          ldi     r25, 0x00
+00031f df7b                          rcall   mfrc522_write_reg
+                                 
+000320 e081                          ldi     r24, MFRC_CommandReg
+000321 e09c                          ldi     r25, CMD_TRANSCEIVE
+000322 df78                          rcall   mfrc522_write_reg
+                                 
+                                     ; Start transmission
+000323 e08d                          ldi     r24, MFRC_BitFramingReg
+000324 df7e                          rcall   mfrc522_read_reg
+000325 6880                          ori     r24, 0x80
+000326 2f98                          mov     r25, r24
+000327 e08d                          ldi     r24, MFRC_BitFramingReg
+000328 df72                          rcall   mfrc522_write_reg
+                                 
+000329 d031                          rcall   delay_10ms
+                                 
+                                     ; Go back to idle
+00032a e081                          ldi     r24, MFRC_CommandReg
+00032b e090                          ldi     r25, CMD_IDLE
+00032c df6e                          rcall   mfrc522_write_reg
+                                 
+00032d 9508                          ret
+                                 
+                                 // ============================================================================
+                                 // BUZZER FUNCTIONS
+                                 // ============================================================================
+                                 buzzer_short_beep:
+                                     ; tone(PIN_BUZZER, 1000, 50) - Short click beep
+00032e 9a28                          sbi     PORTB, PB0
+00032f d02e                          rcall   delay_50ms
+000330 9828                          cbi     PORTB, PB0
+000331 9508                          ret
+                                 
+                                 buzzer_confirm_beep:
+                                     ; tone(PIN_BUZZER, 2000, 150) - Confirmation beep
+000332 9a28                          sbi     PORTB, PB0
+000333 d02f                          rcall   delay_100ms
+000334 d029                          rcall   delay_50ms
+000335 9828                          cbi     PORTB, PB0
+000336 9508                          ret
+                                 
+                                 buzzer_error_beep:
+                                     ; tone(PIN_BUZZER, 500, 700) - Error beep
+000337 9a28                          sbi     PORTB, PB0
+000338 d031                          rcall   delay_500ms
+000339 d02c                          rcall   delay_250ms
+00033a 9828                          cbi     PORTB, PB0
+00033b 9508                          ret
+                                 
+                                 buzzer_success_beep:
+                                     ; tone(PIN_BUZZER, 3000, 200) - Success beep
+00033c 9a28                          sbi     PORTB, PB0
+00033d d028                          rcall   delay_250ms
+00033e 9828                          cbi     PORTB, PB0
+00033f 9508                          ret
+                                 
+                                 buzzer_alarm:
+                                     ; tone(PIN_BUZZER, 300, 2000) - Alarm sound
+000340 9a28                          sbi     PORTB, PB0
+000341 d02b                          rcall   delay_1000ms
+000342 d02a                          rcall   delay_1000ms
+000343 9828                          cbi     PORTB, PB0
+000344 9508                          ret
+                                 
+                                 buzzer_alarm_short:
+                                     ; Short alarm beep during lockout
+000345 9a28                          sbi     PORTB, PB0
+000346 d01c                          rcall   delay_100ms
+000347 d01b                          rcall   delay_100ms
+000348 9828                          cbi     PORTB, PB0
+000349 9508                          ret
+                                 
+                                 // ============================================================================
+                                 // DELAY FUNCTIONS (at 16MHz clock)
+                                 // ============================================================================
+                                 delay_1ms:
+00034a 930f                          push    r16
+00034b 931f                          push    r17
+00034c e105                          ldi     r16, 21
+00034d ec17                          ldi     r17, 199
+                                 delay_1ms_loop:
+00034e 951a                          dec     r17
+00034f f7f1                          brne    delay_1ms_loop
+000350 950a                          dec     r16
+000351 f7e1                          brne    delay_1ms_loop
+000352 911f                          pop     r17
+000353 910f                          pop     r16
+000354 9508                          ret
+                                 
+                                 delay_5ms:
+000355 dff4                          rcall   delay_1ms
+000356 dff3                          rcall   delay_1ms
+000357 dff2                          rcall   delay_1ms
+000358 dff1                          rcall   delay_1ms
+000359 dff0                          rcall   delay_1ms
+00035a 9508                          ret
+                                 
+                                 delay_10ms:
+00035b dff9                          rcall   delay_5ms
+00035c dff8                          rcall   delay_5ms
+00035d 9508                          ret
+                                 
+                                 delay_50ms:
+00035e e06a                          ldi     r22, 10
+                                 delay_50ms_loop:
+00035f dff5                          rcall   delay_5ms
+000360 956a                          dec     r22
+000361 f7e9                          brne    delay_50ms_loop
+000362 9508                          ret
+                                 
+                                 delay_100ms:
+000363 dffa                          rcall   delay_50ms
+000364 dff9                          rcall   delay_50ms
+000365 9508                          ret
+                                 
+                                 delay_250ms:
+000366 dffc                          rcall   delay_100ms
+000367 dffb                          rcall   delay_100ms
+000368 dff5                          rcall   delay_50ms
+000369 9508                          ret
+                                 
+                                 delay_500ms:
+00036a dffb                          rcall   delay_250ms
+00036b dffa                          rcall   delay_250ms
+00036c 9508                          ret
+                                 
+                                 delay_1000ms:
+00036d dffc                          rcall   delay_500ms
+00036e dffb                          rcall   delay_500ms
+00036f 9508                          ret
+                                 
+                                 // ============================================================================
+                                 // CONSTANTS IN FLASH
+                                 // ============================================================================
+                                 secret_pin:
+000370 3231
+000371 3433
+E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1685): warning: .cseg .db misalignment - padding zero byte
+000372 0000                          .db '1', '2', '3', '4', 0x00
+                                 
+                                 secret_uid:
+000373 9367
+000374 04a9                          .db 0x67, 0x93, 0xA9, 0x04
+                                 
+                                 // Keypad lookup table (Row x Col)
+                                 // Row 0: 1 2 3 A
+                                 // Row 1: 4 5 6 B
+                                 // Row 2: 7 8 9 C
+                                 // Row 3: * 0 # D
+                                 keypad_map:
+000375 3231
+000376 4133                          .db '1', '2', '3', 'A'
+000377 3534
+000378 4236                          .db '4', '5', '6', 'B'
+000379 3837
+00037a 4339                          .db '7', '8', '9', 'C'
+00037b 302a
+00037c 4423                          .db '*', '0', '#', 'D'
+                                 
+                                 // LCD Strings (Matches TwoFactorLock.ino exactly)
+                                 str_booting:
+00037d 7953
+00037e 7473
+00037f 6d65
+000380 4220
+000381 6f6f
+000382 6974
+000383 676e
+E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1703): warning: .cseg .db misalignment - padding zero byte
+000384 0000                          .db "System Booting", 0
+                                 str_ready:
+000385 4552
+000386 4441
+000387 2e59
+000388 5020
+000389 6572
+00038a 7373
+00038b 4b20
+00038c 7965
+E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1705): warning: .cseg .db misalignment - padding zero byte
+00038d 0000                          .db "READY. Press Key", 0
+                                 str_enter_pin:
+00038e 6e45
+00038f 6574
+000390 2072
+000391 4950
+000392 3a4e
+E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1707): warning: .cseg .db misalignment - padding zero byte
+000393 0000                          .db "Enter PIN:", 0
+                                 str_verifying:
+000394 6556
+000395 6972
+000396 7966
+000397 6e69
+000398 2e67
+000399 2e2e
+E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1709): warning: .cseg .db misalignment - padding zero byte
+00039a 0000                          .db "Verifying...", 0
+                                 str_pin_ok:
+00039b 4950
+00039c 204e
+00039d 4b4f
+00039e 0021                          .db "PIN OK!", 0
+                                 str_scan_card:
+00039f 6353
+0003a0 6e61
+0003a1 4320
+0003a2 7261
+0003a3 0064                          .db "Scan Card", 0
+                                 str_wrong_pin:
+0003a4 7257
+0003a5 6e6f
+0003a6 2067
+0003a7 4950
+0003a8 214e
+E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1715): warning: .cseg .db misalignment - padding zero byte
+0003a9 0000                          .db "Wrong PIN!", 0
+                                 str_tries_left:
+0003aa 7254
+0003ab 6569
+0003ac 2073
+0003ad 656c
+0003ae 7466
+0003af 203a
+E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1717): warning: .cseg .db misalignment - padding zero byte
+0003b0 0000                          .db "Tries left: ", 0
+                                 str_system_locked:
+0003b1 5953
+0003b2 5453
+0003b3 4d45
+0003b4 4c20
+0003b5 434f
+0003b6 454b
+0003b7 2144
+E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1719): warning: .cseg .db misalignment - padding zero byte
+0003b8 0000                          .db "SYSTEM LOCKED!", 0
+                                 str_locked_out:
+0003b9 2121
+0003ba 4c20
+0003bb 434f
+0003bc 454b
+0003bd 2044
+0003be 554f
+0003bf 2054
+0003c0 2121
+E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1721): warning: .cseg .db misalignment - padding zero byte
+0003c1 0000                          .db "!! LOCKED OUT !!", 0
+                                 str_wait:
+0003c2 6157
+0003c3 7469
+0003c4 203a
+E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1723): warning: .cseg .db misalignment - padding zero byte
+0003c5 0000                          .db "Wait: ", 0
+                                 str_seconds:
+0003c6 0073                          .db "s", 0
+                                 str_lock_released:
+0003c7 6f4c
+0003c8 6b63
+0003c9 5220
+0003ca 6c65
+0003cb 6165
+0003cc 6573
+0003cd 0064                          .db "Lock Released", 0
+                                 str_reading_card:
+0003ce 6552
+0003cf 6461
+0003d0 6e69
+0003d1 2067
+0003d2 6143
+0003d3 6472
+0003d4 2e2e
+0003d5 002e                          .db "Reading Card...", 0
+                                 str_unknown_card:
+0003d6 6e55
+0003d7 6e6b
+0003d8 776f
+0003d9 206e
+0003da 6143
+0003db 6472
+0003dc 0021                          .db "Unknown Card!", 0
+                                 str_access_granted:
+0003dd 4341
+0003de 4543
+0003df 5353
+0003e0 4720
+0003e1 4152
+0003e2 544e
+0003e3 4445
+E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1733): warning: .cseg .db misalignment - padding zero byte
+0003e4 0000                          .db "ACCESS GRANTED", 0
+                                 str_tries:
+0003e5 7254
+0003e6 6569
+0003e7 3a73
+0003e8 0020                          .db "Tries: ", 0
+                                 str_left:
+0003e9 6c20
+0003ea 6665
+0003eb 0074                          .db " left", 0
+                                 
+                                 // ============================================================================
+                                 // END OF PROGRAM
+
+
+RESOURCE USE INFORMATION
+------------------------
+
+Notice:
+The register and instruction counts are symbol table hit counts,
+and hence implicitly used resources are not counted, eg, the
+'lpm' instruction without operands implicitly uses r0 and z,
+none of which are counted.
+
+x,y,z are separate entities in the symbol table and are
+counted separately from r26..r31 here.
+
+.dseg memory usage only counts static data declared with .byte
+
+"ATmega328P" register use summary:
+x  :   4 y  :   0 z  :   8 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
+r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
+r13:   0 r14:   0 r15:   0 r16: 112 r17:  33 r18:  37 r19:  21 r20:  16 
+r21:  11 r22:   2 r23:   0 r24: 126 r25:  33 r26:   3 r27:   3 r28:   0 
+r29:   0 r30:  30 r31:  30 
+Registers used: 15 out of 35 (42.9%)
+
+"ATmega328P" instruction use summary:
+.lds  :   0 .sts  :   0 adc   :   5 add   :   6 adiw  :   0 and   :   0 
+andi  :   9 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
+brcc  :   0 brcs  :   0 break :   0 breq  :  23 brge  :   2 brhc  :   0 
+brhs  :   0 brid  :   0 brie  :   0 brlo  :   1 brlt  :   0 brmi  :   0 
+brne  :  18 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
+brvs  :   0 bset  :   0 bst   :   0 call  :   0 cbi   :  25 cbr   :   0 
+clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :  13 cls   :   0 
+clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   2 cpc   :   0 
+cpi   :  20 cpse  :   0 dec   :   7 eor   :   0 fmul  :   0 fmuls :   0 
+fmulsu:   0 icall :   0 ijmp  :   0 in    :   3 inc   :   8 jmp   :   0 
+ld    :   3 ldd   :   0 ldi   : 175 lds   :  13 lpm   :   5 lsl   :   4 
+lsr   :   0 mov   :  21 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
+neg   :   0 nop   :   6 or    :   0 ori   :  13 out   :   5 pop   :  18 
+push  :  18 rcall : 187 ret   :  42 reti  :   2 rjmp  :  57 rol   :   0 
+ror   :   0 sbc   :   0 sbci  :   2 sbi   :  36 sbic  :   4 sbis  :   4 
+sbiw  :   0 sbr   :   0 sbrc  :   0 sbrs  :   3 sec   :   0 seh   :   0 
+sei   :   1 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
+sez   :   0 sleep :   0 spm   :   0 st    :   5 std   :   0 sts   :  38 
+sub   :   2 subi  :   7 swap  :   2 tst   :  15 wdr   :   0 
+Instructions used: 41 out of 113 (36.3%)
+
+"ATmega328P" memory use summary [bytes]:
+Segment   Begin    End      Code   Data   Used    Size   Use%
+---------------------------------------------------------------
+[.cseg] 0x000000 0x0007d8   1760    248   2008   32768   6.1%
+[.dseg] 0x000100 0x00010e      0     14     14    2048   0.7%
+[.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
+
+Assembly complete, 0 errors, 11 warnings
