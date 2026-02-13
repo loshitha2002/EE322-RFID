@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm Fri Feb 13 10:56:21 2026
+AVRASM ver. 2.2.8  E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm Fri Feb 13 11:12:30 2026
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328Pdef.inc'
 E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(9): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328Pdef.inc'
@@ -1091,6 +1091,7 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
                                  // MFRC522 Registers
                                  .equ MFRC_CommandReg = 0x01
                                  .equ MFRC_ComIrqReg = 0x04
+                                 .equ MFRC_ErrorReg = 0x06
                                  .equ MFRC_FIFODataReg = 0x09
                                  .equ MFRC_FIFOLevelReg = 0x0A
                                  .equ MFRC_BitFramingReg = 0x0D
@@ -1273,20 +1274,20 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
 00003a d201                          rcall   lcd_set_cursor
                                  
                                      ; lcd.print("System Booting")
-00003b efea                          ldi     ZL, LOW(str_booting<<1)
-00003c e0f6                          ldi     ZH, HIGH(str_booting<<1)
+00003b e4ec                          ldi     ZL, LOW(str_booting<<1)
+00003c e0f7                          ldi     ZH, HIGH(str_booting<<1)
 00003d d207                          rcall   lcd_print_string
                                  
                                      ; delay(1000)
-00003e d32e                          rcall   delay_1000ms
+00003e d357                          rcall   delay_1000ms
                                  
                                      ; --- RFID Init ---
                                      ; rfid.PCD_Init()
 00003f d26c                          rcall   mfrc522_init
                                  
                                      ; delay(1500)
-000040 d32c                          rcall   delay_1000ms
-000041 d328                          rcall   delay_500ms
+000040 d355                          rcall   delay_1000ms
+000041 d351                          rcall   delay_500ms
                                  
                                      ; --- Initialize State Variables ---
                                      ; currentState = SYS_IDLE
@@ -1375,7 +1376,7 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
 000070 d1c6                          rcall   lcd_clear
                                  
                                      ; lcd.print("Enter PIN:")
-000071 e1ec                          ldi     ZL, LOW(str_enter_pin<<1)
+000071 e6ee                          ldi     ZL, LOW(str_enter_pin<<1)
 000072 e0f7                          ldi     ZH, HIGH(str_enter_pin<<1)
 000073 d1d1                          rcall   lcd_print_string
                                  
@@ -1423,7 +1424,7 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
 000092 d1b0                          rcall   lcd_print_char
                                  
                                      ; tone(PIN_BUZZER, 1000, 50)
-000093 d29a                          rcall   buzzer_short_beep
+000093 d2c3                          rcall   buzzer_short_beep
                                  
 000094 c001                          rjmp    state_idle_done
                                  
@@ -1447,7 +1448,7 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
 000099 f111                          breq    enter_pin_done         ; No key, continue loop
                                  
                                      ; tone(PIN_BUZZER, 1000, 50)
-00009a d293                          rcall   buzzer_short_beep
+00009a d2bc                          rcall   buzzer_short_beep
                                  
                                      ; if (key == '#')
 00009b 3283                          cpi     r24, '#'
@@ -1513,20 +1514,20 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
 0000bd d179                          rcall   lcd_clear
                                  
                                      ; lcd.print("Verifying...")
-0000be e2e8                          ldi     ZL, LOW(str_verifying<<1)
+0000be e7ea                          ldi     ZL, LOW(str_verifying<<1)
 0000bf e0f7                          ldi     ZH, HIGH(str_verifying<<1)
 0000c0 d184                          rcall   lcd_print_string
                                  
                                      ; delay(800)
-0000c1 d2a8                          rcall   delay_500ms
-0000c2 d2a3                          rcall   delay_250ms
+0000c1 d2d1                          rcall   delay_500ms
+0000c2 d2cc                          rcall   delay_250ms
                                  
                                      ; --- strcmp(inputBuffer, SECRET_PIN) ---
                                      ; Compare byte by byte
 0000c3 e0a0                          ldi     XL, LOW(input_buffer)
 0000c4 e0b1                          ldi     XH, HIGH(input_buffer)
-0000c5 eee0                          ldi     ZL, LOW(secret_pin<<1)
-0000c6 e0f6                          ldi     ZH, HIGH(secret_pin<<1)
+0000c5 e3e2                          ldi     ZL, LOW(secret_pin<<1)
+0000c6 e0f7                          ldi     ZH, HIGH(secret_pin<<1)
                                  
 0000c7 e020                          ldi     r18, 0                 ; match = true (0 = match)
 0000c8 e034                          ldi     r19, PIN_LENGTH        ; 4 bytes to compare
@@ -1564,7 +1565,7 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
 0000db d15b                          rcall   lcd_clear
                                  
                                      ; lcd.print("PIN OK!")
-0000dc e3e6                          ldi     ZL, LOW(str_pin_ok<<1)
+0000dc e8e8                          ldi     ZL, LOW(str_pin_ok<<1)
 0000dd e0f7                          ldi     ZH, HIGH(str_pin_ok<<1)
 0000de d166                          rcall   lcd_print_string
                                  
@@ -1574,12 +1575,12 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
 0000e1 d15a                          rcall   lcd_set_cursor
                                  
                                      ; lcd.print("Scan Card")
-0000e2 e3ee                          ldi     ZL, LOW(str_scan_card<<1)
+0000e2 e9e0                          ldi     ZL, LOW(str_scan_card<<1)
 0000e3 e0f7                          ldi     ZH, HIGH(str_scan_card<<1)
 0000e4 d160                          rcall   lcd_print_string
                                  
                                      ; tone(PIN_BUZZER, 2000, 150)
-0000e5 d24c                          rcall   buzzer_confirm_beep
+0000e5 d275                          rcall   buzzer_confirm_beep
                                  
                                      ; currentState = SYS_WAIT_RFID
 0000e6 e003                          ldi     r16, SYS_WAIT_RFID
@@ -1598,7 +1599,7 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
 0000ef d147                          rcall   lcd_clear
                                  
                                      ; lcd.print("Wrong PIN!")
-0000f0 e4e8                          ldi     ZL, LOW(str_wrong_pin<<1)
+0000f0 e9ea                          ldi     ZL, LOW(str_wrong_pin<<1)
 0000f1 e0f7                          ldi     ZH, HIGH(str_wrong_pin<<1)
 0000f2 d152                          rcall   lcd_print_string
                                  
@@ -1614,7 +1615,7 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
                                  
                                      ; --- Not locked out yet ---
                                      ; lcd.print("Tries left: ")
-0000fa e5e4                          ldi     ZL, LOW(str_tries_left<<1)
+0000fa eae6                          ldi     ZL, LOW(str_tries_left<<1)
 0000fb e0f7                          ldi     ZH, HIGH(str_tries_left<<1)
 0000fc d148                          rcall   lcd_print_string
                                  
@@ -1627,11 +1628,11 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
 000103 d13f                          rcall   lcd_print_char
                                  
                                      ; tone(PIN_BUZZER, 500, 700)
-000104 d232                          rcall   buzzer_error_beep
+000104 d25b                          rcall   buzzer_error_beep
                                  
                                      ; delay(2000)
-000105 d267                          rcall   delay_1000ms
-000106 d266                          rcall   delay_1000ms
+000105 d290                          rcall   delay_1000ms
+000106 d28f                          rcall   delay_1000ms
                                  
                                      ; resetSystem()
 000107 d078                          rcall   reset_system
@@ -1640,16 +1641,16 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
                                  pin_lockout:
                                      ; === LOCKOUT ===
                                      ; lcd.print("SYSTEM LOCKED!")
-000109 e6e2                          ldi     ZL, LOW(str_system_locked<<1)
+000109 ebe4                          ldi     ZL, LOW(str_system_locked<<1)
 00010a e0f7                          ldi     ZH, HIGH(str_system_locked<<1)
 00010b d139                          rcall   lcd_print_string
                                  
                                      ; tone(PIN_BUZZER, 300, 2000)
-00010c d233                          rcall   buzzer_alarm
+00010c d25c                          rcall   buzzer_alarm
                                  
                                      ; delay(2000)
-00010d d25f                          rcall   delay_1000ms
-00010e d25e                          rcall   delay_1000ms
+00010d d288                          rcall   delay_1000ms
+00010e d287                          rcall   delay_1000ms
                                  
                                      ; startLockout()
 00010f d066                          rcall   start_lockout
@@ -1667,7 +1668,7 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
 000113 f529                          brne    rfid_no_card
                                  
                                      ; if (!rfid.PICC_ReadCardSerial()) return
-000114 d1d5                          rcall   mfrc522_anticoll
+000114 d1ea                          rcall   mfrc522_anticoll
 000115 2388                          tst     r24
 000116 f511                          brne    rfid_no_card
                                  
@@ -1675,15 +1676,15 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
 000117 d11f                          rcall   lcd_clear
                                  
                                      ; lcd.print("Reading Card...")
-000118 e9ec                          ldi     ZL, LOW(str_reading_card<<1)
+000118 eeee                          ldi     ZL, LOW(str_reading_card<<1)
 000119 e0f7                          ldi     ZH, HIGH(str_reading_card<<1)
 00011a d12a                          rcall   lcd_print_string
                                  
                                      ; --- Compare scanned UID with SECRET_UID ---
 00011b e0aa                          ldi     XL, LOW(scanned_uid)
 00011c e0b1                          ldi     XH, HIGH(scanned_uid)
-00011d eee6                          ldi     ZL, LOW(secret_uid<<1)
-00011e e0f6                          ldi     ZH, HIGH(secret_uid<<1)
+00011d e3e8                          ldi     ZL, LOW(secret_uid<<1)
+00011e e0f7                          ldi     ZH, HIGH(secret_uid<<1)
                                  
 00011f e020                          ldi     r18, 0                 ; match = true
 000120 e034                          ldi     r19, 4                 ; 4 bytes
@@ -1703,7 +1704,7 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
                                  
                                  rfid_check_done:
                                      ; rfid.PICC_HaltA()
-00012a d1ec                          rcall   mfrc522_halt
+00012a d215                          rcall   mfrc522_halt
                                  
 00012b 2322                          tst     r18
 00012c f421                          brne    rfid_unknown
@@ -1720,16 +1721,16 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
 000131 d105                          rcall   lcd_clear
                                  
                                      ; lcd.print("Unknown Card!")
-000132 eaec                          ldi     ZL, LOW(str_unknown_card<<1)
+000132 efee                          ldi     ZL, LOW(str_unknown_card<<1)
 000133 e0f7                          ldi     ZH, HIGH(str_unknown_card<<1)
 000134 d110                          rcall   lcd_print_string
                                  
                                      ; tone(PIN_BUZZER, 400, 1000)
-000135 d201                          rcall   buzzer_error_beep
+000135 d22a                          rcall   buzzer_error_beep
                                  
                                      ; delay(2000)
-000136 d236                          rcall   delay_1000ms
-000137 d235                          rcall   delay_1000ms
+000136 d25f                          rcall   delay_1000ms
+000137 d25e                          rcall   delay_1000ms
                                  
                                      ; resetSystem()
 000138 d047                          rcall   reset_system
@@ -1746,8 +1747,8 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
 00013a d0fc                          rcall   lcd_clear
                                  
                                      ; lcd.print("ACCESS GRANTED")
-00013b ebea                          ldi     ZL, LOW(str_access_granted<<1)
-00013c e0f7                          ldi     ZH, HIGH(str_access_granted<<1)
+00013b e0ec                          ldi     ZL, LOW(str_access_granted<<1)
+00013c e0f8                          ldi     ZH, HIGH(str_access_granted<<1)
 00013d d107                          rcall   lcd_print_string
                                  
                                      ; digitalWrite(PIN_LOCK, HIGH)
@@ -1757,12 +1758,12 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
 00013f 9a43                          sbi     PORTC, PC3
                                  
                                      ; tone(PIN_BUZZER, 3000, 200)
-000140 d1fb                          rcall   buzzer_success_beep
+000140 d224                          rcall   buzzer_success_beep
                                  
                                      ; delay(3000)
-000141 d22b                          rcall   delay_1000ms
-000142 d22a                          rcall   delay_1000ms
-000143 d229                          rcall   delay_1000ms
+000141 d254                          rcall   delay_1000ms
+000142 d253                          rcall   delay_1000ms
+000143 d252                          rcall   delay_1000ms
                                  
                                      ; digitalWrite(PIN_LOCK, LOW)
 000144 985f                          cbi     PORTD, PD7
@@ -1791,7 +1792,7 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
 00014d d0e9                          rcall   lcd_clear
                                  
                                      ; lcd.print("!! LOCKED OUT !!")
-00014e e7e2                          ldi     ZL, LOW(str_locked_out<<1)
+00014e ece4                          ldi     ZL, LOW(str_locked_out<<1)
 00014f e0f7                          ldi     ZH, HIGH(str_locked_out<<1)
 000150 d0f4                          rcall   lcd_print_string
                                  
@@ -1801,7 +1802,7 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
 000153 d0e8                          rcall   lcd_set_cursor
                                  
                                      ; lcd.print("Wait: ")
-000154 e8e4                          ldi     ZL, LOW(str_wait<<1)
+000154 ede6                          ldi     ZL, LOW(str_wait<<1)
 000155 e0f7                          ldi     ZH, HIGH(str_wait<<1)
 000156 d0ee                          rcall   lcd_print_string
                                  
@@ -1810,12 +1811,12 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
 000159 d0f3                          rcall   lcd_print_number
                                  
                                      ; lcd.print("s")
-00015a e8ec                          ldi     ZL, LOW(str_seconds<<1)
+00015a edee                          ldi     ZL, LOW(str_seconds<<1)
 00015b e0f7                          ldi     ZH, HIGH(str_seconds<<1)
 00015c d0e8                          rcall   lcd_print_string
                                  
                                      ; Alarm beep
-00015d d1e7                          rcall   buzzer_alarm_short
+00015d d210                          rcall   buzzer_alarm_short
                                  
                                      ; Ignore keypad presses
 00015e d04d                          rcall   scan_keypad            ; Read and discard
@@ -1829,7 +1830,7 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
 000164 9300 0109                     sts     lockout_counter, r16
                                  
                                      ; delay(1000) - 1 second between updates
-000166 d206                          rcall   delay_1000ms
+000166 d22f                          rcall   delay_1000ms
                                  
 000167 cef0                          rjmp    main_loop
                                  
@@ -1845,16 +1846,16 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
 00016d d0c9                          rcall   lcd_clear
                                  
                                      ; lcd.print("Lock Released")
-00016e e8ee                          ldi     ZL, LOW(str_lock_released<<1)
+00016e eee0                          ldi     ZL, LOW(str_lock_released<<1)
 00016f e0f7                          ldi     ZH, HIGH(str_lock_released<<1)
 000170 d0d4                          rcall   lcd_print_string
                                  
                                      ; tone(PIN_BUZZER, 2000, 200)
-000171 d1c0                          rcall   buzzer_confirm_beep
+000171 d1e9                          rcall   buzzer_confirm_beep
                                  
                                      ; delay(1500)
-000172 d1fa                          rcall   delay_1000ms
-000173 d1f6                          rcall   delay_500ms
+000172 d223                          rcall   delay_1000ms
+000173 d21f                          rcall   delay_500ms
                                  
                                      ; resetSystem()
 000174 d00b                          rcall   reset_system
@@ -1889,7 +1890,7 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
 000180 d0b6                          rcall   lcd_clear
                                  
                                      ; lcd.print("READY. Press Key")
-000181 e0ea                          ldi     ZL, LOW(str_ready<<1)
+000181 e5ec                          ldi     ZL, LOW(str_ready<<1)
 000182 e0f7                          ldi     ZH, HIGH(str_ready<<1)
 000183 d0c1                          rcall   lcd_print_string
                                  
@@ -1904,8 +1905,8 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
 00018a d0b1                          rcall   lcd_set_cursor
                                  
                                      ; lcd.print("Tries: ")
-00018b ecea                          ldi     ZL, LOW(str_tries<<1)
-00018c e0f7                          ldi     ZH, HIGH(str_tries<<1)
+00018b e1ec                          ldi     ZL, LOW(str_tries<<1)
+00018c e0f8                          ldi     ZH, HIGH(str_tries<<1)
 00018d d0b7                          rcall   lcd_print_string
                                  
                                      ; lcd.print(MAX_ATTEMPTS - wrongAttempts)
@@ -1917,8 +1918,8 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
 000194 d0ae                          rcall   lcd_print_char
                                  
                                      ; lcd.print(" left")
-000195 ede2                          ldi     ZL, LOW(str_left<<1)
-000196 e0f7                          ldi     ZH, HIGH(str_left<<1)
+000195 e2e4                          ldi     ZL, LOW(str_left<<1)
+000196 e0f8                          ldi     ZH, HIGH(str_left<<1)
 000197 d0ad                          rcall   lcd_print_string
                                  
                                  reset_no_tries:
@@ -2041,8 +2042,8 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
 0001dd 0f32                          add     r19, r18               ; row * 4 + col
                                  
                                      ; Load character from keypad_map
-0001de eeea                          ldi     ZL, LOW(keypad_map<<1)
-0001df e0f6                          ldi     ZH, HIGH(keypad_map<<1)
+0001de e3ec                          ldi     ZL, LOW(keypad_map<<1)
+0001df e0f7                          ldi     ZH, HIGH(keypad_map<<1)
 0001e0 0fe3                          add     ZL, r19
 0001e1 2744                          clr     r20
 0001e2 1ff4                          adc     ZH, r20
@@ -2050,7 +2051,7 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
                                  
                                      ; Debounce: wait until key released
                                  key_debounce_wait:
-0001e4 d176                          rcall   delay_10ms
+0001e4 d19f                          rcall   delay_10ms
                                      ; Re-read the same column
 0001e5 3020                          cpi     r18, 0
 0001e6 f419                          brne    debounce_not_col0
@@ -2135,25 +2136,25 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
                                  // ============================================================================
                                  lcd_init:
                                      ; Wait for LCD to power up
-000220 d13d                          rcall   delay_50ms
+000220 d166                          rcall   delay_50ms
                                  
                                      ; Send init sequence (4-bit mode)
 000221 e380                          ldi     r24, 0x30
 000222 d05c                          rcall   lcd_send_nibble
-000223 d131                          rcall   delay_5ms
+000223 d15a                          rcall   delay_5ms
                                  
 000224 e380                          ldi     r24, 0x30
 000225 d059                          rcall   lcd_send_nibble
-000226 d123                          rcall   delay_1ms
+000226 d14c                          rcall   delay_1ms
                                  
 000227 e380                          ldi     r24, 0x30
 000228 d056                          rcall   lcd_send_nibble
-000229 d120                          rcall   delay_1ms
+000229 d149                          rcall   delay_1ms
                                  
                                      ; Set 4-bit mode
 00022a e280                          ldi     r24, 0x20
 00022b d053                          rcall   lcd_send_nibble
-00022c d11d                          rcall   delay_1ms
+00022c d146                          rcall   delay_1ms
                                  
                                      ; Function set: 4-bit, 2 lines, 5x8 font
 00022d e288                          ldi     r24, 0x28
@@ -2166,7 +2167,7 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
                                      ; Clear display
 000231 e081                          ldi     r24, 0x01
 000232 d02e                          rcall   lcd_send_command
-000233 d121                          rcall   delay_5ms
+000233 d14a                          rcall   delay_5ms
                                  
                                      ; Entry mode: increment, no shift
 000234 e086                          ldi     r24, 0x06
@@ -2177,7 +2178,7 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
                                  lcd_clear:
 000237 e081                          ldi     r24, 0x01
 000238 d028                          rcall   lcd_send_command
-000239 d11b                          rcall   delay_5ms
+000239 d144                          rcall   delay_5ms
 00023a 9508                          ret
                                  
                                  lcd_enable_backlight:
@@ -2266,7 +2267,7 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
 00026a 6088                          ori     r24, LCD_BACKLIGHT
 00026b d016                          rcall   lcd_write_nibble_en
                                  
-00026c d0dd                          rcall   delay_1ms
+00026c d106                          rcall   delay_1ms
                                  
 00026d 919f                          pop     r25
 00026e 918f                          pop     r24
@@ -2290,7 +2291,7 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
 000279 6089                          ori     r24, LCD_BACKLIGHT|LCD_RS
 00027a d007                          rcall   lcd_write_nibble_en
                                  
-00027b d0ce                          rcall   delay_1ms
+00027b d0f7                          rcall   delay_1ms
                                  
 00027c 919f                          pop     r25
 00027d 918f                          pop     r24
@@ -2309,14 +2310,14 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
                                      ; Send with EN=1
 000283 6084                          ori     r24, LCD_ENABLE
 000284 d008                          rcall   lcd_i2c_write_byte
-000285 d0c4                          rcall   delay_1ms
+000285 d0ed                          rcall   delay_1ms
                                  
                                      ; Send with EN=0
 000286 918f                          pop     r24
 000287 938f                          push    r24
 000288 7f8b                          andi    r24, ~LCD_ENABLE
 000289 d003                          rcall   lcd_i2c_write_byte
-00028a d0bf                          rcall   delay_1ms
+00028a d0e8                          rcall   delay_1ms
                                  
 00028b 918f                          pop     r24
 00028c 9508                          ret
@@ -2384,15 +2385,15 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
                                      ; Reset the MFRC522
                                      ; Pull RST LOW then HIGH
 0002ac 9829                          cbi     PORTB, PB1
-0002ad d0b0                          rcall   delay_50ms
+0002ad d0d9                          rcall   delay_50ms
 0002ae 9a29                          sbi     PORTB, PB1
-0002af d0ae                          rcall   delay_50ms
+0002af d0d7                          rcall   delay_50ms
                                  
                                      ; Soft reset
 0002b0 e081                          ldi     r24, MFRC_CommandReg
 0002b1 e09f                          ldi     r25, CMD_SOFTRESET
 0002b2 dfe8                          rcall   mfrc522_write_reg
-0002b3 d0aa                          rcall   delay_50ms
+0002b3 d0d3                          rcall   delay_50ms
                                  
                                      ; Timer: TModeReg (0x2A) = 0x8D
 0002b4 e28a                          ldi     r24, 0x2A
@@ -2436,291 +2437,360 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
                                  
                                  mfrc522_request:
                                      ; Send REQA command to detect cards nearby
-                                     ; Returns r24 = 0 if card found, 1 if no card
+                                     ; Returns r24 = 0 if card found, 1 if no card/error
                                  
-                                     ; BitFramingReg = 0x07 (7 bits)
-0002cd e08d                          ldi     r24, MFRC_BitFramingReg
-0002ce e097                          ldi     r25, 0x07
+                                     ; Idle
+0002cd e081                          ldi     r24, MFRC_CommandReg
+0002ce e090                          ldi     r25, CMD_IDLE
 0002cf dfcb                          rcall   mfrc522_write_reg
                                  
-                                     ; Write REQA (0x26) to FIFO
-0002d0 e089                          ldi     r24, MFRC_FIFODataReg
-0002d1 e296                          ldi     r25, PICC_REQIDL
+                                     ; Clear IRQ flags
+0002d0 e084                          ldi     r24, MFRC_ComIrqReg
+0002d1 e79f                          ldi     r25, 0x7F
 0002d2 dfc8                          rcall   mfrc522_write_reg
                                  
-                                     ; Execute Transceive command
-0002d3 e081                          ldi     r24, MFRC_CommandReg
-0002d4 e09c                          ldi     r25, CMD_TRANSCEIVE
+                                     ; Flush FIFO
+0002d3 e08a                          ldi     r24, MFRC_FIFOLevelReg
+0002d4 e890                          ldi     r25, 0x80
 0002d5 dfc5                          rcall   mfrc522_write_reg
                                  
-                                     ; Start transmission: BitFramingReg |= 0x80
+                                     ; 7-bit framing for REQA
 0002d6 e08d                          ldi     r24, MFRC_BitFramingReg
-0002d7 dfcb                          rcall   mfrc522_read_reg
-0002d8 6880                          ori     r24, 0x80
-0002d9 2f98                          mov     r25, r24
-0002da e08d                          ldi     r24, MFRC_BitFramingReg
+0002d7 e097                          ldi     r25, 0x07
+0002d8 dfc2                          rcall   mfrc522_write_reg
+                                 
+                                     ; FIFO <- REQA
+0002d9 e089                          ldi     r24, MFRC_FIFODataReg
+0002da e296                          ldi     r25, PICC_REQIDL
 0002db dfbf                          rcall   mfrc522_write_reg
                                  
-                                     ; Wait for response (with timeout)
-0002dc ef4f                          ldi     r20, 0xFF              ; Timeout counter H
-0002dd ef5f                          ldi     r21, 0xFF              ; Timeout counter L
+                                     ; Transceive
+0002dc e081                          ldi     r24, MFRC_CommandReg
+0002dd e09c                          ldi     r25, CMD_TRANSCEIVE
+0002de dfbc                          rcall   mfrc522_write_reg
+                                 
+                                     ; StartSend = 1 (keep 7-bit framing)
+0002df e08d                          ldi     r24, MFRC_BitFramingReg
+0002e0 e897                          ldi     r25, 0x87
+0002e1 dfb9                          rcall   mfrc522_write_reg
+                                 
+0002e2 ef4f                          ldi     r20, 0xFF
+0002e3 ef5f                          ldi     r21, 0xFF
                                  
                                  mfrc_req_wait:
-0002de e084                          ldi     r24, MFRC_ComIrqReg
-0002df dfc3                          rcall   mfrc522_read_reg
-0002e0 2f08                          mov     r16, r24
+0002e4 e084                          ldi     r24, MFRC_ComIrqReg
+0002e5 dfbd                          rcall   mfrc522_read_reg
+0002e6 2f08                          mov     r16, r24
                                  
-                                     ; Check RxIRq (bit 5) or IdleIRq (bit 4)
-0002e1 7300                          andi    r16, 0x30
-0002e2 f429                          brne    mfrc_req_got_response
+                                     ; TimerIRq => timeout/no card
+0002e7 fd00                          sbrc    r16, 0
+0002e8 c014                          rjmp    mfrc_req_no_card
                                  
-                                     ; Timeout check
-0002e3 5051                          subi    r21, 1
-0002e4 4040                          sbci    r20, 0
-0002e5 f7c1                          brne    mfrc_req_wait
+                                     ; Require RxIRq (bit5). IdleIRq alone is NOT success.
+0002e9 ff05                          sbrs    r16, 5
+0002ea c001                          rjmp    mfrc_req_wait_continue
+0002eb c004                          rjmp    mfrc_req_have_rx
                                  
-                                     ; Timeout - no card
-0002e6 e081                          ldi     r24, 1
-0002e7 9508                          ret
+                                 mfrc_req_wait_continue:
+0002ec 5051                          subi    r21, 1
+0002ed 4040                          sbci    r20, 0
+0002ee f7a9                          brne    mfrc_req_wait
+0002ef c00d                          rjmp    mfrc_req_no_card
                                  
-                                 mfrc_req_got_response:
-                                     ; Card detected
-0002e8 e080                          ldi     r24, 0
-0002e9 9508                          ret
+                                 mfrc_req_have_rx:
+                                     ; Clear StartSend back to 7-bit framing
+0002f0 e08d                          ldi     r24, MFRC_BitFramingReg
+0002f1 e097                          ldi     r25, 0x07
+0002f2 dfa8                          rcall   mfrc522_write_reg
+                                 
+                                     ; Error check
+0002f3 e086                          ldi     r24, MFRC_ErrorReg
+0002f4 dfae                          rcall   mfrc522_read_reg
+0002f5 718b                          andi    r24, 0x1B
+0002f6 f431                          brne    mfrc_req_no_card
+                                 
+                                     ; ATQA should be at least 2 bytes
+0002f7 e08a                          ldi     r24, MFRC_FIFOLevelReg
+0002f8 dfaa                          rcall   mfrc522_read_reg
+0002f9 3082                          cpi     r24, 2
+0002fa f010                          brlo    mfrc_req_no_card
+                                 
+0002fb e080                          ldi     r24, 0
+0002fc 9508                          ret
+                                 
+                                 mfrc_req_no_card:
+0002fd e081                          ldi     r24, 1
+0002fe 9508                          ret
                                  
                                  mfrc522_anticoll:
                                      ; Anti-collision: get card UID
                                      ; Returns r24 = 0 if success, stores UID in scanned_uid
                                  
+                                     ; Idle
+0002ff e081                          ldi     r24, MFRC_CommandReg
+000300 e090                          ldi     r25, CMD_IDLE
+000301 df99                          rcall   mfrc522_write_reg
+                                 
+                                     ; Clear IRQ flags
+000302 e084                          ldi     r24, MFRC_ComIrqReg
+000303 e79f                          ldi     r25, 0x7F
+000304 df96                          rcall   mfrc522_write_reg
+                                 
                                      ; BitFramingReg = 0x00 (full bytes)
-0002ea e08d                          ldi     r24, MFRC_BitFramingReg
-0002eb e090                          ldi     r25, 0x00
-0002ec dfae                          rcall   mfrc522_write_reg
+000305 e08d                          ldi     r24, MFRC_BitFramingReg
+000306 e090                          ldi     r25, 0x00
+000307 df93                          rcall   mfrc522_write_reg
                                  
                                      ; Clear FIFO
-0002ed e08a                          ldi     r24, MFRC_FIFOLevelReg
-0002ee e890                          ldi     r25, 0x80
-0002ef dfab                          rcall   mfrc522_write_reg
+000308 e08a                          ldi     r24, MFRC_FIFOLevelReg
+000309 e890                          ldi     r25, 0x80
+00030a df90                          rcall   mfrc522_write_reg
                                  
                                      ; Write anti-collision command to FIFO
-0002f0 e089                          ldi     r24, MFRC_FIFODataReg
-0002f1 e993                          ldi     r25, PICC_ANTICOLL       ; 0x93
-0002f2 dfa8                          rcall   mfrc522_write_reg
+00030b e089                          ldi     r24, MFRC_FIFODataReg
+00030c e993                          ldi     r25, PICC_ANTICOLL       ; 0x93
+00030d df8d                          rcall   mfrc522_write_reg
                                  
-0002f3 e089                          ldi     r24, MFRC_FIFODataReg
-0002f4 e290                          ldi     r25, 0x20                ; NVB = 0x20
-0002f5 dfa5                          rcall   mfrc522_write_reg
+00030e e089                          ldi     r24, MFRC_FIFODataReg
+00030f e290                          ldi     r25, 0x20                ; NVB = 0x20
+000310 df8a                          rcall   mfrc522_write_reg
                                  
                                      ; Execute Transceive
-0002f6 e081                          ldi     r24, MFRC_CommandReg
-0002f7 e09c                          ldi     r25, CMD_TRANSCEIVE
-0002f8 dfa2                          rcall   mfrc522_write_reg
+000311 e081                          ldi     r24, MFRC_CommandReg
+000312 e09c                          ldi     r25, CMD_TRANSCEIVE
+000313 df87                          rcall   mfrc522_write_reg
                                  
                                      ; Start transmission
-0002f9 e08d                          ldi     r24, MFRC_BitFramingReg
-0002fa dfa8                          rcall   mfrc522_read_reg
-0002fb 6880                          ori     r24, 0x80
-0002fc 2f98                          mov     r25, r24
-0002fd e08d                          ldi     r24, MFRC_BitFramingReg
-0002fe df9c                          rcall   mfrc522_write_reg
+000314 e08d                          ldi     r24, MFRC_BitFramingReg
+000315 df8d                          rcall   mfrc522_read_reg
+000316 6880                          ori     r24, 0x80
+000317 2f98                          mov     r25, r24
+000318 e08d                          ldi     r24, MFRC_BitFramingReg
+000319 df81                          rcall   mfrc522_write_reg
                                  
                                      ; Wait for response
-0002ff ef4f                          ldi     r20, 0xFF
-000300 ef5f                          ldi     r21, 0xFF
+00031a ef4f                          ldi     r20, 0xFF
+00031b ef5f                          ldi     r21, 0xFF
                                  
                                  mfrc_ac_wait:
-000301 e084                          ldi     r24, MFRC_ComIrqReg
-000302 dfa0                          rcall   mfrc522_read_reg
-000303 2f08                          mov     r16, r24
-000304 7300                          andi    r16, 0x30
-000305 f429                          brne    mfrc_ac_got_response
+00031c e084                          ldi     r24, MFRC_ComIrqReg
+00031d df85                          rcall   mfrc522_read_reg
+00031e 2f08                          mov     r16, r24
                                  
-000306 5051                          subi    r21, 1
-000307 4040                          sbci    r20, 0
-000308 f7c1                          brne    mfrc_ac_wait
+                                     ; TimerIRq => fail
+00031f fd00                          sbrc    r16, 0
+000320 c01d                          rjmp    mfrc_ac_fail
                                  
-                                     ; Timeout
-000309 e081                          ldi     r24, 1
-00030a 9508                          ret
+                                     ; Require RxIRq
+000321 ff05                          sbrs    r16, 5
+000322 c001                          rjmp    mfrc_ac_wait_continue
+000323 c004                          rjmp    mfrc_ac_have_rx
                                  
-                                 mfrc_ac_got_response:
+                                 mfrc_ac_wait_continue:
+000324 5051                          subi    r21, 1
+000325 4040                          sbci    r20, 0
+000326 f7a9                          brne    mfrc_ac_wait
+                                 
+000327 c016                          rjmp    mfrc_ac_fail
+                                 
+                                 mfrc_ac_have_rx:
+                                     ; Error check
+000328 e086                          ldi     r24, MFRC_ErrorReg
+000329 df79                          rcall   mfrc522_read_reg
+00032a 718b                          andi    r24, 0x1B
+00032b f491                          brne    mfrc_ac_fail
+                                 
+                                     ; Need at least 5 bytes: UID0..UID3 + BCC
+00032c e08a                          ldi     r24, MFRC_FIFOLevelReg
+00032d df75                          rcall   mfrc522_read_reg
+00032e 3085                          cpi     r24, 5
+00032f f070                          brlo    mfrc_ac_fail
+                                 
                                      ; Read 4 bytes of UID from FIFO
-00030b e024                          ldi     r18, 4
-00030c e0aa                          ldi     XL, LOW(scanned_uid)
-00030d e0b1                          ldi     XH, HIGH(scanned_uid)
+000330 e024                          ldi     r18, 4
+000331 e0aa                          ldi     XL, LOW(scanned_uid)
+000332 e0b1                          ldi     XH, HIGH(scanned_uid)
                                  
                                  mfrc_read_uid_loop:
-00030e 2322                          tst     r18
-00030f f029                          breq    mfrc_read_uid_done
+000333 2322                          tst     r18
+000334 f029                          breq    mfrc_read_uid_done
                                  
-000310 e089                          ldi     r24, MFRC_FIFODataReg
-000311 df91                          rcall   mfrc522_read_reg
-000312 938d                          st      X+, r24
+000335 e089                          ldi     r24, MFRC_FIFODataReg
+000336 df6c                          rcall   mfrc522_read_reg
+000337 938d                          st      X+, r24
                                  
-000313 952a                          dec     r18
-000314 cff9                          rjmp    mfrc_read_uid_loop
+000338 952a                          dec     r18
+000339 cff9                          rjmp    mfrc_read_uid_loop
                                  
                                  mfrc_read_uid_done:
+                                     ; Discard BCC byte
+00033a e089                          ldi     r24, MFRC_FIFODataReg
+00033b df67                          rcall   mfrc522_read_reg
+                                 
                                      ; Success
-000315 e080                          ldi     r24, 0
-000316 9508                          ret
+00033c e080                          ldi     r24, 0
+00033d 9508                          ret
+                                 
+                                 mfrc_ac_fail:
+00033e e081                          ldi     r24, 1
+00033f 9508                          ret
                                  
                                  mfrc522_halt:
                                      ; Send HLTA command to put card to sleep
                                      ; FIFO: 0x50, 0x00
-000317 e08a                          ldi     r24, MFRC_FIFOLevelReg
-000318 e890                          ldi     r25, 0x80
-000319 df81                          rcall   mfrc522_write_reg
+000340 e08a                          ldi     r24, MFRC_FIFOLevelReg
+000341 e890                          ldi     r25, 0x80
+000342 df58                          rcall   mfrc522_write_reg
                                  
-00031a e089                          ldi     r24, MFRC_FIFODataReg
-00031b e590                          ldi     r25, 0x50
-00031c df7e                          rcall   mfrc522_write_reg
+000343 e089                          ldi     r24, MFRC_FIFODataReg
+000344 e590                          ldi     r25, 0x50
+000345 df55                          rcall   mfrc522_write_reg
                                  
-00031d e089                          ldi     r24, MFRC_FIFODataReg
-00031e e090                          ldi     r25, 0x00
-00031f df7b                          rcall   mfrc522_write_reg
+000346 e089                          ldi     r24, MFRC_FIFODataReg
+000347 e090                          ldi     r25, 0x00
+000348 df52                          rcall   mfrc522_write_reg
                                  
-000320 e081                          ldi     r24, MFRC_CommandReg
-000321 e09c                          ldi     r25, CMD_TRANSCEIVE
-000322 df78                          rcall   mfrc522_write_reg
+000349 e081                          ldi     r24, MFRC_CommandReg
+00034a e09c                          ldi     r25, CMD_TRANSCEIVE
+00034b df4f                          rcall   mfrc522_write_reg
                                  
                                      ; Start transmission
-000323 e08d                          ldi     r24, MFRC_BitFramingReg
-000324 df7e                          rcall   mfrc522_read_reg
-000325 6880                          ori     r24, 0x80
-000326 2f98                          mov     r25, r24
-000327 e08d                          ldi     r24, MFRC_BitFramingReg
-000328 df72                          rcall   mfrc522_write_reg
+00034c e08d                          ldi     r24, MFRC_BitFramingReg
+00034d df55                          rcall   mfrc522_read_reg
+00034e 6880                          ori     r24, 0x80
+00034f 2f98                          mov     r25, r24
+000350 e08d                          ldi     r24, MFRC_BitFramingReg
+000351 df49                          rcall   mfrc522_write_reg
                                  
-000329 d031                          rcall   delay_10ms
+000352 d031                          rcall   delay_10ms
                                  
                                      ; Go back to idle
-00032a e081                          ldi     r24, MFRC_CommandReg
-00032b e090                          ldi     r25, CMD_IDLE
-00032c df6e                          rcall   mfrc522_write_reg
+000353 e081                          ldi     r24, MFRC_CommandReg
+000354 e090                          ldi     r25, CMD_IDLE
+000355 df45                          rcall   mfrc522_write_reg
                                  
-00032d 9508                          ret
+000356 9508                          ret
                                  
                                  // ============================================================================
                                  // BUZZER FUNCTIONS
                                  // ============================================================================
                                  buzzer_short_beep:
                                      ; tone(PIN_BUZZER, 1000, 50) - Short click beep
-00032e 9a28                          sbi     PORTB, PB0
-00032f d02e                          rcall   delay_50ms
-000330 9828                          cbi     PORTB, PB0
-000331 9508                          ret
+000357 9a28                          sbi     PORTB, PB0
+000358 d02e                          rcall   delay_50ms
+000359 9828                          cbi     PORTB, PB0
+00035a 9508                          ret
                                  
                                  buzzer_confirm_beep:
                                      ; tone(PIN_BUZZER, 2000, 150) - Confirmation beep
-000332 9a28                          sbi     PORTB, PB0
-000333 d02f                          rcall   delay_100ms
-000334 d029                          rcall   delay_50ms
-000335 9828                          cbi     PORTB, PB0
-000336 9508                          ret
+00035b 9a28                          sbi     PORTB, PB0
+00035c d02f                          rcall   delay_100ms
+00035d d029                          rcall   delay_50ms
+00035e 9828                          cbi     PORTB, PB0
+00035f 9508                          ret
                                  
                                  buzzer_error_beep:
                                      ; tone(PIN_BUZZER, 500, 700) - Error beep
-000337 9a28                          sbi     PORTB, PB0
-000338 d031                          rcall   delay_500ms
-000339 d02c                          rcall   delay_250ms
-00033a 9828                          cbi     PORTB, PB0
-00033b 9508                          ret
+000360 9a28                          sbi     PORTB, PB0
+000361 d031                          rcall   delay_500ms
+000362 d02c                          rcall   delay_250ms
+000363 9828                          cbi     PORTB, PB0
+000364 9508                          ret
                                  
                                  buzzer_success_beep:
                                      ; tone(PIN_BUZZER, 3000, 200) - Success beep
-00033c 9a28                          sbi     PORTB, PB0
-00033d d028                          rcall   delay_250ms
-00033e 9828                          cbi     PORTB, PB0
-00033f 9508                          ret
+000365 9a28                          sbi     PORTB, PB0
+000366 d028                          rcall   delay_250ms
+000367 9828                          cbi     PORTB, PB0
+000368 9508                          ret
                                  
                                  buzzer_alarm:
                                      ; tone(PIN_BUZZER, 300, 2000) - Alarm sound
-000340 9a28                          sbi     PORTB, PB0
-000341 d02b                          rcall   delay_1000ms
-000342 d02a                          rcall   delay_1000ms
-000343 9828                          cbi     PORTB, PB0
-000344 9508                          ret
+000369 9a28                          sbi     PORTB, PB0
+00036a d02b                          rcall   delay_1000ms
+00036b d02a                          rcall   delay_1000ms
+00036c 9828                          cbi     PORTB, PB0
+00036d 9508                          ret
                                  
                                  buzzer_alarm_short:
                                      ; Short alarm beep during lockout
-000345 9a28                          sbi     PORTB, PB0
-000346 d01c                          rcall   delay_100ms
-000347 d01b                          rcall   delay_100ms
-000348 9828                          cbi     PORTB, PB0
-000349 9508                          ret
+00036e 9a28                          sbi     PORTB, PB0
+00036f d01c                          rcall   delay_100ms
+000370 d01b                          rcall   delay_100ms
+000371 9828                          cbi     PORTB, PB0
+000372 9508                          ret
                                  
                                  // ============================================================================
                                  // DELAY FUNCTIONS (at 16MHz clock)
                                  // ============================================================================
                                  delay_1ms:
-00034a 930f                          push    r16
-00034b 931f                          push    r17
-00034c e105                          ldi     r16, 21
-00034d ec17                          ldi     r17, 199
+000373 930f                          push    r16
+000374 931f                          push    r17
+000375 e105                          ldi     r16, 21
+000376 ec17                          ldi     r17, 199
                                  delay_1ms_loop:
-00034e 951a                          dec     r17
-00034f f7f1                          brne    delay_1ms_loop
-000350 950a                          dec     r16
-000351 f7e1                          brne    delay_1ms_loop
-000352 911f                          pop     r17
-000353 910f                          pop     r16
-000354 9508                          ret
+000377 951a                          dec     r17
+000378 f7f1                          brne    delay_1ms_loop
+000379 950a                          dec     r16
+00037a f7e1                          brne    delay_1ms_loop
+00037b 911f                          pop     r17
+00037c 910f                          pop     r16
+00037d 9508                          ret
                                  
                                  delay_5ms:
-000355 dff4                          rcall   delay_1ms
-000356 dff3                          rcall   delay_1ms
-000357 dff2                          rcall   delay_1ms
-000358 dff1                          rcall   delay_1ms
-000359 dff0                          rcall   delay_1ms
-00035a 9508                          ret
+00037e dff4                          rcall   delay_1ms
+00037f dff3                          rcall   delay_1ms
+000380 dff2                          rcall   delay_1ms
+000381 dff1                          rcall   delay_1ms
+000382 dff0                          rcall   delay_1ms
+000383 9508                          ret
                                  
                                  delay_10ms:
-00035b dff9                          rcall   delay_5ms
-00035c dff8                          rcall   delay_5ms
-00035d 9508                          ret
+000384 dff9                          rcall   delay_5ms
+000385 dff8                          rcall   delay_5ms
+000386 9508                          ret
                                  
                                  delay_50ms:
-00035e e06a                          ldi     r22, 10
+000387 e06a                          ldi     r22, 10
                                  delay_50ms_loop:
-00035f dff5                          rcall   delay_5ms
-000360 956a                          dec     r22
-000361 f7e9                          brne    delay_50ms_loop
-000362 9508                          ret
+000388 dff5                          rcall   delay_5ms
+000389 956a                          dec     r22
+00038a f7e9                          brne    delay_50ms_loop
+00038b 9508                          ret
                                  
                                  delay_100ms:
-000363 dffa                          rcall   delay_50ms
-000364 dff9                          rcall   delay_50ms
-000365 9508                          ret
+00038c dffa                          rcall   delay_50ms
+00038d dff9                          rcall   delay_50ms
+00038e 9508                          ret
                                  
                                  delay_250ms:
-000366 dffc                          rcall   delay_100ms
-000367 dffb                          rcall   delay_100ms
-000368 dff5                          rcall   delay_50ms
-000369 9508                          ret
+00038f dffc                          rcall   delay_100ms
+000390 dffb                          rcall   delay_100ms
+000391 dff5                          rcall   delay_50ms
+000392 9508                          ret
                                  
                                  delay_500ms:
-00036a dffb                          rcall   delay_250ms
-00036b dffa                          rcall   delay_250ms
-00036c 9508                          ret
+000393 dffb                          rcall   delay_250ms
+000394 dffa                          rcall   delay_250ms
+000395 9508                          ret
                                  
                                  delay_1000ms:
-00036d dffc                          rcall   delay_500ms
-00036e dffb                          rcall   delay_500ms
-00036f 9508                          ret
+000396 dffc                          rcall   delay_500ms
+000397 dffb                          rcall   delay_500ms
+000398 9508                          ret
                                  
                                  // ============================================================================
                                  // CONSTANTS IN FLASH
                                  // ============================================================================
                                  secret_pin:
-000370 3231
-000371 3433
-E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1685): warning: .cseg .db misalignment - padding zero byte
-000372 0000                          .db '1', '2', '3', '4', 0x00
+000399 3231
+00039a 3433
+E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1755): warning: .cseg .db misalignment - padding zero byte
+00039b 0000                          .db '1', '2', '3', '4', 0x00
                                  
                                  secret_uid:
-000373 9367
-000374 04a9                          .db 0x67, 0x93, 0xA9, 0x04
+00039c 9367
+00039d 04a9                          .db 0x67, 0x93, 0xA9, 0x04
                                  
                                  // Keypad lookup table (Row x Col)
                                  // Row 0: 1 2 3 A
@@ -2728,155 +2798,155 @@ E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactor
                                  // Row 2: 7 8 9 C
                                  // Row 3: * 0 # D
                                  keypad_map:
-000375 3231
-000376 4133                          .db '1', '2', '3', 'A'
-000377 3534
-000378 4236                          .db '4', '5', '6', 'B'
-000379 3837
-00037a 4339                          .db '7', '8', '9', 'C'
-00037b 302a
-00037c 4423                          .db '*', '0', '#', 'D'
+00039e 3231
+00039f 4133                          .db '1', '2', '3', 'A'
+0003a0 3534
+0003a1 4236                          .db '4', '5', '6', 'B'
+0003a2 3837
+0003a3 4339                          .db '7', '8', '9', 'C'
+0003a4 302a
+0003a5 4423                          .db '*', '0', '#', 'D'
                                  
                                  // LCD Strings (Matches TwoFactorLock.ino exactly)
                                  str_booting:
-00037d 7953
-00037e 7473
-00037f 6d65
-000380 4220
-000381 6f6f
-000382 6974
-000383 676e
-E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1703): warning: .cseg .db misalignment - padding zero byte
-000384 0000                          .db "System Booting", 0
+0003a6 7953
+0003a7 7473
+0003a8 6d65
+0003a9 4220
+0003aa 6f6f
+0003ab 6974
+0003ac 676e
+E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1773): warning: .cseg .db misalignment - padding zero byte
+0003ad 0000                          .db "System Booting", 0
                                  str_ready:
-000385 4552
-000386 4441
-000387 2e59
-000388 5020
-000389 6572
-00038a 7373
-00038b 4b20
-00038c 7965
-E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1705): warning: .cseg .db misalignment - padding zero byte
-00038d 0000                          .db "READY. Press Key", 0
+0003ae 4552
+0003af 4441
+0003b0 2e59
+0003b1 5020
+0003b2 6572
+0003b3 7373
+0003b4 4b20
+0003b5 7965
+E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1775): warning: .cseg .db misalignment - padding zero byte
+0003b6 0000                          .db "READY. Press Key", 0
                                  str_enter_pin:
-00038e 6e45
-00038f 6574
-000390 2072
-000391 4950
-000392 3a4e
-E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1707): warning: .cseg .db misalignment - padding zero byte
-000393 0000                          .db "Enter PIN:", 0
+0003b7 6e45
+0003b8 6574
+0003b9 2072
+0003ba 4950
+0003bb 3a4e
+E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1777): warning: .cseg .db misalignment - padding zero byte
+0003bc 0000                          .db "Enter PIN:", 0
                                  str_verifying:
-000394 6556
-000395 6972
-000396 7966
-000397 6e69
-000398 2e67
-000399 2e2e
-E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1709): warning: .cseg .db misalignment - padding zero byte
-00039a 0000                          .db "Verifying...", 0
+0003bd 6556
+0003be 6972
+0003bf 7966
+0003c0 6e69
+0003c1 2e67
+0003c2 2e2e
+E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1779): warning: .cseg .db misalignment - padding zero byte
+0003c3 0000                          .db "Verifying...", 0
                                  str_pin_ok:
-00039b 4950
-00039c 204e
-00039d 4b4f
-00039e 0021                          .db "PIN OK!", 0
+0003c4 4950
+0003c5 204e
+0003c6 4b4f
+0003c7 0021                          .db "PIN OK!", 0
                                  str_scan_card:
-00039f 6353
-0003a0 6e61
-0003a1 4320
-0003a2 7261
-0003a3 0064                          .db "Scan Card", 0
+0003c8 6353
+0003c9 6e61
+0003ca 4320
+0003cb 7261
+0003cc 0064                          .db "Scan Card", 0
                                  str_wrong_pin:
-0003a4 7257
-0003a5 6e6f
-0003a6 2067
-0003a7 4950
-0003a8 214e
-E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1715): warning: .cseg .db misalignment - padding zero byte
-0003a9 0000                          .db "Wrong PIN!", 0
+0003cd 7257
+0003ce 6e6f
+0003cf 2067
+0003d0 4950
+0003d1 214e
+E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1785): warning: .cseg .db misalignment - padding zero byte
+0003d2 0000                          .db "Wrong PIN!", 0
                                  str_tries_left:
-0003aa 7254
-0003ab 6569
-0003ac 2073
-0003ad 656c
-0003ae 7466
-0003af 203a
-E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1717): warning: .cseg .db misalignment - padding zero byte
-0003b0 0000                          .db "Tries left: ", 0
+0003d3 7254
+0003d4 6569
+0003d5 2073
+0003d6 656c
+0003d7 7466
+0003d8 203a
+E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1787): warning: .cseg .db misalignment - padding zero byte
+0003d9 0000                          .db "Tries left: ", 0
                                  str_system_locked:
-0003b1 5953
-0003b2 5453
-0003b3 4d45
-0003b4 4c20
-0003b5 434f
-0003b6 454b
-0003b7 2144
-E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1719): warning: .cseg .db misalignment - padding zero byte
-0003b8 0000                          .db "SYSTEM LOCKED!", 0
+0003da 5953
+0003db 5453
+0003dc 4d45
+0003dd 4c20
+0003de 434f
+0003df 454b
+0003e0 2144
+E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1789): warning: .cseg .db misalignment - padding zero byte
+0003e1 0000                          .db "SYSTEM LOCKED!", 0
                                  str_locked_out:
-0003b9 2121
-0003ba 4c20
-0003bb 434f
-0003bc 454b
-0003bd 2044
-0003be 554f
-0003bf 2054
-0003c0 2121
-E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1721): warning: .cseg .db misalignment - padding zero byte
-0003c1 0000                          .db "!! LOCKED OUT !!", 0
+0003e2 2121
+0003e3 4c20
+0003e4 434f
+0003e5 454b
+0003e6 2044
+0003e7 554f
+0003e8 2054
+0003e9 2121
+E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1791): warning: .cseg .db misalignment - padding zero byte
+0003ea 0000                          .db "!! LOCKED OUT !!", 0
                                  str_wait:
-0003c2 6157
-0003c3 7469
-0003c4 203a
-E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1723): warning: .cseg .db misalignment - padding zero byte
-0003c5 0000                          .db "Wait: ", 0
+0003eb 6157
+0003ec 7469
+0003ed 203a
+E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1793): warning: .cseg .db misalignment - padding zero byte
+0003ee 0000                          .db "Wait: ", 0
                                  str_seconds:
-0003c6 0073                          .db "s", 0
+0003ef 0073                          .db "s", 0
                                  str_lock_released:
-0003c7 6f4c
-0003c8 6b63
-0003c9 5220
-0003ca 6c65
-0003cb 6165
-0003cc 6573
-0003cd 0064                          .db "Lock Released", 0
+0003f0 6f4c
+0003f1 6b63
+0003f2 5220
+0003f3 6c65
+0003f4 6165
+0003f5 6573
+0003f6 0064                          .db "Lock Released", 0
                                  str_reading_card:
-0003ce 6552
-0003cf 6461
-0003d0 6e69
-0003d1 2067
-0003d2 6143
-0003d3 6472
-0003d4 2e2e
-0003d5 002e                          .db "Reading Card...", 0
+0003f7 6552
+0003f8 6461
+0003f9 6e69
+0003fa 2067
+0003fb 6143
+0003fc 6472
+0003fd 2e2e
+0003fe 002e                          .db "Reading Card...", 0
                                  str_unknown_card:
-0003d6 6e55
-0003d7 6e6b
-0003d8 776f
-0003d9 206e
-0003da 6143
-0003db 6472
-0003dc 0021                          .db "Unknown Card!", 0
+0003ff 6e55
+000400 6e6b
+000401 776f
+000402 206e
+000403 6143
+000404 6472
+000405 0021                          .db "Unknown Card!", 0
                                  str_access_granted:
-0003dd 4341
-0003de 4543
-0003df 5353
-0003e0 4720
-0003e1 4152
-0003e2 544e
-0003e3 4445
-E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1733): warning: .cseg .db misalignment - padding zero byte
-0003e4 0000                          .db "ACCESS GRANTED", 0
+000406 4341
+000407 4543
+000408 5353
+000409 4720
+00040a 4152
+00040b 544e
+00040c 4445
+E:\University Files\SEM - 5\EE 322 Embedded Systems\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main.asm(1803): warning: .cseg .db misalignment - padding zero byte
+00040d 0000                          .db "ACCESS GRANTED", 0
                                  str_tries:
-0003e5 7254
-0003e6 6569
-0003e7 3a73
-0003e8 0020                          .db "Tries: ", 0
+00040e 7254
+00040f 6569
+000410 3a73
+000411 0020                          .db "Tries: ", 0
                                  str_left:
-0003e9 6c20
-0003ea 6665
-0003eb 0074                          .db " left", 0
+000412 6c20
+000413 6665
+000414 0074                          .db " left", 0
                                  
                                  // ============================================================================
                                  // END OF PROGRAM
@@ -2899,8 +2969,8 @@ counted separately from r26..r31 here.
 "ATmega328P" register use summary:
 x  :   4 y  :   0 z  :   8 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16: 112 r17:  33 r18:  37 r19:  21 r20:  16 
-r21:  11 r22:   2 r23:   0 r24: 126 r25:  33 r26:   3 r27:   3 r28:   0 
+r13:   0 r14:   0 r15:   0 r16: 114 r17:  33 r18:  37 r19:  21 r20:  16 
+r21:  11 r22:   2 r23:   0 r24: 138 r25:  39 r26:   3 r27:   3 r28:   0 
 r29:   0 r30:  30 r31:  30 
 Registers used: 15 out of 35 (42.9%)
 
@@ -2908,28 +2978,28 @@ Registers used: 15 out of 35 (42.9%)
 .lds  :   0 .sts  :   0 adc   :   5 add   :   6 adiw  :   0 and   :   0 
 andi  :   9 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
 brcc  :   0 brcs  :   0 break :   0 breq  :  23 brge  :   2 brhc  :   0 
-brhs  :   0 brid  :   0 brie  :   0 brlo  :   1 brlt  :   0 brmi  :   0 
+brhs  :   0 brid  :   0 brie  :   0 brlo  :   3 brlt  :   0 brmi  :   0 
 brne  :  18 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
 brvs  :   0 bset  :   0 bst   :   0 call  :   0 cbi   :  25 cbr   :   0 
 clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :  13 cls   :   0 
 clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   2 cpc   :   0 
-cpi   :  20 cpse  :   0 dec   :   7 eor   :   0 fmul  :   0 fmuls :   0 
+cpi   :  22 cpse  :   0 dec   :   7 eor   :   0 fmul  :   0 fmuls :   0 
 fmulsu:   0 icall :   0 ijmp  :   0 in    :   3 inc   :   8 jmp   :   0 
-ld    :   3 ldd   :   0 ldi   : 175 lds   :  13 lpm   :   5 lsl   :   4 
-lsr   :   0 mov   :  21 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
-neg   :   0 nop   :   6 or    :   0 ori   :  13 out   :   5 pop   :  18 
-push  :  18 rcall : 187 ret   :  42 reti  :   2 rjmp  :  57 rol   :   0 
+ld    :   3 ldd   :   0 ldi   : 192 lds   :  13 lpm   :   5 lsl   :   4 
+lsr   :   0 mov   :  20 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
+neg   :   0 nop   :   6 or    :   0 ori   :  12 out   :   5 pop   :  18 
+push  :  18 rcall : 197 ret   :  42 reti  :   2 rjmp  :  65 rol   :   0 
 ror   :   0 sbc   :   0 sbci  :   2 sbi   :  36 sbic  :   4 sbis  :   4 
-sbiw  :   0 sbr   :   0 sbrc  :   0 sbrs  :   3 sec   :   0 seh   :   0 
+sbiw  :   0 sbr   :   0 sbrc  :   2 sbrs  :   5 sec   :   0 seh   :   0 
 sei   :   1 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
 sez   :   0 sleep :   0 spm   :   0 st    :   5 std   :   0 sts   :  38 
 sub   :   2 subi  :   7 swap  :   2 tst   :  15 wdr   :   0 
-Instructions used: 41 out of 113 (36.3%)
+Instructions used: 42 out of 113 (37.2%)
 
 "ATmega328P" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x0007d8   1760    248   2008   32768   6.1%
+[.cseg] 0x000000 0x00082a   1842    248   2090   32768   6.4%
 [.dseg] 0x000100 0x00010e      0     14     14    2048   0.7%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 

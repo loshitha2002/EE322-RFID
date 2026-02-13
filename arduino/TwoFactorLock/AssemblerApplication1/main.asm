@@ -60,6 +60,7 @@
 // MFRC522 Registers
 .equ MFRC_CommandReg = 0x01
 .equ MFRC_ComIrqReg = 0x04
+.equ MFRC_ErrorReg = 0x06
 .equ MFRC_FIFODataReg = 0x09
 .equ MFRC_FIFOLevelReg = 0x0A
 .equ MFRC_BitFramingReg = 0x0D
@@ -1405,61 +1406,104 @@ mfrc522_init:
 
 mfrc522_request:
     ; Send REQA command to detect cards nearby
-    ; Returns r24 = 0 if card found, 1 if no card
+    ; Returns r24 = 0 if card found, 1 if no card/error
 
-    ; BitFramingReg = 0x07 (7 bits)
+    ; Idle
+    ldi     r24, MFRC_CommandReg
+    ldi     r25, CMD_IDLE
+    rcall   mfrc522_write_reg
+
+    ; Clear IRQ flags
+    ldi     r24, MFRC_ComIrqReg
+    ldi     r25, 0x7F
+    rcall   mfrc522_write_reg
+
+    ; Flush FIFO
+    ldi     r24, MFRC_FIFOLevelReg
+    ldi     r25, 0x80
+    rcall   mfrc522_write_reg
+
+    ; 7-bit framing for REQA
     ldi     r24, MFRC_BitFramingReg
     ldi     r25, 0x07
     rcall   mfrc522_write_reg
 
-    ; Write REQA (0x26) to FIFO
+    ; FIFO <- REQA
     ldi     r24, MFRC_FIFODataReg
     ldi     r25, PICC_REQIDL
     rcall   mfrc522_write_reg
 
-    ; Execute Transceive command
+    ; Transceive
     ldi     r24, MFRC_CommandReg
     ldi     r25, CMD_TRANSCEIVE
     rcall   mfrc522_write_reg
 
-    ; Start transmission: BitFramingReg |= 0x80
+    ; StartSend = 1 (keep 7-bit framing)
     ldi     r24, MFRC_BitFramingReg
-    rcall   mfrc522_read_reg
-    ori     r24, 0x80
-    mov     r25, r24
-    ldi     r24, MFRC_BitFramingReg
+    ldi     r25, 0x87
     rcall   mfrc522_write_reg
 
-    ; Wait for response (with timeout)
-    ldi     r20, 0xFF              ; Timeout counter H
-    ldi     r21, 0xFF              ; Timeout counter L
+    ldi     r20, 0xFF
+    ldi     r21, 0xFF
 
 mfrc_req_wait:
     ldi     r24, MFRC_ComIrqReg
     rcall   mfrc522_read_reg
     mov     r16, r24
 
-    ; Check RxIRq (bit 5) or IdleIRq (bit 4)
-    andi    r16, 0x30
-    brne    mfrc_req_got_response
+    ; TimerIRq => timeout/no card
+    sbrc    r16, 0
+    rjmp    mfrc_req_no_card
 
-    ; Timeout check
+    ; Require RxIRq (bit5). IdleIRq alone is NOT success.
+    sbrs    r16, 5
+    rjmp    mfrc_req_wait_continue
+    rjmp    mfrc_req_have_rx
+
+mfrc_req_wait_continue:
     subi    r21, 1
     sbci    r20, 0
     brne    mfrc_req_wait
+    rjmp    mfrc_req_no_card
 
-    ; Timeout - no card
-    ldi     r24, 1
+mfrc_req_have_rx:
+    ; Clear StartSend back to 7-bit framing
+    ldi     r24, MFRC_BitFramingReg
+    ldi     r25, 0x07
+    rcall   mfrc522_write_reg
+
+    ; Error check
+    ldi     r24, MFRC_ErrorReg
+    rcall   mfrc522_read_reg
+    andi    r24, 0x1B
+    brne    mfrc_req_no_card
+
+    ; ATQA should be at least 2 bytes
+    ldi     r24, MFRC_FIFOLevelReg
+    rcall   mfrc522_read_reg
+    cpi     r24, 2
+    brlo    mfrc_req_no_card
+
+    ldi     r24, 0
     ret
 
-mfrc_req_got_response:
-    ; Card detected
-    ldi     r24, 0
+mfrc_req_no_card:
+    ldi     r24, 1
     ret
 
 mfrc522_anticoll:
     ; Anti-collision: get card UID
     ; Returns r24 = 0 if success, stores UID in scanned_uid
+
+    ; Idle
+    ldi     r24, MFRC_CommandReg
+    ldi     r25, CMD_IDLE
+    rcall   mfrc522_write_reg
+
+    ; Clear IRQ flags
+    ldi     r24, MFRC_ComIrqReg
+    ldi     r25, 0x7F
+    rcall   mfrc522_write_reg
 
     ; BitFramingReg = 0x00 (full bytes)
     ldi     r24, MFRC_BitFramingReg
@@ -1501,18 +1545,36 @@ mfrc_ac_wait:
     ldi     r24, MFRC_ComIrqReg
     rcall   mfrc522_read_reg
     mov     r16, r24
-    andi    r16, 0x30
-    brne    mfrc_ac_got_response
 
+    ; TimerIRq => fail
+    sbrc    r16, 0
+    rjmp    mfrc_ac_fail
+
+    ; Require RxIRq
+    sbrs    r16, 5
+    rjmp    mfrc_ac_wait_continue
+    rjmp    mfrc_ac_have_rx
+
+mfrc_ac_wait_continue:
     subi    r21, 1
     sbci    r20, 0
     brne    mfrc_ac_wait
 
-    ; Timeout
-    ldi     r24, 1
-    ret
+    rjmp    mfrc_ac_fail
 
-mfrc_ac_got_response:
+mfrc_ac_have_rx:
+    ; Error check
+    ldi     r24, MFRC_ErrorReg
+    rcall   mfrc522_read_reg
+    andi    r24, 0x1B
+    brne    mfrc_ac_fail
+
+    ; Need at least 5 bytes: UID0..UID3 + BCC
+    ldi     r24, MFRC_FIFOLevelReg
+    rcall   mfrc522_read_reg
+    cpi     r24, 5
+    brlo    mfrc_ac_fail
+
     ; Read 4 bytes of UID from FIFO
     ldi     r18, 4
     ldi     XL, LOW(scanned_uid)
@@ -1530,8 +1592,16 @@ mfrc_read_uid_loop:
     rjmp    mfrc_read_uid_loop
 
 mfrc_read_uid_done:
+    ; Discard BCC byte
+    ldi     r24, MFRC_FIFODataReg
+    rcall   mfrc522_read_reg
+
     ; Success
     ldi     r24, 0
+    ret
+
+mfrc_ac_fail:
+    ldi     r24, 1
     ret
 
 mfrc522_halt:
