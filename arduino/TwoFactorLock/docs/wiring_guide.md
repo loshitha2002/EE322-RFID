@@ -21,6 +21,10 @@
                       └──────────┘
 ```
 
+**PCB NOTE (your board):** If your PCB connects the lock MOSFET gate to **PC3 (A3)**, use the firmware variant
+[arduino/TwoFactorLock/AssemblerApplication1/main_final_real_lock_PC3_LOCK.asm](arduino/TwoFactorLock/AssemblerApplication1/main_final_real_lock_PC3_LOCK.asm).
+In that variant: **PC3 = LOCK output**, and the **LED moves to PD7 (D7)**.
+
 ---
 
 ## Components Required
@@ -147,12 +151,18 @@ on the back of the I2C module with a screwdriver until text appears.
 
 ## STEP H: LED - Door Lock Indicator (1 LED + 1 resistor)
 
-Code: `PIN_LED = A3`
+Code (breadboard/default): `PIN_LED = A3`
+
+Code (PCB variant file): `PIN_LED = D7` and `PIN_LOCK = A3`
 
 | From | To | Component |
 |---|---|---|
 | Chip **Pin 26** (PC3/A3) | LED Anode (+) (long leg) | Wire |
 | LED Cathode (-) (short leg) | GND Rail | 330Ω Resistor |
+
+**PCB variant wiring:**
+- LED Anode (+) -> Chip **Pin 13** (PD7/D7) (instead of PC3)
+- LED Cathode (-) -> GND through 330Ω
 
 ---
 
@@ -167,15 +177,25 @@ Code: `PIN_BUZZER = 8` (PB0)
 
 ---
 
-## STEP J: Lock Relay (OPTIONAL - Skip for Mid-Eval)
+## STEP J: Lock Driver (Relay or MOSFET)
 
-Code: `PIN_LOCK = 7` (PD7)
+Code (breadboard/default): `PIN_LOCK = 7` (PD7)
+
+Code (PCB variant file): `PIN_LOCK = A3` (PC3)
 
 | From | To |
 |---|---|
 | Chip **Pin 13** (PD7/D7) | Relay Signal IN |
 | Relay VCC | +5V Rail |
 | Relay GND | GND Rail |
+
+**PCB variant wiring (MOSFET gate on PC3):**
+- Chip **Pin 26** (PC3/A3) -> MOSFET Gate (through 100–220Ω)
+- MOSFET Gate -> GND (100k pulldown)
+- MOSFET Source -> GND (common with Arduino GND)
+- MOSFET Drain -> Lock (-)
+- Lock (+) -> +12V
+- Flyback diode across lock coil (stripe/cathode to +12V)
 
 For Mid-Eval, the LED on A3 already shows the lock state. Skip this step.
 

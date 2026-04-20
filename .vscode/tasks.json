@@ -27,6 +27,31 @@
         }
       },
       "problemMatcher": []
+    },
+    {
+      "label": "Flash TwoFactorLock (assemble + upload, COM4)",
+      "type": "shell",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}\\tools\\flash_twofactorlock.ps1",
+        "-Port",
+        "COM4",
+        "-Mode",
+        "bootloader",
+        "-Baud",
+        "115200"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "Path": "${env:Path};C:\\msys64\\ucrt64\\bin"
+        }
+      },
+      "problemMatcher": []
     }
   ]
 }
