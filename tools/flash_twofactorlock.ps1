@@ -3,7 +3,14 @@ param(
     [string]$Port = 'COM4',
     [int]$Baud = 115200,
     [ValidateSet('bootloader','arduino-as-isp')]
-    [string]$Mode = 'bootloader'
+    [string]$Mode = 'bootloader',
+    # Optional: pick a specific ASM source file inside arduino\TwoFactorLock\AssemblerApplication1
+    # Examples:
+    #   -AsmFile main_final_real_lock.asm
+    #   -AsmFile main_final_real_lock_PC3_LOCK.asm
+    [string]$AsmFile = 'main_final_real_lock.asm',
+    # If set, pause before each bootloader attempt so you can press RESET on the board.
+    [switch]$PromptForReset
 )
 
 $ErrorActionPreference = 'Stop'
@@ -11,7 +18,7 @@ Set-StrictMode -Version Latest
 
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $asmDir = Join-Path $repoRoot 'arduino\TwoFactorLock\AssemblerApplication1'
-$asmFile = Join-Path $asmDir 'main_final_real_lock.asm'
+$asmFile = Join-Path $asmDir $AsmFile
 $hexFile = Join-Path $asmDir 'main_final_real_lock.hex'
 
 if (-not (Test-Path -LiteralPath $asmFile)) {
@@ -150,6 +157,10 @@ if ($Port -match '^COM\d+$') {
 
 $lastExit = 1
 foreach ($attempt in $attempts) {
+    if ($PromptForReset -and $Mode -eq 'bootloader') {
+        Write-Host "\nRESET TIP: Press the board RESET button now." -ForegroundColor Yellow
+        [void](Read-Host "Then press Enter to start avrdude")
+    }
     Write-Host "Trying avrdude: -c $programmer -P $($attempt.Port) -b $($attempt.Baud)"
     $lastExit = Invoke-Avrdude -programmer $programmer -portArg $attempt.Port -baudArg $attempt.Baud
     if ($lastExit -eq 0) {

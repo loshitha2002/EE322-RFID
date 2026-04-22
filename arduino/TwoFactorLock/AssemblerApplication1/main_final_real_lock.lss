@@ -1,16 +1,17 @@
 
-AVRASM ver. 2.2.8  E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_real_lock.asm Mon Apr 20 12:38:37 2026
+AVRASM ver. 2.2.8  E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_real_lock_PC3_LOCK.asm Tue Apr 21 11:22:15 2026
 
-E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_real_lock.asm(11): Including file 'C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328Pdef.inc'
-E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_real_lock.asm(11): Including file 'C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328Pdef.inc'
+E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_real_lock_PC3_LOCK.asm(12): Including file 'C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328Pdef.inc'
+E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_real_lock_PC3_LOCK.asm(12): Including file 'C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m328Pdef.inc'
                                  
                                  
-                                 // main_final_real_lock.asm
+                                 // main_final_real_lock_PC3_LOCK.asm
                                  // Based on: main.asm (known-good mid-evaluation firmware)
                                  // Goal: final-hardware friendly version WITHOUT editing main.asm
                                  // Changes:
                                  // - Configurable lock output polarity (active-high/active-low)
                                  // - Configurable unlock time in seconds
+                                 // - PCB variant: LOCK output moved to PC3 (A3). LED moved to PD7 (D7).
                                  // ============================================================================
                                  
                                  .equ __SFR_OFFSET = 0
@@ -998,8 +999,8 @@ E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_r
                                  // ============================================================================
                                  // FINAL HARDWARE OPTIONS (edit only these for your real lock)
                                  // ============================================================================
-                                 // If your driver turns ON when PD7 is HIGH (typical MOSFET low-side): set 1
-                                 // If your driver turns ON when PD7 is LOW (some relay modules): set 0
+                                 // If your driver turns ON when LOCK pin is HIGH (typical MOSFET low-side): set 1
+                                 // If your driver turns ON when LOCK pin is LOW (some relay modules): set 0
                                  .equ LOCK_ACTIVE_HIGH = 1
                                  
                                  // How long to keep the lock open after ACCESS GRANTED (seconds)
@@ -1010,17 +1011,17 @@ E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_r
                                  // ============================================================================
                                  .macro LOCK_ON
                                      .if LOCK_ACTIVE_HIGH
-                                         sbi     PORTD, PD7
+                                         sbi     PORTC, PC3
                                      .else
-                                         cbi     PORTD, PD7
+                                         cbi     PORTC, PC3
                                      .endif
                                  .endmacro
                                  
                                  .macro LOCK_OFF
                                      .if LOCK_ACTIVE_HIGH
-                                         cbi     PORTD, PD7
+                                         cbi     PORTC, PC3
                                      .else
-                                         sbi     PORTD, PD7
+                                         sbi     PORTC, PC3
                                      .endif
                                  .endmacro
                                  
@@ -1028,8 +1029,8 @@ E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_r
                                  // PIN CONFIGURATION (Matches TwoFactorLock.ino exactly)
                                  // ============================================================================
                                  // PIN_BUZZER  = D8  = PB0
-                                 // PIN_LOCK    = D7  = PD7
-                                 // PIN_LED     = A3  = PC3
+                                 // PIN_LOCK    = A3  = PC3
+                                 // PIN_LED     = D7  = PD7
                                  // RFID SS     = D10 = PB2
                                  // RFID RST    = D9  = PB1
                                  // RFID MOSI   = D11 = PB3
@@ -1190,18 +1191,18 @@ E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_r
                                  
                                      ; --- Pin Configuration ---
                                      ; pinMode(PIN_BUZZER, OUTPUT)  -> PB0 output
-                                     ; pinMode(PIN_LOCK, OUTPUT)    -> PD7 output
-                                     ; pinMode(PIN_LED, OUTPUT)     -> PC3 output
+                                     ; pinMode(PIN_LOCK, OUTPUT)    -> PC3 output
+                                     ; pinMode(PIN_LED, OUTPUT)     -> PD7 output
 000019 9a20                          sbi     DDRB, PB0              ; Buzzer = output
-00001a 9a57                          sbi     DDRD, PD7              ; Lock = output
-00001b 9a3b                          sbi     DDRC, PC3              ; LED = output
+00001a 9a3b                          sbi     DDRC, PC3              ; Lock = output
+00001b 9a57                          sbi     DDRD, PD7              ; LED = output
                                  
                                      ; All outputs LOW initially
                                      ; digitalWrite(PIN_LOCK, LOW)
                                      ; digitalWrite(PIN_LED, LOW)
 00001c 9828                          cbi     PORTB, PB0             ; Buzzer OFF
-00001d 985f                          LOCK_OFF                        ; Lock OFF (polarity-safe)
-00001e 9843                          cbi     PORTC, PC3             ; LED OFF
+00001d 9843                          LOCK_OFF                        ; Lock OFF (polarity-safe)
+00001e 985f                          cbi     PORTD, PD7             ; LED OFF
                                  
                                      ; --- Keypad Pin Configuration ---
                                      ; Row pins (D2-D5) = Output (driven LOW one at a time)
@@ -1737,10 +1738,10 @@ E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_r
 00013d d108                          rcall   lcd_print_string
                                  
                                      ; digitalWrite(PIN_LOCK, HIGH)
-00013e 9a5f                          LOCK_ON
+00013e 9a43                          LOCK_ON
                                  
                                      ; digitalWrite(PIN_LED, HIGH)
-00013f 9a43                          sbi     PORTC, PC3
+00013f 9a5f                          sbi     PORTD, PD7
                                  
                                      ; tone(PIN_BUZZER, 3000, 200)
 000140 d225                          rcall   buzzer_success_beep
@@ -1753,10 +1754,10 @@ E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_r
 000144 f7e9                          brne    unlock_wait_loop
                                  
                                      ; digitalWrite(PIN_LOCK, LOW)
-000145 985f                          LOCK_OFF
+000145 9843                          LOCK_OFF
                                  
                                      ; digitalWrite(PIN_LED, LOW)
-000146 9843                          cbi     PORTC, PC3
+000146 985f                          cbi     PORTD, PD7
                                  
                                      ; wrongAttempts = 0
 000147 2700                          clr     r16
@@ -1927,10 +1928,10 @@ E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_r
 0001a8 9300 0104                     sts     input_buffer+4, r16
                                  
                                      ; digitalWrite(PIN_LOCK, LOW)
-0001aa 985f                          LOCK_OFF
+0001aa 9843                          LOCK_OFF
                                  
                                      ; digitalWrite(PIN_LED, LOW)
-0001ab 9843                          cbi     PORTC, PC3
+0001ab 985f                          cbi     PORTD, PD7
                                  
 0001ac 9508                          ret
                                  
@@ -2772,7 +2773,7 @@ E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_r
                                  secret_pin:
 00039a 3231
 00039b 3433
-E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_real_lock.asm(1788): warning: .cseg .db misalignment - padding zero byte
+E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_real_lock_PC3_LOCK.asm(1789): warning: .cseg .db misalignment - padding zero byte
 00039c 0000                          .db '1', '2', '3', '4', 0x00
                                  
                                  secret_uid:
@@ -2803,7 +2804,7 @@ E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_r
 0003ab 6f6f
 0003ac 6974
 0003ad 676e
-E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_real_lock.asm(1806): warning: .cseg .db misalignment - padding zero byte
+E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_real_lock_PC3_LOCK.asm(1807): warning: .cseg .db misalignment - padding zero byte
 0003ae 0000                          .db "System Booting", 0
                                  str_ready:
 0003af 4552
@@ -2814,7 +2815,7 @@ E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_r
 0003b4 7373
 0003b5 4b20
 0003b6 7965
-E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_real_lock.asm(1808): warning: .cseg .db misalignment - padding zero byte
+E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_real_lock_PC3_LOCK.asm(1809): warning: .cseg .db misalignment - padding zero byte
 0003b7 0000                          .db "READY. Press Key", 0
                                  str_enter_pin:
 0003b8 6e45
@@ -2822,7 +2823,7 @@ E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_r
 0003ba 2072
 0003bb 4950
 0003bc 3a4e
-E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_real_lock.asm(1810): warning: .cseg .db misalignment - padding zero byte
+E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_real_lock_PC3_LOCK.asm(1811): warning: .cseg .db misalignment - padding zero byte
 0003bd 0000                          .db "Enter PIN:", 0
                                  str_verifying:
 0003be 6556
@@ -2831,7 +2832,7 @@ E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_r
 0003c1 6e69
 0003c2 2e67
 0003c3 2e2e
-E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_real_lock.asm(1812): warning: .cseg .db misalignment - padding zero byte
+E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_real_lock_PC3_LOCK.asm(1813): warning: .cseg .db misalignment - padding zero byte
 0003c4 0000                          .db "Verifying...", 0
                                  str_pin_ok:
 0003c5 4950
@@ -2850,7 +2851,7 @@ E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_r
 0003d0 2067
 0003d1 4950
 0003d2 214e
-E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_real_lock.asm(1818): warning: .cseg .db misalignment - padding zero byte
+E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_real_lock_PC3_LOCK.asm(1819): warning: .cseg .db misalignment - padding zero byte
 0003d3 0000                          .db "Wrong PIN!", 0
                                  str_tries_left:
 0003d4 7254
@@ -2859,7 +2860,7 @@ E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_r
 0003d7 656c
 0003d8 7466
 0003d9 203a
-E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_real_lock.asm(1820): warning: .cseg .db misalignment - padding zero byte
+E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_real_lock_PC3_LOCK.asm(1821): warning: .cseg .db misalignment - padding zero byte
 0003da 0000                          .db "Tries left: ", 0
                                  str_system_locked:
 0003db 5953
@@ -2869,7 +2870,7 @@ E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_r
 0003df 434f
 0003e0 454b
 0003e1 2144
-E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_real_lock.asm(1822): warning: .cseg .db misalignment - padding zero byte
+E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_real_lock_PC3_LOCK.asm(1823): warning: .cseg .db misalignment - padding zero byte
 0003e2 0000                          .db "SYSTEM LOCKED!", 0
                                  str_locked_out:
 0003e3 2121
@@ -2880,13 +2881,13 @@ E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_r
 0003e8 554f
 0003e9 2054
 0003ea 2121
-E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_real_lock.asm(1824): warning: .cseg .db misalignment - padding zero byte
+E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_real_lock_PC3_LOCK.asm(1825): warning: .cseg .db misalignment - padding zero byte
 0003eb 0000                          .db "!! LOCKED OUT !!", 0
                                  str_wait:
 0003ec 6157
 0003ed 7469
 0003ee 203a
-E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_real_lock.asm(1826): warning: .cseg .db misalignment - padding zero byte
+E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_real_lock_PC3_LOCK.asm(1827): warning: .cseg .db misalignment - padding zero byte
 0003ef 0000                          .db "Wait: ", 0
                                  str_seconds:
 0003f0 0073                          .db "s", 0
@@ -2923,7 +2924,7 @@ E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_r
 00040b 4152
 00040c 544e
 00040d 4445
-E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_real_lock.asm(1836): warning: .cseg .db misalignment - padding zero byte
+E:\Pera bots\EE322-RFID\arduino\TwoFactorLock\AssemblerApplication1\main_final_real_lock_PC3_LOCK.asm(1837): warning: .cseg .db misalignment - padding zero byte
 00040e 0000                          .db "ACCESS GRANTED", 0
                                  str_tries:
 00040f 7254
